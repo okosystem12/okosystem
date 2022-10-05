@@ -1,0 +1,26 @@
+{
+  "name": "webpack_oko",
+  "version": "1.0.0",
+  "description": "**`npm run build`** - для запуска скрипта сборки",
+  "main": "webpaccdk.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack --watch"
+  },
+  "author": "starostin vladislav (starostin_vo@cnii.local)",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.18.5",
+    "@babel/preset-env": "^7.18.2",
+    "babel-loader": "^8.2.5",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.7.1",
+    "glob": "^8.0.3",
+    "mini-css-extract-plugin": "^2.6.1",
+    "nanoid": "^4.0.0",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.2"
+  }
+}

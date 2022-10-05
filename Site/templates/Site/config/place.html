@@ -1,0 +1,220 @@
+{% extends 'Site/base.html' %}
+
+{% load static %}
+{% block title %}
+    Список городов
+{% endblock %}
+
+{% block nav-config %}
+    active
+{% endblock %}
+
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'index' %}">Главная</a></li>
+        <li><a href="{% url 'config' %}">Настройки</a></li>
+        <li class="active">Список городов</li>
+    </ol>
+
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <div class="pull-left">
+                <div class="form-group">
+                    <select class="form-control" id="placeType" name="placeType">
+                        <option value="">Всё</option>
+                        <option value="countries">Страны</option>
+                        <option value="regions">Регионы</option>
+                    </select>
+                </div>
+            </div>
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" id="countryBtnAdd">
+                                        <span class="btn-label">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </span>
+                    Добавить страну
+                </button>
+                <button type="button" class="btn btn-primary" id="regionBtnAdd">
+                                        <span class="btn-label">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </span>
+                    Добавить регион
+                </button>
+                <button type="button" class="btn btn-primary" id="cityBtnAdd">
+                                        <span class="btn-label">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </span>
+                    Добавить город
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="placeTable"></div>
+
+    <div class="modal fade" id="countryModal" tabindex="-1" role="dialog" aria-labelledby="countryModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="countryModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form" id="countryForm" action="#" method="post">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="countryName" class="control-label"
+                                                   title="Это поле обязательно для заполнения">Страна</label>
+                                            <input type="text" class="form-control" id="countryName" name="countryName"
+                                                   placeholder="Страна">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-success">
+                <span class="btn-label">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </span>
+                                        Сохранить
+                                    </button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                            aria-hidden="true">
+                <span class="btn-label">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </span>
+                                        Отмена
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="regionModal" tabindex="-1" role="dialog" aria-labelledby="regionModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="regionModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form" id="regionForm" action="#" method="post">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="regionCountry" class="control-label">Страна</label>
+                                            <select class="form-control" id="regionCountry" name="regionCountry">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="regionName" class="control-label"
+                                                   title="Это поле обязательно для заполнения">Регион</label>
+                                            <input type="text" class="form-control" id="regionName" name="regionName"
+                                                   placeholder="Регион">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-success">
+                <span class="btn-label">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </span>
+                                        Сохранить
+                                    </button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+                <span class="btn-label">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </span>
+                                        Отмена
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="cityModal" tabindex="-1" role="dialog" aria-labelledby="cityModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="cityModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form" id="cityForm" action="#" method="post">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="cityCountry" class="control-label">Страна</label>
+                                            <select class="form-control" id="cityCountry" name="cityCountry">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="cityRegion" class="control-label">Регион</label>
+                                            <select class="form-control" id="cityRegion" name="cityRegion">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="cityName" class="control-label"
+                                                   title="Это поле обязательно для заполнения">Город</label>
+                                            <input type="text" class="form-control" id="cityName" name="cityName"
+                                                   placeholder="Город">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-success">
+                <span class="btn-label">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </span>
+                                        Сохранить
+                                    </button>
+                                    <button type="button" class="btn btn-danger"  data-dismiss="modal" aria-hidden="true">
+                <span class="btn-label">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </span>
+                                        Отмена
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{% static 'Site/dist/place.bundle.js' %}"></script>
+
+{% endblock %}

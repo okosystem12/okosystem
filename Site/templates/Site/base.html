@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="shortcut icon" href="{% static 'Site/images/star.png' %}"/>
+
+    <title>{% block title %}{% endblock %}</title>
+
+
+    <script type="text/javascript" src="{% static 'Site/vendor/jquery/jquery-3.5.1.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/jquery/jquery-ui.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/jquery/datepicker-ru.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/jquery/validate.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/jquery/jquery.highlight.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/jquery.easing.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/jquery/jquery.cookie.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/jquery/jquery.inputmask.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/chosen_v1.8.7/chosen.jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/fancybox-master/jquery.fancybox.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'Site/vendor/ajax-file-uploader/dist/jquery.uploader.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'Site/vendor/dataTables/jquery.dataTables.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/dataTables/dataTables.bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/dataTables/dataTables.buttons.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/JSZip-2.5.0/jszip.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/pdfmake-0.1.36/pdfmake.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Site/vendor/pdfmake-0.1.36/vfs_fonts.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'Site/vendor/dataTables/Buttons-2.2.3/js/buttons.html5.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'Site/vendor/dataTables/Buttons-2.2.3/js/buttons.print.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'Site/vendor/dataTables/Buttons-2.2.3/js/buttons.colVis.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'Site/vendor/dataTables/Buttons-2.2.3/js/buttons.bootstrap.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'Site/vendor/dataTables/ColReorder-1.5.6/js/dataTables.colReorder.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'Site/vendor/dataTables/FixedHeader-3.2.4/js/dataTables.fixedHeader.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'Site/vendor/dataTables/FixedHeader-3.2.4/js/fixedHeader.bootstrap.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'Site/vendor/dataTables/Responsive-2.3.0/js/dataTables.responsive.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'Site/vendor/dataTables/Responsive-2.3.0/js/responsive.bootstrap.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'Site/vendor/dataTables/RowGroup-1.2.0/js/dataTables.rowGroup.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'Site/vendor/dataTables/Select-1.4.0/js/dataTables.select.min.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'Site/vendor/dataTables/searchHighlight/js/dataTables.searchHighlight.min.js' %}"></script>
+
+
+    <link href="{% static 'Site/dist/style.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+<!-- Шапка сервиса -->
+<div class="header">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'index' %}">
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                </a>
+            </div>
+            {% if user.username %}
+                <ul class="nav navbar-nav collapse navbar-collapse">
+                    <li class="{% block nav-index %}{% endblock %}"><a href="{% url 'index' %}">Главная</a></li>
+                    <li class="{% block nav-control %}{% endblock %}"><a href="{% url 'control' %}">Данные ЛС</a></li>
+                    <li class="{% block nav-actions %}{% endblock %}"><a href="{% url 'actions' %}">События</a></li>
+                    <li class="{% block nav-reports %}{% endblock %}"><a href="{% url 'reports' %}">Отчёты</a></li>
+                    {% if user.is_superuser %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">Настройки <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'config' %}">Общие</a></li>
+                                <li><a href="{% url 'place' %}">Список городов</a></li>
+                                <li><a href="{% url 'vch' %}">Список ВЧ</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {{ user.get_short_name }}
+                            <b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{% url 'index' %}">Главная</a></li>
+                            <li><a href="{% url 'control' %}">Данные ЛС</a></li>
+                            <li><a href="{% url 'actions' %}">События</a></li>
+                            <li><a href="{% url 'reports' %}">Отчёты</a></li>
+                            {% if user.is_superuser %}
+                                <li class="divider"></li>
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                       aria-haspopup="true" aria-expanded="false">Настройки</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{% url 'config' %}">Общие</a></li>
+                                        <li><a href="{% url 'place' %}">Список городов</a></li>
+                                        <li><a href="{% url 'vch' %}">Список ВЧ</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="/admin" target="_blank">Панель администратора</a></li>
+                            {% endif %}
+                            <li class="divider"></li>
+                            <li><a href="{% url 'auth_logout' %}">Выход</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            {% endif %}
+        </div>
+    </nav>
+</div>
+
+<div class="content container">
+    {% block content %}{% endblock %}
+</div>
+
+
+<!-- Затычка (Загрузка) -->
+<div class="load" style="display: none">
+    <div class="load__wrapper">
+        <p class="load__text">Загрузка</p>
+    </div>
+</div>
+
+<div>
+
+</div>
+
+<script type="text/javascript" src="{% static 'Site/dist/base.bundle.js' %}"></script>
+</body>
+</html>

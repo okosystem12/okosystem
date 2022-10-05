@@ -1,0 +1,1 @@
+export const prepUri = (uri) => `/uploads/${uri}`;

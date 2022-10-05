@@ -1,0 +1,17 @@
+@import "../vendor/dataTables/jquery.dataTables.min.css";
+@import "../vendor/dataTables/Buttons-2.2.3/css/buttons.dataTables.min.css";
+@import "../vendor/dataTables/Buttons-2.2.3/css/buttons.bootstrap.min.css";
+@import "../vendor/dataTables/ColReorder-1.5.6/css/colReorder.dataTables.min.css";
+@import "../vendor/dataTables/ColReorder-1.5.6/css/colReorder.bootstrap.min.css";
+@import "../vendor/dataTables/FixedHeader-3.2.4/css/fixedHeader.bootstrap.min.css";
+@import "../vendor/dataTables/FixedHeader-3.2.4/css/fixedHeader.bootstrap.min.css";
+@import "../vendor/dataTables/Responsive-2.3.0/css/responsive.bootstrap.min.css";
+@import "../vendor/dataTables/RowGroup-1.2.0/css/rowGroup.bootstrap.min.css";
+@import "../vendor/dataTables/Select-1.4.0/css/select.bootstrap.min.css";
+@import "../vendor/dataTables/searchHighlight/css/dataTables.searchHighlight.css";
+
+
+div.dt-button-collection.columns>:last-child .dt-button > a {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

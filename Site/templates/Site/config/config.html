@@ -1,0 +1,22 @@
+{% extends 'Site/base.html' %}
+
+{% load static %}
+{% block title %}
+    Настройки
+{% endblock %}
+
+{% block nav-config %}
+    active
+{% endblock %}
+
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'index' %}">Главная</a></li>
+        <li class="active">Настройки</li>
+    </ol>
+
+    <div class="row">
+    </div>
+
+    <script type="text/javascript" src="{% static 'Site/dist/config.bundle.js' %}"></script>
+{% endblock %}

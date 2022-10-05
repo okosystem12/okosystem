@@ -1,0 +1,225 @@
+@import "./vendor.css";
+@import "./component.css";
+
+.load {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100000;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    background: rgba(255, 255, 255, .66);
+}
+
+.load__wrapper {
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    background-image: url("../images/loader.gif");
+    background-repeat: no-repeat;
+    background-position: center top;
+}
+
+.load__text {
+    margin: 0 0 0 7px;
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 7px;
+    text-transform: uppercase;
+    color: #1F4173;
+}
+
+.btn .btn-label {
+    border-right: 1px solid;
+    border-color: inherit;
+    margin-right: 6px;
+    padding: 6px 6px 6px 0;
+}
+
+.btn:hover .btn-label {
+    border-color: inherit;
+}
+
+.input-group {
+    width: 100%;
+}
+
+.input-group-3 .form-control {
+    width: calc(100% / 3);
+}
+
+form .control-label[title]:after {
+    content: ' *';
+}
+
+div.dataTables_wrapper div.dataTables_filter {
+    float: right;
+}
+
+div.dataTables_wrapper div.dataTables_length {
+    float: left;
+    margin-right: 15px;
+}
+
+div.dt-button-collection button.dt-button {
+    display: inline-block;
+    width: 32%;
+}
+
+div.dt-button-collection button.buttons-colvis {
+    display: inline-block;
+    width: 49%;
+}
+
+div.dt-button-collection h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-weight: 100;
+    border-bottom: 1px solid #9f9f9f;
+    font-size: 1em;
+}
+
+div.dt-button-collection h3.not-top-heading {
+    margin-top: 10px;
+}
+
+.table-btn-list {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    margin: -5px;
+    max-width: 75px;
+}
+
+.table-btn-list a {
+    margin: 5px;
+}
+
+div.dt-button-collection .dt-button {
+    min-width: 100%;
+}
+
+div.dt-buttons {
+    margin-bottom: 5px;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.spin {
+    animation-name: spin;
+    animation-duration: 3333ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.fancybox-confirm {
+    padding: 20px;
+}
+
+.fancybox-confirm__title {
+}
+
+.fancybox-confirm__text {
+    margin-bottom: 20px;
+}
+
+.fancybox-confirm__btn {
+
+}
+
+.fancybox-confirm__btn + .fancybox-confirm__btn {
+    margin-left: 5px;
+}
+
+.jquery-uploader-select-card-solo, .jquery-uploader-card-solo {
+    width: 100%;
+}
+
+.jquery-uploader-preview-main > .files_img {
+    object-fit: contain;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    right: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu > a:after {
+    display: block;
+    position: absolute;
+    content: " ";
+    float: left;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #cccccc;
+    top: calc(50% - 5px);
+    left: 10px;
+    transform: rotate(180deg);
+}
+
+.dropdown-submenu:hover > a:after {
+    border-left-color: #ffffff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left > .dropdown-menu {
+    right: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 6px 0 6px;
+    -moz-border-radius: 6px 6px 0 6px;
+    border-radius: 6px 6px 0 6px;
+}
+
+.img {
+    width: 100%;
+    height: auto;
+}
+
+.modal-header .img {
+    height: 20px;
+    width: auto;
+    margin-right: 15px;
+    float: left;
+}
+
+.modal-dialog-xl {
+    width: 95%;
+}
