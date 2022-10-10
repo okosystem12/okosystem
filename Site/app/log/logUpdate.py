@@ -1,18 +1,16 @@
-from datetime import datetime, date
-from threading import Thread
 import time
+from datetime import datetime
+from threading import Thread
 
-from django.db.models import Q
-
-from Site.apps.queue import que
+from Site.app.queue import que
 from Site.models import LastUpdateConfig
 
 
-def logUpdateThread():
-    que.add_element(Thread(target=logUpdate, args=[LastUpdateConfig]))
-
-
 def logUpdate():
+    que.add_element(Thread(target=logUpdateThread, args=[]))
+
+
+def logUpdateThread():
     LastUpdateConfig.objects.create(
         type='vkLastUpdateDate',
         dateStart=datetime.now()

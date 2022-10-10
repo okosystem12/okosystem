@@ -223,3 +223,8 @@ div.dt-buttons {
 .modal-dialog-xl {
     width: 95%;
 }
+
+.form-textarea {
+    resize: vertical;
+    max-height: 100px;
+}

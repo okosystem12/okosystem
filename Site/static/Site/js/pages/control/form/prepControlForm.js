@@ -7,13 +7,20 @@ import {userId} from "../../../storage/control/userId";
 import {controlUserImgList} from "../../../storage/control/controlUserImgList";
 
 export const prepControlForm = () => {
-    const {birthCity, birthCountry, birthRegion, birthDate, photoList} = componentsData;
+    const {
+        birthCity, birthCountry, birthRegion,
+        liveCity, liveCountry, liveRegion,
+        birthDate,  photoList} = componentsData;
 
     initDatepickerPast(birthDate);
 
     initChosen(birthCity);
     initChosen(birthCountry);
     initChosen(birthRegion);
+
+    initChosen(liveCity);
+    initChosen(liveCountry);
+    initChosen(liveRegion);
 
     upload(photoList, (e, file) => {
     }, (e, file) => {

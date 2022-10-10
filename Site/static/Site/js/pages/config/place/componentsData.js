@@ -1,6 +1,4 @@
 export const componentsData = {
-    placeType: $('#placeType'),
-    
     placeTable: $('#placeTable'),
 
     countryBtnAdd: $('#countryBtnAdd'),

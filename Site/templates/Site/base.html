@@ -78,7 +78,6 @@
                 <ul class="nav navbar-nav collapse navbar-collapse">
                     <li class="{% block nav-index %}{% endblock %}"><a href="{% url 'index' %}">Главная</a></li>
                     <li class="{% block nav-control %}{% endblock %}"><a href="{% url 'control' %}">Данные ЛС</a></li>
-                    <li class="{% block nav-actions %}{% endblock %}"><a href="{% url 'actions' %}">События</a></li>
                     <li class="{% block nav-reports %}{% endblock %}"><a href="{% url 'reports' %}">Отчёты</a></li>
                     {% if user.is_superuser %}
                         <li class="dropdown">
@@ -100,7 +99,6 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{% url 'index' %}">Главная</a></li>
                             <li><a href="{% url 'control' %}">Данные ЛС</a></li>
-                            <li><a href="{% url 'actions' %}">События</a></li>
                             <li><a href="{% url 'reports' %}">Отчёты</a></li>
                             {% if user.is_superuser %}
                                 <li class="divider"></li>

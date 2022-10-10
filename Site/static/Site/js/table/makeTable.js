@@ -20,6 +20,12 @@ export const makeTable = (table, options = {}) => {
     return table.DataTable({
         ...settings,
         data: [],
+        ...('ajax' in options ? {
+            processing: true,
+            serverSide: true,
+            serverMethod: 'post',
+            ajax: options.ajax
+        } : {}),
         colReorder: {
             fixedColumnsLeft: options.table.columnsList.filter(el => el.fixed).length,
             fixedColumnsRight: columnsBtnList.length,
@@ -40,7 +46,8 @@ export const makeTable = (table, options = {}) => {
                         text: 'Сбросить',
                         action: (e, dt, node, config) => {
                             options.table.table.state.clear().destroy();
-                            options.destroyCallback()
+                            options.destroyCallback();
+                            dt.ajax.reload(false);
                         }
                     },
                     ...(buttonsColvis(visList)?.buttons || []),
@@ -51,7 +58,7 @@ export const makeTable = (table, options = {}) => {
             {
                 text: 'Обновить',
                 action: (e, dt, node, config) =>
-                    options.refreshCallback()
+                    dt.ajax.reload(false)
             }
         ]
     })

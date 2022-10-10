@@ -4,7 +4,6 @@ import {makeTable} from "../../../table/makeTable";
 import {remove} from "./event/remove";
 import {edit} from "./event/edit";
 import {view} from "./event/view";
-import {controlInfo} from "../controlInfo";
 
 export const make = () => {
     componentsData.controlTable.html('<table class="table table-striped table-bordered" width="100%"></table>');
@@ -12,14 +11,12 @@ export const make = () => {
         componentsData.controlTable.find('.table'),
         {
             table: table.value,
+            ajax: {
+                "url": "/control/table/",
+                "dataSrc": "data"
+            },
             btnList: ['view', 'edit', 'remove'],
-            destroyCallback: () => {
-                make();
-                controlInfo();
-            },
-            refreshCallback: () => {
-                controlInfo();
-            },
+            destroyCallback: make,
             removeCallback: remove,
             editCallback: edit,
             viewCallback: view,

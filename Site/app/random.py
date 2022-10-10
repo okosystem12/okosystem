@@ -1,4 +1,6 @@
+import hashlib
 import random
+import time
 
 try:
     random = random.SystemRandom()

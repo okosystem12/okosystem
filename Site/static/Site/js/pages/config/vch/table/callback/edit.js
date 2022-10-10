@@ -1,5 +1,5 @@
-import {vchList} from "../../../../../storage/app/vchList";
+import {get} from "../../../../../req/config/vch/get";
 import {openForm} from "../../form/openForm";
 
 export const edit = (id) =>
-    openForm(vchList.value.find(el => el.id === id) || {});
+    get({id}, (msg) => openForm(msg.vch[0]));

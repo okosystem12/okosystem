@@ -67,7 +67,6 @@ class Column(models.Model):
     orderable = models.BooleanField(verbose_name='Сортируемый', default=True)
     fixed = models.BooleanField(verbose_name='Зафиксировать', default=False)
     hide = models.BooleanField(verbose_name='Не скрываемый', default=False)
-    searchable = models.BooleanField(verbose_name='Поиск по столбщу', default=True)
     visible = models.BooleanField(verbose_name='Отображаемый (по умолчанию)', default=True)
     render = models.ForeignKey(Render, verbose_name='Рендер', default=None, blank=True, null=True)
 
@@ -167,34 +166,6 @@ class Place(models.Model):
         verbose_name = 'Место'
 
 
-class Universities(models.Model):
-    title = models.CharField(max_length=200, verbose_name='ВУЗ', default='')
-    city = models.ForeignKey(Cities, verbose_name='Город', on_delete=models.CASCADE, default=None, blank=True,
-                             null=True)
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        ordering = ['title']
-        verbose_name_plural = 'ВУЗы'
-        verbose_name = 'ВУЗ'
-
-
-class Schools(models.Model):
-    title = models.CharField(max_length=200, verbose_name='Школа', default='')
-    city = models.ForeignKey(Cities, verbose_name='Город', on_delete=models.CASCADE, default=None, blank=True,
-                             null=True)
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        ordering = ['title']
-        verbose_name_plural = 'Школы'
-        verbose_name = 'Школа'
-
-
 class Vch(models.Model):
     number = models.CharField(max_length=200, verbose_name='Номер ВЧ', default='')
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
@@ -214,20 +185,41 @@ class ControlUser(models.Model):
 
     lastName = models.CharField(max_length=200, verbose_name='Фамилия', default='')
     firstName = models.CharField(max_length=200, verbose_name='Имя', default='')
-    patronymic = models.CharField(max_length=200, verbose_name='Отчество', default='')
+    patronymic = models.CharField(max_length=200, verbose_name='Отчество', default='', blank=True)
 
-    birthDay = models.IntegerField(verbose_name='День рождения', default=0)
-    birthMonth = models.IntegerField(verbose_name='Месяц рождения', default=0)
-    birthYear = models.IntegerField(verbose_name='Год рождения', default=0)
+    birthDay = models.IntegerField(verbose_name='День рождения', default=0, blank=True)
+    birthMonth = models.IntegerField(verbose_name='Месяц рождения', default=0, blank=True)
+    birthYear = models.IntegerField(verbose_name='Год рождения', default=0, blank=True)
 
-    birthPlace = models.ForeignKey(Place, verbose_name='Место рождения', on_delete=models.CASCADE, default=None, blank=True,
-                                   null=True)
+    birthPlace = models.ForeignKey(Place, verbose_name='Место рождения', on_delete=models.CASCADE, default=None,
+                                   blank=True, null=True, related_name='birthPlace')
+
+    livePlace = models.ForeignKey(Place, verbose_name='Место жительства', on_delete=models.CASCADE, default=None,
+                                  blank=True, null=True, related_name='livePlace')
+
+    schools = models.TextField(verbose_name='Школа', default='', blank=True)
+    universities = models.TextField(verbose_name='ВУЗ', default='', blank=True)
+
+    work = models.TextField(verbose_name='Место работы', default='', blank=True)
+
+    vch = models.ForeignKey(Vch, verbose_name='Место военной службы', on_delete=models.CASCADE, default=None,
+                            blank=True, null=True)
 
     updatedAt = models.DateTimeField(verbose_name='Дата последнего обновления', default=None, blank=True, null=True)
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
     def __str__(self):
         return self.lastName + self.firstName
+
+    def fullName(self):
+        return self.lastName \
+               + ((' ' + self.firstName) if self.firstName != '' else '') \
+               + ((' ' + self.patronymic) if self.patronymic != '' else '')
+
+    def shortName(self):
+        return self.lastName \
+               + ((' ' + self.firstName[0]) if self.firstName != '' else '') \
+               + ((' ' + self.patronymic[0]) if self.patronymic != '' else '')
 
     class Meta:
         ordering = ['lastName', 'firstName']

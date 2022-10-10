@@ -24,6 +24,9 @@ export const setFormValue = (data = emptyControlForm) => {
         lastName,
         firstName,
         patronymic,
+        schools,
+        work,
+        universities,
         birthDate,
         photoList,
         phoneList,
@@ -31,6 +34,9 @@ export const setFormValue = (data = emptyControlForm) => {
         birthCountry,
         birthRegion,
         birthCity,
+        liveCountry,
+        liveRegion,
+        liveCity,
     } = componentsData;
 
     userId.value = data.id || null;
@@ -40,6 +46,9 @@ export const setFormValue = (data = emptyControlForm) => {
     lastName.val(data.lastName);
     firstName.val(data.firstName);
     patronymic.val(data.patronymic);
+    schools.val(data.schools);
+    work.val(data.work);
+    universities.val(data.universities);
     birthDate.datepicker("setDate", bDate(data));
 
     photoList.uploaderClean();
@@ -62,7 +71,8 @@ export const setFormValue = (data = emptyControlForm) => {
     componentList(mailList, storageMailList.value.filter(el => el.controlUser_id === data.id));
 
 
-    placeEngine(birthCountry, birthRegion, birthCity, data.birthPlace_id)
+    placeEngine(birthCountry, birthRegion, birthCity, data.birthPlace_id);
+    placeEngine(liveCountry, liveRegion, liveCity, data.livePlace_id);
 
 };
 

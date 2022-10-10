@@ -9,11 +9,19 @@ export const componentsData = {
     firstName: $('#firstName'),
     patronymic: $('#patronymic'),
 
+    schools: $('#schools'),
+    universities: $('#universities'),
+    work: $('#work'),
+
     birthDate: $('#birthDate'),
 
     birthCountry: $('#birthCountry'),
     birthRegion: $('#birthRegion'),
     birthCity: $('#birthCity'),
+
+    liveCountry: $('#liveCountry'),
+    liveRegion: $('#liveRegion'),
+    liveCity: $('#liveCity'),
 
     photoList: $('#photoList'),
 

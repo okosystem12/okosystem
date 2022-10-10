@@ -3,7 +3,6 @@ import {table} from "../../../../storage/config/place/table";
 import {makeTable} from "../../../../table/makeTable";
 import {rowsAdd} from "../../../../table/handler/rowsAdd";
 import {info} from "../../../../storage/config/place/info";
-import {placeInfo} from "../../../app/placeInfo";
 import {edit} from "./callback/edit";
 import {remove} from "./callback/remove";
 
@@ -15,8 +14,7 @@ export const make = () => {
         {
             table: table.value,
             btnList: ['edit', 'remove'],
-            destroyCallback: placeInfo,
-            refreshCallback: placeInfo,
+            destroyCallback: make,
             removeCallback: remove,
             editCallback: edit,
         }

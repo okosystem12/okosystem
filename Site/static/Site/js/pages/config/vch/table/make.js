@@ -1,9 +1,6 @@
 import {componentsData} from "../componentsData";
 import {table} from "../../../../storage/config/vch/table";
 import {makeTable} from "../../../../table/makeTable";
-import {rowsAdd} from "../../../../table/handler/rowsAdd";
-import {vchList} from "../../../../storage/app/vchList";
-import {vchInfo} from "../../../app/vchInfo";
 import {remove} from "./callback/remove";
 import {edit} from "./callback/edit";
 
@@ -15,11 +12,9 @@ export const make = () => {
         {
             table: table.value,
             btnList: ['edit', 'remove'],
-            destroyCallback: vchInfo,
-            refreshCallback: vchInfo,
+            destroyCallback: make,
             removeCallback: remove,
             editCallback: edit,
         }
     );
-    rowsAdd(table.value.table, vchList.value, false, false);
 };

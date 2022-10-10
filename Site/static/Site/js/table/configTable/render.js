@@ -10,10 +10,14 @@ export const render = (render) => {
         case 'datetime':
             return DataTable.render.datetime();
         case 'valueList':
-            return (data, type, row, meta) => {
-               return data?.map(el =>
+            return (data, type, row, meta) =>
+                data?.map(el =>
                     el.value
-                ).join(type === 'display' ? '<br>' : ', ')
-            }
+                ).join(type === 'display' ? '<br>' : ', ');
+        case 'place':
+            return (data, type, row, meta) =>
+                data?.filter(el => el)
+                    .join(type === 'display' ? '<br>' : ', ');
+
     }
 };
