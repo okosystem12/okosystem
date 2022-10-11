@@ -3,11 +3,7 @@ import {columnsBtn} from "./configTable/columnsBtn";
 import {buttonsExport} from "./handler/buttonsExport";
 import {buttonsColvis} from "./handler/buttonsColvis";
 import {colvisGroup} from "./configTable/colvisGroup";
-import {highlight} from "./handler/highlight";
 import {prepColumnsList} from "./configTable/prepColumnsList";
-import {remove} from "./event/remove";
-import {edit} from "./event/edit";
-import {view} from "./event/view";
 import {buttonsInit} from "./handler/buttonsInit";
 
 export const makeTable = (table, options = {}) => {
@@ -46,7 +42,7 @@ export const makeTable = (table, options = {}) => {
                     {
                         text: 'Сбросить',
                         action: (e, dt, node, config) => {
-                            options.table.table.state.clear().destroy();
+                            dt.state.clear().destroy();
                             options.destroyCallback();
                             dt.ajax.reload(false);
                         }

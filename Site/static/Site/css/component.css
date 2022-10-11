@@ -16,19 +16,15 @@
 }
 
 .component__item {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: nowrap;
     margin: 10px;
     width: calc(100% / 3 - 20px);
 }
 
 .component__input {
     width: 100%;
-    margin-right: 10px;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1170px) {
     .component__item {
         width: calc(100% / 2 - 20px);
     }

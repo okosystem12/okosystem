@@ -1,16 +1,16 @@
-import {componentItem} from "./componentItem";
-import {componentItemEvent} from "./componentItemEvent";
+import {item} from "./item/item";
+import {event as itemEvent} from "./item/event";
 
-import {componentAdd} from "./componentAdd";
-import {componentAddEvent} from "./componentAddEvent";
+import {add} from "./add/add";
+import {event as addEvent} from "./add/event";
 
 export const componentList = (elem = null, list = [], limit = 0) => {
     if (elem !== null) {
-        elem.html(`<div class="component__place"></div>`);
         elem.addClass('component');
-        list.slice(0, limit === 0 ? list.length : limit).forEach(el => elem.find('.component__place').append(componentItem(el)));
-        componentItemEvent(elem, limit);
-        elem.append(componentAdd());
-        componentAddEvent(elem, limit)
+        elem.html(`<div class="component__place"></div>`);
+        list.slice(0, limit === 0 ? list.length : limit).forEach(el => elem.find('.component__place').append(item(el)));
+        elem.append(add());
+        itemEvent(elem, limit);
+        addEvent(elem, limit)
     }
 };

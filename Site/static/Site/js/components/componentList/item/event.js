@@ -1,6 +1,6 @@
-import {componentAddShow} from "./componentAddShow";
+import {show} from "../add/show";
 
-export const componentItemEvent = (elem = null, limit = 0) => {
+export const event = (elem = null, limit = 0) => {
     if(elem !== null) {
 
         const componentItemList = $(elem).find('.component__item');
@@ -9,7 +9,7 @@ export const componentItemEvent = (elem = null, limit = 0) => {
            const item = $(componentItemList[el]);
             item.find('.component__remove').unbind('click').click((e) => {
                 item.remove();
-                componentAddShow(elem, !(limit !== 0 && limit <= componentItemList.length - 1));
+                show(elem, !(limit !== 0 && limit <= componentItemList.length - 1));
             });
         });
     }

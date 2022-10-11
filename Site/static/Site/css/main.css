@@ -1,3 +1,4 @@
+
 @import "./vendor.css";
 @import "./component.css";
 
@@ -46,10 +47,6 @@
 
 .btn:hover .btn-label {
     border-color: inherit;
-}
-
-.input-group {
-    width: 100%;
 }
 
 .input-group-3 .form-control {

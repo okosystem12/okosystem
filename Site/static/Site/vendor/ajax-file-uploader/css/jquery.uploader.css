@@ -9,9 +9,10 @@
 }
 
 .jquery-uploader-preview-container {
-    padding: 10px;
-    height: 100%;
-    width: 100%;
+    /*padding: 10px;*/
+    /*height: 100%;*/
+    /*width: 100%;*/
+    margin: 0 -5px;
     background-color: white;
 }
 
@@ -19,11 +20,21 @@
     vertical-align: middle;
     width: 120px;
     height: 120px;
-    border: 1px solid rgba(103, 103, 103, 0.39);
-    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 4px;
     margin: 5px;
     display: inline-block;
 }
+
+.jquery-uploader-gallery .jquery-uploader-card {
+    width: 60px;
+    height: 60px;
+}
+
+
+
+
 
 .jquery-uploader-select-card {
     vertical-align: middle;
@@ -108,6 +119,10 @@
     padding-top: 40px;
     list-style: none;
     display: inline-block;
+}
+
+.jquery-uploader-gallery .jquery-uploader-preview-action > ul{
+    padding-top: 10px;
 }
 
 .jquery-uploader-preview-action > ul > li {
