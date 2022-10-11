@@ -10,6 +10,7 @@ export const componentsData = {
     viewModalLabel: $('#viewModalLabel'),
     viewMainPhoto: $('#viewMainPhoto'),
     viewPhotoList: $('#viewPhotoList'),
+    viewInfo: $('#viewInfo'),
 
     lastName: $('#lastName'),
     firstName: $('#firstName'),

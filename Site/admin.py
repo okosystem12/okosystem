@@ -1,5 +1,14 @@
 from django.contrib import admin
-from Site.models import *
+
+from Site.models import Status, Render, Table, Column, PatternColumn, PatternTable, LastUpdateConfig, ControlUser, File, \
+    Phone, Place
+
+
+class StatusPanel(admin.ModelAdmin):
+    list_display = [field.name for field in Status._meta.fields]
+
+
+admin.site.register(Status, StatusPanel)
 
 
 class RenderPanel(admin.ModelAdmin):
@@ -18,6 +27,7 @@ admin.site.register(Table, TablePanel)
 
 class ColumnPanel(admin.ModelAdmin):
     list_display = [field.name for field in Column._meta.fields]
+    list_editable = ['viewOrder']
 
 
 admin.site.register(Column, ColumnPanel)

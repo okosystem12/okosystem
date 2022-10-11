@@ -1,6 +1,7 @@
 
 @import "./vendor.css";
 @import "./component.css";
+@import "./card-info.css";
 
 .load {
     position: absolute;

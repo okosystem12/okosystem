@@ -5,6 +5,20 @@ from Site.apps import *
 from mysite.settings import MEDIA_ROOT
 
 
+class Status(models.Model):
+    type = models.CharField(max_length=200, verbose_name='Тип', default='', unique=True)
+    name = models.CharField(max_length=200, verbose_name='Название', default='')
+    value = models.IntegerField(verbose_name='Значение', default=0)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['value', 'name']
+        verbose_name_plural = 'Статусы'
+        verbose_name = 'Статусы'
+
+
 class LastUpdateConfig(models.Model):
     type = models.CharField(max_length=200, verbose_name='Тип', default='')
     dateStart = models.DateTimeField(verbose_name='Дата начала', default=None, blank=True, null=True)
@@ -65,6 +79,8 @@ class Column(models.Model):
     title = models.CharField(max_length=200, verbose_name='Название', default='')
     data = models.CharField(max_length=200, verbose_name='Набор данных', default='')
     order = models.IntegerField(verbose_name='Позиция', default=0)
+    view = models.BooleanField(verbose_name='Отображаемый в карточке', default=True)
+    viewOrder = models.IntegerField(verbose_name='Позиция в карточке', default=0)
     orderable = models.BooleanField(verbose_name='Сортируемый', default=True)
     fixed = models.BooleanField(verbose_name='Зафиксировать', default=False)
     hide = models.BooleanField(verbose_name='Не скрываемый', default=False)

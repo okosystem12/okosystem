@@ -24,13 +24,13 @@
     width: 100%;
 }
 
-@media (max-width: 1170px) {
+@media (max-width: 1200px) {
     .component__item {
         width: calc(100% / 2 - 20px);
     }
 }
 
-@media (max-width: 750px) {
+@media (max-width: 768px) {
     .component__item {
         width: calc(100% - 20px);
     }

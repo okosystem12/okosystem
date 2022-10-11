@@ -1,0 +1,24 @@
+.card-info {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 5px 10px;
+}
+
+.card-info__title {
+    font-weight: bold;
+    justify-self: end;
+}
+
+.card-info__value {
+
+}
+
+@media (max-width: 768px) {
+    .card-info {
+        grid-template-columns: auto;
+    }
+
+    .card-info__title {
+        justify-self: start;
+    }
+}

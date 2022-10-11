@@ -5,15 +5,17 @@ import {controlUserImgList} from "../../../storage/control/controlUserImgList";
 import {fileList} from "../../../storage/control/fileList";
 import {prepUri} from "../../../utils/file/prepUri";
 import {initGallery} from "../../../utils/file/initGallery";
+import {info} from "../../../components/card/info";
 
 
 export const setViewValue = (data = null) => {
     if (data !== null) {
-        const defaultFileList = [];
+        let defaultFileList = [];
         const {
             viewModalLabel,
             viewMainPhoto,
-            viewPhotoList
+            viewPhotoList,
+            viewInfo
         } = componentsData;
         viewModalLabel.html(`Карточка ${userShortName(data)}`);
 
@@ -29,12 +31,13 @@ export const setViewValue = (data = null) => {
             }
         });
 
-
         imgPrep(viewMainPhoto, defaultFileList[0]?.url, userShortName(data));
 
         initGallery(viewPhotoList);
         viewPhotoList.uploaderClean();
         viewPhotoList.uploaderDefaultFiles(defaultFileList);
+
+        viewInfo.html(info(data))
 
     }
 };
