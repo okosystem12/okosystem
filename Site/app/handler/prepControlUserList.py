@@ -2,6 +2,7 @@ from django.db.models import Q
 
 from Site.app.datetime.bDate import bDate
 from Site.app.handler.placeDisassemble import placeDisassemble
+from Site.app.handler.vchNumber import vchNumber
 from Site.models import Phone, Mail
 
 
@@ -20,6 +21,7 @@ def prepControlUserList(controlUserList):
             'mailList': list(Mail.objects.filter(Q(controlUser=user)).values()),
             'birthPlace': placeDisassemble(user.birthPlace),
             'livePlace': placeDisassemble(user.livePlace),
+            'vch': vchNumber(user.vch_id)
         })
 
         result.append(cur)

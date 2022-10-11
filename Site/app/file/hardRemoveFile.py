@@ -2,8 +2,10 @@ import os
 
 from django.db.models import Q
 
+from Site.models import File
 
-def hardRemoveFile(id, File):
+
+def hardRemoveFile(id):
     for f in File.objects.filter(Q(id__in=id)):
         if f.file.path:
             try:

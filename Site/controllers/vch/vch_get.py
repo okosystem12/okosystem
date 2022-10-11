@@ -20,10 +20,8 @@ def vch_get(request):
         _data = json.loads(elem(request.POST, 'data', '{}'))
         _id = elem(_data, 'id', None)
 
-        vch = Vch.objects.filter(Q(removeAt=None) & Q(pk=_id))
-
         args = {
-            'vch': list(vch.values()),
+            'vch': list(Vch.objects.filter(Q(removeAt=None) & Q(pk=_id)).values()),
         }
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

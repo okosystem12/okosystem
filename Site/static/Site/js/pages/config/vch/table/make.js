@@ -11,6 +11,10 @@ export const make = () => {
         componentsData.placeTable.find('.table'),
         {
             table: table.value,
+            ajax: {
+                "url": "/config/vch/table/",
+                "dataSrc": "data"
+            },
             btnList: ['edit', 'remove'],
             destroyCallback: make,
             removeCallback: remove,

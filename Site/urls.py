@@ -19,7 +19,6 @@ from Site.controllers.place.place_countries_work import place_countries_work
 from Site.controllers.place.place_info import place_info
 from Site.controllers.place.place_regions_remove import place_regions_remove
 from Site.controllers.place.place_regions_work import place_regions_work
-from Site.controllers.place.place_table import place_table
 from Site.controllers.table.table_info import table_info
 from Site.controllers.vch.vch_get import vch_get
 from Site.controllers.vch.vch_remove import vch_remove

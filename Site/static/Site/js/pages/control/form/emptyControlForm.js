@@ -5,6 +5,7 @@ export const emptyControlForm = {
     schools: '',
     work: '',
     universities: '',
+    vch: '',
     birthDay: 0,
     birthMonth: 0,
     birthYear: 0,

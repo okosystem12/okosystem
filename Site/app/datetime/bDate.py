@@ -7,4 +7,4 @@ def bDate(day, month, year):
     if day == 0 or month == 0 or year == 0:
         return ''
 
-    return for_date(date(year, month - 1, day))
+    return for_date(date(year, month, day))

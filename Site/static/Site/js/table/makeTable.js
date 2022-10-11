@@ -8,6 +8,7 @@ import {prepColumnsList} from "./configTable/prepColumnsList";
 import {remove} from "./event/remove";
 import {edit} from "./event/edit";
 import {view} from "./event/view";
+import {buttonsInit} from "./handler/buttonsInit";
 
 export const makeTable = (table, options = {}) => {
 
@@ -62,29 +63,7 @@ export const makeTable = (table, options = {}) => {
             }
         ]
     })
-        .on('draw', () => {
+        .on('draw', () => buttonsInit(options))
+        .on('responsive-display', () => buttonsInit(options))
 
-            highlight(options.table.table);
-
-            $('.view-table-btn')
-                .off('click')
-                .on('click', (e) => {
-                    e.preventDefault();
-                    view(e.currentTarget, options.viewCallback);
-                });
-
-            $('.edit-table-btn')
-                .off('click')
-                .on('click', (e) => {
-                    e.preventDefault();
-                    edit(e.currentTarget, options.editCallback);
-                });
-
-            $('.remove-table-btn')
-                .off('click')
-                .on('click', (e) => {
-                    e.preventDefault();
-                    remove(e.currentTarget, options.removeCallback);
-                });
-        });
 };

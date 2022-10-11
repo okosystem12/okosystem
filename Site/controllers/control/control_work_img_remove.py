@@ -9,7 +9,7 @@ from Site.app.datetime.my_convert_datetime import my_convert_datetime
 from Site.app.file.hardRemoveFile import hardRemoveFile
 from Site.app.object.elem import elem
 from Site.app.object.object import objectRemoveAt
-from Site.models import File, ControlUserImg, ControlUser
+from Site.models import ControlUserImg, ControlUser, File
 
 
 @csrf_exempt
@@ -26,9 +26,9 @@ def control_work_img_remove(request):
 
         if controlUser:
             objectRemoveAt(ControlUserImg.objects.filter(Q(file_id__in=_id)))
-            objectRemoveAt(File.objects.filter(Q(id__in=_id)))
+            objectRemoveAt(File.objects.filter(Q(removeAt=None) & Q(id__in=_id)))
         else:
-            hardRemoveFile(_id, File)
+            hardRemoveFile(_id)
 
         args['successText'] = 'Файл удалён'
         args['reload'] = True

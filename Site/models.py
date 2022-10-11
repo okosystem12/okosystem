@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+
 from Site.apps import *
 from mysite.settings import MEDIA_ROOT
 

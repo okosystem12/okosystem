@@ -22,6 +22,7 @@ export const controlForm = (form, e) => {
         schools: componentsData.schools.val().trim(),
         universities: componentsData.universities.val().trim(),
         work: componentsData.work.val().trim(),
+        vch: componentsData.vch.val().trim(),
         birthDate: componentsData.birthDate.val().trim(),
         birthCountry: componentsData.birthCountry.val(),
         birthRegion: componentsData.birthRegion.val(),

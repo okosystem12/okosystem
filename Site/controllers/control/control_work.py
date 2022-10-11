@@ -11,7 +11,7 @@ from Site.app.object.elem import elem
 from Site.app.object.objDate import objDate
 from Site.app.object.object import objectRemoveAt
 from Site.app.object.objectUpdate import objectUpdate
-from Site.models import ControlUser, Place, File, ControlUserImg, Phone, Mail
+from Site.models import ControlUser, Place, ControlUserImg, Phone, Mail, File
 
 
 @csrf_exempt
@@ -69,12 +69,12 @@ def control_work(request):
             controlUser.livePlace = livePlace
         controlUser.save()
 
-        for file in File.objects.filter(Q(pk__in=elem(_data, 'photoList', []))):
-            isDuplicate = ControlUserImg.objects.filter(Q(file=file)).count() != 0
+        for f in File.objects.filter(Q(removeAt=None) & Q(pk__in=elem(_data, 'photoList', []))):
+            isDuplicate = ControlUserImg.objects.filter(Q(file=f)).count() != 0
             if not isDuplicate:
                 ControlUserImg.objects.create(
                     controlUser=controlUser,
-                    file=file
+                    file=f
                 )
 
         userPhoneList = Phone.objects.filter(Q(controlUser=controlUser))

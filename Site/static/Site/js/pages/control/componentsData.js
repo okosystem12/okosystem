@@ -12,6 +12,7 @@ export const componentsData = {
     schools: $('#schools'),
     universities: $('#universities'),
     work: $('#work'),
+    vch: $('#vch'),
 
     birthDate: $('#birthDate'),
 

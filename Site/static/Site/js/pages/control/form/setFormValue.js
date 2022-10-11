@@ -14,6 +14,7 @@ import {filterCities} from "../../../utils/list/filter/filterCities";
 import {placeList} from "../../../storage/app/placeList";
 import {label} from "../../../utils/modal/label";
 import {userId} from "../../../storage/control/userId";
+import {vchList} from "../../../storage/app/vchList";
 
 
 export const setFormValue = (data = emptyControlForm) => {
@@ -27,6 +28,7 @@ export const setFormValue = (data = emptyControlForm) => {
         schools,
         work,
         universities,
+        vch,
         birthDate,
         photoList,
         phoneList,
@@ -74,14 +76,18 @@ export const setFormValue = (data = emptyControlForm) => {
     placeEngine(birthCountry, birthRegion, birthCity, data.birthPlace_id);
     placeEngine(liveCountry, liveRegion, liveCity, data.livePlace_id);
 
+    initOptionList(vch, vchList.value.map(el => {
+        return {id: el.id, title: el.number}
+    }), data.vch_id)
+
 };
 
 const placeEngine = (country, region, city, place_id = null) => {
     const place = placeList.value.find(el => el.id === place_id);
 
     initOptionList(country, countriesList.value, place?.country_id || '');
-    initOptionList(region, filterRegion(parseInt(country.val())),  place?.region_id || '');
-    initOptionList(city, filterCities(parseInt(country.val()), parseInt(city.val())),  place?.city_id || '');
+    initOptionList(region, filterRegion(parseInt(country.val())), place?.region_id || '');
+    initOptionList(city, filterCities(parseInt(country.val()), parseInt(city.val())), place?.city_id || '');
 
     country.unbind('change').change(() => {
         initOptionList(region, filterRegion(parseInt(country.val())), '');
