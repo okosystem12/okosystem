@@ -135,3 +135,4 @@ dmypy.json
 .genering_profils_vk/verification_result/
 
 статистика темп.xlsx
+genering_profils_vk/src/tmp.py
