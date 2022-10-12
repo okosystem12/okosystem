@@ -1,7 +1,7 @@
 @import "./vendor.css";
 @import "./component.css";
 @import "./card-info.css";
-@import "./progress.css";
+@import "./progressbar.css";
 
 .load {
     position: absolute;

@@ -15,3 +15,7 @@ div.dt-button-collection.columns>:last-child .dt-button > a {
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
+div.dataTables_wrapper div.dataTables_processing{
+    z-index: 1;
+}

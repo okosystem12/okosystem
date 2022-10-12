@@ -7,6 +7,8 @@ def prepStatus(_id=None):
     result = {}
     status = Status.objects.filter(Q(pk=_id)).first()
     if status:
-        # result['value'] = status.value
-        result['value'] = 50
+        result['value'] = status.value
+        result['color'] = status.color
+        result['title'] = status.stage.name + ': ' + status.name
+        result['blockSearch'] = status.type == 'search'
     return result

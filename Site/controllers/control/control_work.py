@@ -11,6 +11,7 @@ from Site.app.object.elem import elem
 from Site.app.object.objDate import objDate
 from Site.app.object.object import objectRemoveAt
 from Site.app.object.objectUpdate import objectUpdate
+from Site.app.status.setStatus import setStatus
 from Site.models import ControlUser, Place, ControlUserImg, Phone, Mail, File
 
 
@@ -29,6 +30,7 @@ def control_work(request):
         if not controlUser:
             _new = True
             controlUser = ControlUser.objects.create()
+            setStatus(controlUser)
 
         birthDate = objDate(_data, 'birthDate', '0.0.0').split('.')
 

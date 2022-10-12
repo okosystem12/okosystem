@@ -7,6 +7,7 @@ export const componentsData = {
     controlForm: $('#controlForm'),
 
     viewModal: $('#viewModal'),
+    viewSearch: $('#viewSearch'),
     viewModalLabel: $('#viewModalLabel'),
     viewMainPhoto: $('#viewMainPhoto'),
     viewPhotoList: $('#viewPhotoList'),

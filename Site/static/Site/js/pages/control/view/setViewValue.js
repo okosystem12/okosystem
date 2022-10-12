@@ -6,6 +6,7 @@ import {fileList} from "../../../storage/control/fileList";
 import {prepUri} from "../../../utils/file/prepUri";
 import {initGallery} from "../../../utils/file/initGallery";
 import {info} from "../../../components/card/info";
+import {btnToggle} from "./btnToggle";
 
 
 export const setViewValue = (data = null) => {
@@ -37,7 +38,8 @@ export const setViewValue = (data = null) => {
         viewPhotoList.uploaderClean();
         viewPhotoList.uploaderDefaultFiles(defaultFileList);
 
-        viewInfo.html(info(data))
+        viewInfo.html(info(data));
 
+        btnToggle(data);
     }
 };

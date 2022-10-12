@@ -33,4 +33,15 @@ def orderControlUserList(controlUserList, order, order_dir):
             order_dir + 'vch__number',
             order_dir + 'pk'
         )
+    elif order == 'updatedAt':
+        return controlUserList.order_by(
+            order_dir + 'updatedAt',
+            order_dir + 'pk'
+        )
+    elif order == 'status':
+        return controlUserList.order_by(
+            order_dir + 'status__stage__value',
+            order_dir + 'status__value',
+            order_dir + 'pk'
+        )
     return controlUserList

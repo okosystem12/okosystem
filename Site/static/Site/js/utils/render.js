@@ -1,11 +1,11 @@
-import {progress} from "../components/progress";
+import {progressbar} from "../components/progressbar";
 
 export const render = (render) => {
     switch (render?.type) {
         case 'progress':
             return (data, type = 'display') =>
                 type === 'display'
-                    ? progress(data)
+                    ? progressbar(data)
                     : data;
         case 'valueList':
             return (data, type = 'display') =>

@@ -25,7 +25,8 @@ class Status(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название', default='')
     stage = models.ForeignKey(StatusStage, verbose_name='Этап', on_delete=models.CASCADE, default=None, blank=True,
                               null=True)
-    value = models.IntegerField(verbose_name='Значение', default=0)
+    value = models.IntegerField(verbose_name='Значение (%)', default=0)
+    color = models.CharField(max_length=200, verbose_name='Цвет', default='')
 
     def __str__(self):
         return self.name
