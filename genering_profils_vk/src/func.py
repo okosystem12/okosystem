@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import asyncio
 from aiohttp import ClientSession
-import nest_asyncio
+# import nest_asyncio
 from time import time
 import vk_api
 from pprint import pprint
@@ -163,7 +163,8 @@ def search_post_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict, tok
                             dt = (resp["response"][0]["items"][i_resp]["date"])
                             file.write(datetime.utcfromtimestamp(dt).strftime('%Y-%m-%d %H:%M:%S') + ": " + resp["response"][0]["items"][i_resp]["text"] + "\n" + "=" * 1000 + "\n")
                         break
-        except Exception:
+        except Exception as e:
+            print(e)
             break
 
 
@@ -425,7 +426,8 @@ def search_name_videos_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_di
                             dt = (resp["response"][0]["items"][0]["date"])
                             file.write(datetime.utcfromtimestamp(dt).strftime('%Y-%m-%d %H:%M:%S') + ": " + resp["response"][0]["items"][0]["title"] + "\n" + "=" * 1000 + "\n")
                         break
-        except Exception:
+        except Exception as e:
+            print(e)
             pass
 
 
@@ -472,12 +474,13 @@ def search_inf_users_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict
                                   encoding="utf-8") as file:
                             file.write(key + ": " + value + "\n" + "=" * 1000 + "\n")
 
-        except Exception:
+        except Exception as e:
+            print(e)
             pass
 # ====================================================================ОБОБЩАЮЩАЯ ФУНКЦИЯ================================
 # пробег по всем пользователям вк c использованием поиска фото, постов
 def collector(list_token, dir_path_date_and_time, dt):
-    nest_asyncio.apply()
+    # nest_asyncio.apply()
     data_photos = {}
     data_posts = {}
     data_groups = {}

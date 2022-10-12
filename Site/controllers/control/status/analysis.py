@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
+from Site.app.analysis.init import init
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
 from Site.app.object.elem import elem
 from Site.app.status.setStatus import setStatus
@@ -24,6 +25,7 @@ def analysis(request):
         controlUser = ControlUser.objects.filter(Q(pk=id)).first()
         if controlUser:
             setStatus(controlUser, 'analysis')
+            init(controlUser)
 
             args = {
                 'successText': 'Анализ сотрудника ' + controlUser.shortName(),

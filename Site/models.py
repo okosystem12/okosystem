@@ -103,7 +103,7 @@ class Column(models.Model):
     fixed = models.BooleanField(verbose_name='Зафиксировать', default=False)
     hide = models.BooleanField(verbose_name='Не скрываемый', default=False)
     visible = models.BooleanField(verbose_name='Отображаемый (по умолчанию)', default=True)
-    render = models.ForeignKey(Render, verbose_name='Рендер', default=None, blank=True, null=True)
+    render = models.ForeignKey(Render, verbose_name='Рендер', on_delete=models.CASCADE, default=None, blank=True, null=True)
 
     def __str__(self):
         return self.title
