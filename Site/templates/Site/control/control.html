@@ -54,8 +54,9 @@
                                                             <label for="lastName" class="control-label"
                                                                    title="Это поле обязательно для заполнения">Фамилия</label>
                                                             <input type="text" class="form-control" id="lastName"
-                                                                   name="lastName"
-                                                                   placeholder="Фамилия">
+                                                                   name="lastName" placeholder="Фамилия">
+                                                            <div class="form-control form-transliteration"
+                                                                 id="lastNameT"></div>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
@@ -63,8 +64,9 @@
                                                             <label for="firstName" class="control-label"
                                                                    title="Это поле обязательно для заполнения">Имя</label>
                                                             <input type="text" class="form-control" id="firstName"
-                                                                   name="firstName"
-                                                                   placeholder="Имя">
+                                                                   name="firstName" placeholder="Имя">
+                                                            <div class="form-control form-transliteration"
+                                                                 id="firstNameT"></div>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
@@ -72,15 +74,15 @@
                                                             <label for="patronymic"
                                                                    class="control-label">Отчество</label>
                                                             <input type="text" class="form-control" id="patronymic"
-                                                                   name="patronymic"
-                                                                   placeholder="Отчество">
+                                                                   name="patronymic" placeholder="Отчество">
+                                                            <div class="form-control form-transliteration"
+                                                                 id="patronymicT"></div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="col-md-6">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">Фото</div>
@@ -89,6 +91,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">Дата и место рождения</div>
@@ -97,10 +101,10 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label for="birthDate" class="control-label"
-                                                                   title="Это поле обязательно для заполнения">Дата</label>
+                                                                   title="Это поле обязательно для заполнения">Дата
+                                                                рождения</label>
                                                             <input type="text" class="form-control" id="birthDate"
-                                                                   name="birthDate"
-                                                                   placeholder="Дата">
+                                                                   name="birthDate" placeholder="Дата рождения">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -157,6 +161,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-12">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">Контакты</div>
@@ -176,6 +182,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-12">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">Учебные заведения</div>
@@ -197,9 +205,11 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-12">
                                         <div class="panel panel-default">
-                                            <div class="panel-heading"></div>
+                                            <div class="panel-heading">Текущая деятельность</div>
                                             <div class="panel-body">
                                                 <div class="row">
                                                     <div class="col-md-6">

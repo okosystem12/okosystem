@@ -3,7 +3,9 @@ import {dataTablesRu} from '../../../vendor/dataTables/dataTables.ru.js'
 export const settings = {
     dom: 'lBfrtip',
     destroy : true,
+    autoWidth: true,
     fixedHeader: true,
+    resizeColumn:true,
     responsive: true,
     colReorder: true,
     stateSave: true,

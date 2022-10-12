@@ -4,6 +4,7 @@ import {userId} from "../../storage/control/userId";
 import {componentData} from "../../components/componentList/componentData";
 import {table} from "../../storage/control/table";
 import {hide} from "../../utils/modal/hide";
+import {transliteration} from "../../utils/string/transliteration";
 
 export const controlForm = (form, e) => {
     e.preventDefault();
@@ -14,11 +15,18 @@ export const controlForm = (form, e) => {
     const phoneIdList = phoneList.map(el => el.id);
     const mailIdList = mailList.map(el => el.id);
 
+    const lastName = componentsData.lastName.val().trim();
+    const firstName = componentsData.firstName.val().trim();
+    const patronymic = componentsData.patronymic.val().trim();
+
     work({
         id: userId.value,
-        lastName: componentsData.lastName.val().trim(),
-        firstName: componentsData.firstName.val().trim(),
-        patronymic: componentsData.patronymic.val().trim(),
+        lastName,
+        firstName,
+        patronymic,
+        lastNameT: transliteration(lastName),
+        firstNameT: transliteration(firstName),
+        patronymicT: transliteration(patronymic),
         schools: componentsData.schools.val().trim(),
         universities: componentsData.universities.val().trim(),
         work: componentsData.work.val().trim(),

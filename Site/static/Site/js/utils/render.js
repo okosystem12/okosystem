@@ -1,9 +1,11 @@
+import {progress} from "../components/progress";
+
 export const render = (render) => {
     switch (render?.type) {
         case 'progress':
             return (data, type = 'display') =>
                 type === 'display'
-                    ? `<progress value="${data}" max="${render.max}"></progress>`
+                    ? progress(data)
                     : data;
         case 'valueList':
             return (data, type = 'display') =>

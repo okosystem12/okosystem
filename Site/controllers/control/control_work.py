@@ -35,6 +35,9 @@ def control_work(request):
         controlUser.lastName = elem(_data, 'lastName')
         controlUser.firstName = elem(_data, 'firstName')
         controlUser.patronymic = elem(_data, 'patronymic')
+        controlUser.lastNameT = elem(_data, 'lastNameT')
+        controlUser.firstNameT = elem(_data, 'firstNameT')
+        controlUser.patronymicT = elem(_data, 'patronymicT')
         controlUser.birthDay = birthDate[0]
         controlUser.birthMonth = birthDate[1]
         controlUser.birthYear = birthDate[2]

@@ -1,7 +1,7 @@
-
 @import "./vendor.css";
 @import "./component.css";
 @import "./card-info.css";
+@import "./progress.css";
 
 .load {
     position: absolute;
@@ -225,4 +225,10 @@ div.dt-buttons {
 .form-textarea {
     resize: vertical;
     max-height: 100px;
+}
+
+.form-group .form-transliteration {
+    margin-top: 5px;
+    color: #999;
+    border-color: #d9d9d9;
 }

@@ -13,5 +13,6 @@ import {transliteration} from "../../utils/string/transliteration";
 
     btnAddEvent();
 
-    console.log(transliteration('Михаил'));
+    console.log(transliteration('Имя'));
+    console.log(transliteration('Отчество'));
 })();

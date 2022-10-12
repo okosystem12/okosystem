@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 from Site.apps import *
 from mysite.settings import MEDIA_ROOT
 
 
-class Status(models.Model):
+class StatusStage(models.Model):
     type = models.CharField(max_length=200, verbose_name='Тип', default='', unique=True)
     name = models.CharField(max_length=200, verbose_name='Название', default='')
     value = models.IntegerField(verbose_name='Значение', default=0)
@@ -15,6 +16,22 @@ class Status(models.Model):
 
     class Meta:
         ordering = ['value', 'name']
+        verbose_name_plural = 'Этапы статусов'
+        verbose_name = 'Этап статуса'
+
+
+class Status(models.Model):
+    type = models.CharField(max_length=200, verbose_name='Тип', default='', unique=True)
+    name = models.CharField(max_length=200, verbose_name='Название', default='')
+    stage = models.ForeignKey(StatusStage, verbose_name='Этап', on_delete=models.CASCADE, default=None, blank=True,
+                              null=True)
+    value = models.IntegerField(verbose_name='Значение', default=0)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['stage', 'value', 'name']
         verbose_name_plural = 'Статусы'
         verbose_name = 'Статусы'
 
@@ -204,6 +221,10 @@ class ControlUser(models.Model):
     firstName = models.CharField(max_length=200, verbose_name='Имя', default='')
     patronymic = models.CharField(max_length=200, verbose_name='Отчество', default='', blank=True)
 
+    lastNameT = models.CharField(max_length=200, verbose_name='Фамилия (транслит)', default='', blank=True)
+    firstNameT = models.CharField(max_length=200, verbose_name='Имя (транслит)', default='', blank=True)
+    patronymicT = models.CharField(max_length=200, verbose_name='Отчество (транслит)', default='', blank=True)
+
     birthDay = models.IntegerField(verbose_name='День рождения', default=0, blank=True)
     birthMonth = models.IntegerField(verbose_name='Месяц рождения', default=0, blank=True)
     birthYear = models.IntegerField(verbose_name='Год рождения', default=0, blank=True)
@@ -222,6 +243,9 @@ class ControlUser(models.Model):
     vch = models.ForeignKey(Vch, verbose_name='Место военной службы', on_delete=models.CASCADE, default=None,
                             blank=True, null=True)
 
+    status = models.ForeignKey(Status, verbose_name='Статус', on_delete=models.CASCADE,
+                               default=None, blank=True, null=True)
+
     updatedAt = models.DateTimeField(verbose_name='Дата последнего обновления', default=None, blank=True, null=True)
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
@@ -238,8 +262,9 @@ class ControlUser(models.Model):
                + ((' ' + self.firstName[0]) if self.firstName != '' else '') \
                + ((' ' + self.patronymic[0]) if self.patronymic != '' else '')
 
+
     class Meta:
-        ordering = ['lastName', 'firstName']
+        ordering = ['lastName', 'firstName', 'patronymic']
         verbose_name_plural = 'Сотрудники'
         verbose_name = 'Сотрудник'
 

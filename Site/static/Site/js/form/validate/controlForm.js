@@ -22,13 +22,13 @@ export const controlForm = () => {
         },
         messages: {
             firstName: {
-                required: `Пожалуйста укажите имя`
+                required: `Укажите имя`
             },
             lastName: {
-                required: `Пожалуйста укажите фамилию`
+                required: `Укажите фамилию`
             },
             birthDate: {
-                required: `Пожалуйста укажите дату рождения`
+                required: `Укажите дату рождения`
             },
         },
         ...initHandler,

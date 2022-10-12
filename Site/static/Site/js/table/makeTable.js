@@ -1,4 +1,4 @@
-import {settings} from "./handler/settings";
+import {settings} from "./configTable/settings";
 import {columnsBtn} from "./configTable/columnsBtn";
 import {buttonsExport} from "./handler/buttonsExport";
 import {buttonsColvis} from "./handler/buttonsColvis";
@@ -13,6 +13,7 @@ export const makeTable = (table, options = {}) => {
     const prepList = prepColumnsList(options.table);
 
     const visList = prepList.filter(el => !el.hide);
+
 
     return table.DataTable({
         ...settings,
@@ -61,5 +62,6 @@ export const makeTable = (table, options = {}) => {
     })
         .on('draw', () => buttonsInit(options))
         .on('responsive-display', () => buttonsInit(options))
+
 
 };

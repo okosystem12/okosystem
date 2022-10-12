@@ -5,12 +5,21 @@ import {upload} from "../../../req/control/file/upload";
 import {remove} from "../../../req/control/file/remove";
 import {userId} from "../../../storage/control/userId";
 import {controlUserImgList} from "../../../storage/control/controlUserImgList";
+import {initTransliteration} from "../../../utils/string/initTransliteration";
 
 export const prepControlForm = () => {
     const {
+        lastName, firstName, patronymic,
+        lastNameT, firstNameT, patronymicT,
         birthCity, birthCountry, birthRegion,
         liveCity, liveCountry, liveRegion,
-        birthDate,  photoList} = componentsData;
+        birthDate, photoList
+    } = componentsData;
+
+
+    initTransliteration(lastName, lastNameT);
+    initTransliteration(firstName, firstNameT);
+    initTransliteration(patronymic, patronymicT);
 
     initDatepickerPast(birthDate);
 

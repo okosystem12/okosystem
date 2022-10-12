@@ -16,6 +16,10 @@ export const componentsData = {
     firstName: $('#firstName'),
     patronymic: $('#patronymic'),
 
+    lastNameT: $('#lastNameT'),
+    firstNameT: $('#firstNameT'),
+    patronymicT: $('#patronymicT'),
+
     schools: $('#schools'),
     universities: $('#universities'),
     work: $('#work'),

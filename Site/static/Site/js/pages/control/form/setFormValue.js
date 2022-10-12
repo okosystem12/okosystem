@@ -15,6 +15,7 @@ import {placeList} from "../../../storage/app/placeList";
 import {label} from "../../../utils/modal/label";
 import {userId} from "../../../storage/control/userId";
 import {vchList} from "../../../storage/app/vchList";
+import {transliteration} from "../../../utils/string/transliteration";
 
 
 export const setFormValue = (data = emptyControlForm) => {
@@ -25,6 +26,9 @@ export const setFormValue = (data = emptyControlForm) => {
         lastName,
         firstName,
         patronymic,
+        lastNameT,
+        firstNameT,
+        patronymicT,
         schools,
         work,
         universities,
@@ -45,9 +49,14 @@ export const setFormValue = (data = emptyControlForm) => {
 
     label(controlModalLabel, userId.value, '', data.lastName);
 
+    lastNameT.html(transliteration(data.lastName));
+    firstNameT.html(transliteration(data.firstName));
+    patronymicT.html(transliteration(data.patronymic));
+
     lastName.val(data.lastName);
     firstName.val(data.firstName);
     patronymic.val(data.patronymic);
+
     schools.val(data.schools);
     work.val(data.work);
     universities.val(data.universities);

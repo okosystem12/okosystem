@@ -1,33 +1,28 @@
 .component {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
     flex-wrap: nowrap;
-    width: 100%;
 }
 
 .component__place {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    width: 100%;
     margin: 0 -10px;
 }
 
 .component__item {
     margin: 10px;
-    width: calc(100% / 3 - 20px);
+    width: calc(100% / 2 - 20px);
 }
 
 .component__input {
     width: 100%;
 }
 
-@media (max-width: 1200px) {
-    .component__item {
-        width: calc(100% / 2 - 20px);
-    }
+.component__add {
+    align-self: flex-end;
 }
 
 @media (max-width: 768px) {
