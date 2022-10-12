@@ -251,7 +251,7 @@ class ControlUser(models.Model):
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
     def __str__(self):
-        return self.lastName + self.firstName
+        return self.lastName + ' ' + self.firstName
 
     def fullName(self):
         return self.lastName \
