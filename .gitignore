@@ -124,12 +124,6 @@ venv.bak/
 # Rope project settings
 .ropeproject
 
-<<<<<<< HEAD
-=======
-# mkdocs documentation
-/site
-
->>>>>>> preview
 # mypy
 .mypy_cache/
 .dmypy.json
@@ -137,8 +131,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-<<<<<<< HEAD
-=======
+
 
 # PyCharm
 .idea/
@@ -148,4 +141,3 @@ dmypy.json
 
 статистика темп.xlsx
 genering_profils_vk/src/tmp.py
->>>>>>> preview

@@ -11,8 +11,5 @@ import {btnEvent} from "./work/btnEvent";
     prepControlForm();
     validateControlForm();
 
-    btnEvent()
-
-    console.log(transliteration('Имя'));
-    console.log(transliteration('Отчество'));
+    btnEvent();
 })();
