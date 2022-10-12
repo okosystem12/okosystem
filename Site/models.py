@@ -285,19 +285,6 @@ class Phone(models.Model):
         verbose_name = 'Номер телефона'
 
 
-class Social(models.Model):
-    controlUser = models.ForeignKey(ControlUser, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    value = models.CharField(max_length=200, verbose_name='Значение', default='')
-
-    def __str__(self):
-        return self.value
-
-    class Meta:
-        ordering = ['value']
-        verbose_name_plural = 'Социальные сети'
-        verbose_name = 'Социальная сеть'
-
-
 class Mail(models.Model):
     controlUser = models.ForeignKey(ControlUser, on_delete=models.CASCADE, default=None, blank=True, null=True)
     value = models.CharField(max_length=200, verbose_name='Значение', default='')
@@ -338,3 +325,16 @@ class ControlUserPlace(models.Model):
     class Meta:
         verbose_name_plural = 'Фото сотрудников'
         verbose_name = 'Фото сотрудника'
+
+
+class Social(models.Model):
+    controlUser = models.ForeignKey(ControlUser, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    value = models.CharField(max_length=200, verbose_name='Значение', default='')
+
+    def __str__(self):
+        return self.value
+
+    class Meta:
+        ordering = ['value']
+        verbose_name_plural = 'Социальные сети'
+        verbose_name = 'Социальная сеть'

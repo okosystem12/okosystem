@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from Site.models import Status, Render, Table, Column, PatternColumn, PatternTable, LastUpdateConfig, ControlUser, File, \
-    Phone, Place, StatusStage
+    Phone, Place, StatusStage, Social
 
 
 class StatusStagePanel(admin.ModelAdmin):
@@ -85,3 +85,10 @@ class PlacePanel(admin.ModelAdmin):
 
 
 admin.site.register(Place, PlacePanel)
+
+
+class SocialPanel(admin.ModelAdmin):
+    list_display = [field.name for field in Social._meta.fields]
+
+
+admin.site.register(Social, SocialPanel)
