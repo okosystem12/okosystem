@@ -12,7 +12,7 @@ from Site.models import ControlUser
 
 
 @csrf_exempt
-def start(request):
+def analysis(request):
     if request.user.pk is None:
         return render(request, 'Site/login.html')
 
@@ -23,10 +23,10 @@ def start(request):
 
         controlUser = ControlUser.objects.filter(Q(pk=id)).first()
         if controlUser:
-            setStatus(controlUser, 'search')
+            setStatus(controlUser, 'analysis')
 
-        args = {
-            'successText': 'Запись добавлена',
-        }
+            args = {
+                'successText': 'Анализ сотрудника ' + controlUser.shortName(),
+            }
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

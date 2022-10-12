@@ -11,4 +11,5 @@ def prepStatus(_id=None):
         result['color'] = status.color
         result['title'] = status.stage.name + ': ' + status.name
         result['blockSearch'] = status.type == 'search'
+        result['blockAnalysis'] = status.type == 'analysis'
     return result

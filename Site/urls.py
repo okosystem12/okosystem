@@ -12,7 +12,8 @@ from Site.controllers.control.control_table import control_table
 from Site.controllers.control.control_work import control_work
 from Site.controllers.control.control_work_img import control_work_img
 from Site.controllers.control.control_work_img_remove import control_work_img_remove
-from Site.controllers.control.search.start import start as search_start
+from Site.controllers.control.status.search import search as status_search
+from Site.controllers.control.status.analysis import analysis as status_analysis
 from Site.controllers.place.place_city_remove import place_city_remove
 from Site.controllers.place.place_city_work import place_city_work
 from Site.controllers.place.place_countries_remove import place_countries_remove
@@ -38,7 +39,8 @@ urlpatterns = [
                   url(r'^control/remove/$', control_remove, name='control_remove'),
                   url(r'^control/info/$', control_info, name='control_info'),
                   url(r'^control/table/$', control_table, name='control_table'),
-                  url(r'^control/search/start/$', search_start, name='search_start'),
+                  url(r'^control/status/search/$', status_search, name='status_search'),
+                  url(r'^control/status/analysis/$', status_analysis, name='status_analysis'),
 
                   url(r'^actions/$', actions, name='actions'),
 

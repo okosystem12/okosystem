@@ -1,6 +1,6 @@
 import {componentsData} from "../componentsData";
-import {emptyControlForm} from "../form/emptyControlForm";
-import {openForm} from "../form/openForm";
+import {emptyControlForm} from "./emptyControlForm";
+import {openForm} from "./openForm";
 import {userId} from "../../../storage/control/userId";
 
 export const btnAddEvent = () =>

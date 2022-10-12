@@ -2,9 +2,8 @@ import {componentsData} from "../../pages/control/componentsData";
 import {work} from "../../req/control/work";
 import {userId} from "../../storage/control/userId";
 import {componentData} from "../../components/componentList/componentData";
-import {table} from "../../storage/control/table";
-import {hide} from "../../utils/modal/hide";
 import {transliteration} from "../../utils/string/transliteration";
+import {close} from "../../pages/control/form/close";
 
 export const controlForm = (form, e) => {
     e.preventDefault();
@@ -45,8 +44,7 @@ export const controlForm = (form, e) => {
         mailIdList
     }, (msg) => {
         if (msg.successText) {
-            table.value.table.ajax.reload(false);
-            hide(componentsData.controlModal);
+            close()
         }
     })
 };
