@@ -1,9 +1,9 @@
-import {countryForm} from "../../../../form/validate/countryForm";
-import {regionForm} from "../../../../form/validate/regionForm";
-import {cityForm} from "../../../../form/validate/cityForm";
+import {validate as countryValidate} from "./country/validate";
+import {validate as regionValidate} from "./region/validate";
+import {validate as cityValidate} from "./city/validate";
 
 export const validate = () => {
-  countryForm();
-  regionForm();
-  cityForm();
+  countryValidate();
+  regionValidate();
+  cityValidate();
 };

@@ -14,6 +14,10 @@ from Site.controllers.control.control_work_img import control_work_img
 from Site.controllers.control.control_work_img_remove import control_work_img_remove
 from Site.controllers.control.status.search import search as status_search
 from Site.controllers.control.status.analysis import analysis as status_analysis
+from Site.controllers.corrupt.corrupt_get import corrupt_get
+from Site.controllers.corrupt.corrupt_remove import corrupt_remove
+from Site.controllers.corrupt.corrupt_table import corrupt_table
+from Site.controllers.corrupt.corrupt_work import corrupt_work
 from Site.controllers.place.place_city_remove import place_city_remove
 from Site.controllers.place.place_city_work import place_city_work
 from Site.controllers.place.place_countries_remove import place_countries_remove
@@ -26,7 +30,7 @@ from Site.controllers.vch.vch_get import vch_get
 from Site.controllers.vch.vch_remove import vch_remove
 from Site.controllers.vch.vch_table import vch_table
 from Site.controllers.vch.vch_work import vch_work
-from Site.views import index, control, actions, reports, config, place, login, tester, vch
+from Site.views import index, control, actions, reports, config, place, login, tester, vch, corrupt
 
 urlpatterns = [
                   url(r'^$', index, name='index'),
@@ -41,6 +45,12 @@ urlpatterns = [
                   url(r'^control/table/$', control_table, name='control_table'),
                   url(r'^control/status/search/$', status_search, name='status_search'),
                   url(r'^control/status/analysis/$', status_analysis, name='status_analysis'),
+
+                  url(r'^corrupt/$', corrupt, name='corrupt'),
+                  url(r'^corrupt/get/$', corrupt_get, name='corrupt_get'),
+                  url(r'^corrupt/table/$', corrupt_table, name='corrupt_table'),
+                  url(r'^corrupt/work/$', corrupt_work, name='corrupt_work'),
+                  url(r'^corrupt/remove/$', corrupt_remove, name='corrupt_remove'),
 
                   url(r'^actions/$', actions, name='actions'),
 

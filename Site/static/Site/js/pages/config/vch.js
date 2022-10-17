@@ -1,5 +1,5 @@
 import {initEvent} from "./vch/work/initEvent";
-import {vchForm} from "../../form/validate/vchForm";
+import {validate} from "./vch/form/validate";
 import {init} from "./vch/table/init";
 
 (() => {
@@ -7,5 +7,5 @@ import {init} from "./vch/table/init";
 
     initEvent();
 
-    vchForm();
+    validate();
 })();

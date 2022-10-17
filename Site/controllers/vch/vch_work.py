@@ -31,11 +31,8 @@ def vch_work(request):
             _vch.number = number
             _vch.save()
 
-            vchList = Vch.objects.filter(Q(removeAt=None) & Q(pk=_vch.pk))
-
             args = {
                 'successText': 'Запись обновлена' if _new else 'Запись добавлена',
-                'vchList': list(vchList.values()),
             }
         else:
             args = {

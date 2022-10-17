@@ -5,12 +5,7 @@ import {table} from "../../../../storage/config/vch/table";
 
 export const init = () =>
     getVchTable((msg) => {
-        table.value = {
-            columnsList: msg.columnsList,
-            renderList: msg.renderList,
-            patternList: msg.patternList,
-            patternColumnsList: msg.patternColumnsList
-        };
+        table.setTable(msg);
 
         make();
     });

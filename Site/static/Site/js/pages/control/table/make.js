@@ -1,6 +1,6 @@
 import {componentsData} from "../componentsData";
 import {table} from "../../../storage/control/table";
-import {makeTable} from "../../../table/makeTable";
+import {makeTable} from "../../../utils/table/makeTable";
 import {remove} from "./event/remove";
 import {edit} from "./event/edit";
 import {view} from "./event/view";

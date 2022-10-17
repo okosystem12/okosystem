@@ -1,6 +1,10 @@
 import {Storage} from "./Storage";
 
 export class StorageList extends Storage {
+    constructor(value = []) {
+        super(value);
+    }
+
     clear() {
         this.value = [];
     }

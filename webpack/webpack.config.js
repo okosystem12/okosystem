@@ -8,6 +8,7 @@ const stylePath = '../Site/static/Site/css/';
 const entryPath = '../Site/static/Site/js/pages/';
 
 const controlPath = entryPath + 'control/';
+const corruptPath = entryPath + 'corrupt/';
 const configPath = entryPath + 'config/';
 
 module.exports = {
@@ -21,6 +22,7 @@ module.exports = {
         'place': configPath + 'place.js',
         'vch': configPath + 'vch.js',
         'control': controlPath + 'control.js',
+        'corrupt': corruptPath + 'corrupt.js',
         'login': entryPath + 'login/login.js',
     },
     output: {

@@ -1,18 +1,17 @@
 export class Storage {
-    constructor(value = []) {
-        this.clear();
+    constructor(value = null) {
         this.value = value;
     }
 
-    get value(){
+    get value() {
         return this._value;
     }
 
-    set value(value){
+    set value(value) {
         this._value = value;
     }
 
-    clear(){
+    clear() {
         this.value = null;
     }
 }

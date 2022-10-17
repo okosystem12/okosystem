@@ -6,6 +6,21 @@ from Site.apps import *
 from mysite.settings import MEDIA_ROOT
 
 
+class CorruptInfo(models.Model):
+    value = models.CharField(max_length=200, verbose_name='Значение', default='')
+    info = models.TextField(verbose_name='Информация', default='', blank=True)
+
+    removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
+
+    def __str__(self):
+        return self.value
+
+    class Meta:
+        ordering = ['value', 'pk']
+        verbose_name_plural = 'Данные'
+        verbose_name = 'Данные'
+
+
 class StatusStage(models.Model):
     type = models.CharField(max_length=200, verbose_name='Тип', default='', unique=True)
     name = models.CharField(max_length=200, verbose_name='Название', default='')
@@ -103,7 +118,8 @@ class Column(models.Model):
     fixed = models.BooleanField(verbose_name='Зафиксировать', default=False)
     hide = models.BooleanField(verbose_name='Не скрываемый', default=False)
     visible = models.BooleanField(verbose_name='Отображаемый (по умолчанию)', default=True)
-    render = models.ForeignKey(Render, verbose_name='Рендер', on_delete=models.CASCADE, default=None, blank=True, null=True)
+    render = models.ForeignKey(Render, verbose_name='Рендер', on_delete=models.CASCADE, default=None, blank=True,
+                               null=True)
 
     def __str__(self):
         return self.title
@@ -262,7 +278,6 @@ class ControlUser(models.Model):
         return self.lastName \
                + ((' ' + self.firstName[0]) if self.firstName != '' else '') \
                + ((' ' + self.patronymic[0]) if self.patronymic != '' else '')
-
 
     class Meta:
         ordering = ['lastName', 'firstName', 'patronymic']

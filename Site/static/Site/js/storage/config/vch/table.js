@@ -1,3 +1,3 @@
-import {Storage} from "../../Storage";
+import {StorageTable} from "../../StorageTable";
 
-export const table = new Storage({});
+export const table = new StorageTable();
