@@ -1,5 +1,5 @@
-import {loginForm as validateLoginForm} from "../../form/validate/loginForm";
+import {validate} from "./form/validate";
 
 (() => {
-    validateLoginForm();
+    validate();
 })();

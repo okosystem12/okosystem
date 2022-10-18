@@ -1,7 +1,70 @@
 from django.contrib import admin
 
 from Site.models import Status, Render, Table, Column, PatternColumn, PatternTable, LastUpdateConfig, ControlUser, File, \
-    Phone, Place, StatusStage, Social
+    Phone, Place, StatusStage, Social, Post, Video, Groups, Inf, Photos, VideoChecks, PhotosChecks, GroupsChecks, PostsChecks
+
+
+class VideoChecksPanel(admin.ModelAdmin):
+    list_display = [field.name for field in VideoChecks._meta.fields]
+
+
+admin.site.register(VideoChecks, VideoChecksPanel)
+
+
+class PhotosChecksPanel(admin.ModelAdmin):
+    list_display = [field.name for field in PhotosChecks._meta.fields]
+
+
+admin.site.register(PhotosChecks, PhotosChecksPanel)
+
+
+class GroupsChecksPanel(admin.ModelAdmin):
+    list_display = [field.name for field in GroupsChecks._meta.fields]
+
+
+admin.site.register(GroupsChecks, GroupsChecksPanel)
+
+
+class PostsChecksPanel(admin.ModelAdmin):
+    list_display = [field.name for field in PostsChecks._meta.fields]
+
+
+admin.site.register(PostsChecks, PostsChecksPanel)
+
+
+class VideoPanel(admin.ModelAdmin):
+    list_display = [field.name for field in Video._meta.fields]
+
+
+admin.site.register(Video, VideoPanel)
+
+
+class PhotosPanel(admin.ModelAdmin):
+    list_display = [field.name for field in Photos._meta.fields]
+
+
+admin.site.register(Photos, PhotosPanel)
+
+
+class GroupsPanel(admin.ModelAdmin):
+    list_display = [field.name for field in Groups._meta.fields]
+
+
+admin.site.register(Groups, GroupsPanel)
+
+
+class InfPanel(admin.ModelAdmin):
+    list_display = [field.name for field in Inf._meta.fields]
+
+
+admin.site.register(Inf, InfPanel)
+
+
+class PostPanel(admin.ModelAdmin):
+    list_display = [field.name for field in Post._meta.fields]
+
+
+admin.site.register(Post, PostPanel)
 
 
 class StatusStagePanel(admin.ModelAdmin):

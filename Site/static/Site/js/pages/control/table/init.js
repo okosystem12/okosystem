@@ -5,12 +5,7 @@ import {table} from "../../../storage/control/table";
 
 export const init = () =>
     getControlTable((msg) => {
-        table.value = {
-            columnsList: msg.columnsList,
-            renderList: msg.renderList,
-            patternList: msg.patternList,
-            patternColumnsList: msg.patternColumnsList
-        };
+        table.setTable(msg);
         make();
         controlInfo();
     });

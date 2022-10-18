@@ -2152,12 +2152,12 @@ tokenize = Sizzle.tokenize = function( selector, parseOnly ) {
 
 	// Return the length of the invalid excess
 	// if we're just parsing
-	// Otherwise, throw an error or return tokens
+	// Otherwise, throw an error or return files
 	return parseOnly ?
 		soFar.length :
 		soFar ?
 			Sizzle.error( selector ) :
-			// Cache the tokens
+			// Cache the files
 			tokenCache( selector, groups ).slice( 0 );
 };
 
@@ -2619,7 +2619,7 @@ select = Sizzle.select = function( selector, context, results, seed ) {
 					rsibling.test( tokens[0].type ) && testContext( context.parentNode ) || context
 				)) ) {
 
-					// If seed is empty or no tokens remain, we can return early
+					// If seed is empty or no files remain, we can return early
 					tokens.splice( i, 1 );
 					selector = seed.length && toSelector( tokens );
 					if ( !selector ) {
@@ -9016,7 +9016,7 @@ jQuery.parseJSON = function( data ) {
 		str = jQuery.trim( data + "" );
 
 	// Guard against invalid (and possibly dangerous) input by ensuring that nothing remains
-	// after removing valid tokens
+	// after removing valid files
 	return str && !jQuery.trim( str.replace( rvalidtokens, function( token, comma, open, close ) {
 
 		// Force termination if we see a misplaced comma

@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
 from Site.app.handler.orderControlUserList import orderControlUserList
 from Site.app.handler.prepControlUserList import prepControlUserList
-from Site.app.handler.tableConfig import tableConfig
+from Site.app.table.tableConfig import tableConfig
 from Site.models import ControlUser
 
 

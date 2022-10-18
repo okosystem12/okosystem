@@ -1,0 +1,89 @@
+{% extends 'Site/base.html' %}
+
+{% load static %}
+{% block title %}
+    Ключевые слова
+{% endblock %}
+
+{% block nav-corrupt %}
+    active
+{% endblock %}
+
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'index' %}">Главная</a></li>
+        <li class="active">Ключевые слова</li>
+    </ol>
+
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" id="corruptBtnAdd">
+                                        <span class="btn-label">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </span>
+                    Добавить ключевые слова
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="placeTable"></div>
+
+
+    <div class="modal fade" id="corruptModal" tabindex="-1" role="dialog" aria-labelledby="corruptModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="corruptModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form" id="corruptForm" action="#" method="post">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="corruptValue" class="control-label"
+                                                   title="Это поле обязательно для заполнения">Ключевое слово</label>
+                                            <input type="text" class="form-control" id="corruptValue" name="corruptValue"
+                                                   placeholder="Ключевое слово">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="corruptInfo" class="control-label">Информация</label>
+                                            <textarea class="form-control form-textarea" id="corruptInfo" name="corruptInfo"
+                                                      placeholder="Информация"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-success">
+                <span class="btn-label">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </span>
+                                        Сохранить
+                                    </button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+                <span class="btn-label">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </span>
+                                        Отмена
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{% static 'Site/dist/corrupt.bundle.js' %}"></script>
+
+{% endblock %}

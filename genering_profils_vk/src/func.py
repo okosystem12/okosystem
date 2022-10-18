@@ -1,22 +1,21 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 import asyncio
+from datetime import datetime
+
 from aiohttp import ClientSession
-# import nest_asyncio
-from time import time
-import vk_api
-from pprint import pprint
 import os
 import requests
 import json
-from genering_profils_vk.src.func import *
-import sys
-import json
-import os
-from shutil import rmtree
+
+from django.db.models import Q
+from keras_retinanet import models
 from time import sleep, time
+
+from Site.models import Social, Post, Video, Groups, Inf, Photos, PostsChecks, PhotosChecks, GroupsChecks, VideoChecks
 from genering_profils_vk.src import config
-from datetime import datetime
+from genering_profils_vk.src.evaluate import detect_photo
+
 try:
     from urllib import urlopen as urlopen
     from urllib import urlencode as urlencode
@@ -50,17 +49,17 @@ path_file_inf_users_global = ""
 # ====================================================================СОЗДАНИЕ СЛОВАРЕЙ ДЛЯ БАЗЫ========================
 # создание словаря для базы (ФОТО)
 def create_dict_data(url, check_date, count_record, path_dir_photos, category, data):
-    data[url] ={"check_date": check_date,
-                "inf_profile": {
-                    "materials_profiles": {
-                        "count_record": count_record,
-                        "check_record": {
-                            "path_dir_photos": path_dir_photos,
-                            "category": category,
-                                        }
-                                    }
-                                }
-                }
+    data[url] = {"check_date": check_date,
+                 "inf_profile": {
+                     "materials_profiles": {
+                         "count_record": count_record,
+                         "check_record": {
+                             "path_dir_photos": path_dir_photos,
+                             "category": category,
+                         }
+                     }
+                 }
+                 }
 
 
 # создание словаря для базы (ПОСТЫ)
@@ -134,7 +133,7 @@ def create_dir_current_date_and_time(datetime):
 # ===========================================================================ПОИСК ПО КРИТЕРИЯМ=========================
 # поиск по ключевым словам среди постов + {дата: имя}
 def search_post_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict, token=config.token):
-    flag = False
+    result = []
     url = "https://api.vk.com/method/execute?"
     api = 'API.wall.get({"owner_id":"' + str(owner_id) + '", "count":"1"})'
     code = f'return [{api}];'
@@ -147,6 +146,7 @@ def search_post_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict, tok
     global path_file_text_global
     path_file_text_global = os.path.join(abs_dir_path_user, f"post_user_{owner_id}.txt")
 
+    social = Social.objects.filter(Q(value=owner_id)).first()
 
     for i in range(count_record):
         url = "https://api.vk.com/method/execute?"
@@ -157,7 +157,9 @@ def search_post_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict, tok
         resp = resp.json()
         try:
             for i_resp in range(len((resp["response"][0]["items"]))):
+                value = dict()
 
+                # =================================================ПРОВЕРКА В БАЗЕ ИМЕЮЩИХСЯ ID==============================================================================
                 # проверяем на наличие id  в файле (если есть, то генерим исключение
                 # на его обработке continue
                 # если нету, то записываем в файл (БД)
@@ -169,26 +171,43 @@ def search_post_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict, tok
                 except SyntaxError:
                     continue
                 else:
+                    PostsChecks.objects.create(
+                        social=social,
+                        id_post=resp["response"][0]["items"][i_resp]["id"]
+                    )
                     with open(os.path.join(abs_dir_path_user, "search_id", f"id_posts.txt"), "a") as id_file:
                         id_file.write(str(resp["response"][0]["items"][i_resp]["id"]) + "\n")
+                # =================================================ПРОВЕРКА В БАЗЕ ИМЕЮЩИХСЯ ID==============================================================================
 
                 for word_dict in lst_dict:
                     if word_dict.lower() in resp["response"][0]["items"][i_resp]["text"].lower():
-                        with open(os.path.join(abs_dir_path_user, f"post_user_{owner_id}.txt"), "a", encoding="utf-8") as file:
-                            dt = (resp["response"][0]["items"][i_resp]["date"])
-                            flag = True
-                            file.write(datetime.utcfromtimestamp(dt).strftime('%Y-%m-%d %H:%M:%S') + ": " + resp["response"][0]["items"][i_resp]["text"] + "\n" + "=" * 1000 + "\n")
+                        id_post = resp["response"][0]["items"][i_resp]["owner_id"]
+                        date_post = (resp["response"][0]["items"][i_resp]["date"])
+                        text_post = resp["response"][0]["items"][i_resp]["text"]
+
+
+                        Post.objects.create(
+                            social=social,
+                            id_post=resp["response"][0]["items"][i_resp]["id"],
+                            date=datetime.utcfromtimestamp(date_post),
+                            text=text_post
+                        )
+                        result.append(value)
                         break
         except Exception as e:
             print(e)
             break
 
-    return flag
+    if not result:
+        return None
+    else:
+        return result
 
 
 # скачивание всех фото пользователя + обработка + сохранение
 def downloading_search_photos(user_id, path_user_id, token=config.token):
     flag = False
+
     def touch(path):
         with open(path, 'a'):
             os.utime(path, None)
@@ -251,34 +270,7 @@ def downloading_search_photos(user_id, path_user_id, token=config.token):
         except:
             return '???'
 
-    def get_photos_method(uid, token, file_name, photo_method):
-        req_count = 200
-        params = {}
-        params['access_token'] = token
-        params['owner_id'] = uid
-        params['count'] = 0
-        photos_count = request('photos.%s' % photo_method, params, is_one=True, return_data=False)
-        global count_photo_global
-        count_photo_global = photos_count
-        path = file_name
-        if photos_count:
-            try:
-                f = open(path, 'a')
-                fave_iterations = int(photos_count / req_count) + 1
-                params['count'] = req_count
-                for i in range(0, fave_iterations, 1):
-                    params['offset'] = req_count * i
-                    photos_response = request('photos.%s' % photo_method, params, is_one=False)
-                    for each in photos_response:
-                        link = extract_pirture_url(each)
-                        f.write('%s\n' % (link))
-                f.close()
-            except Exception:
-                pass
-        else:
-            pass
-
-    def get_photos_album(uid, token, file_name, album_id, path_user_id):
+    def get_photos_album(uid, token, file_name, album_id, path_user_id, social):
         req_count = 200
         params = {}
         params['access_token'] = token
@@ -289,42 +281,47 @@ def downloading_search_photos(user_id, path_user_id, token=config.token):
         path = file_name
         if photos_count:
             try:
-                f = open(path, 'a')
-                fave_iterations = int(photos_count / req_count) + 1
-                params['count'] = req_count
-                for i in range(0, fave_iterations, 1):
-                    params['offset'] = req_count * i
-                    photos_response = request('photos.get', params, is_one=False)
-                    for each in photos_response:
-                        if each != 'error':
-                            try:
-                                link = extract_pirture_url(each)
-
-
-                                # есть ли ссылка в файле проверок
+                with open(path, 'a') as f:
+                    fave_iterations = int(photos_count / req_count) + 1
+                    params['count'] = req_count
+                    for i in range(0, fave_iterations, 1):
+                        params['offset'] = req_count * i
+                        photos_response = request('photos.get', params, is_one=False)
+                        for each in photos_response:
+                            if each != 'error':
                                 try:
-                                    with open(os.path.join(path_user_id, "search_id", "id_photos.txt")) as file:
-                                        for line in file:
-                                            if line.replace("\n", "") == link:
-                                                raise SyntaxError
-                                except SyntaxError:
-                                    continue
-                                else:
-                                    with open(os.path.join(path_user_id, "search_id", "id_photos.txt"), "a", encoding="utf-8") as file:
-                                        flag = True
-                                        file.write(link + "\n")
+                                    link = extract_pirture_url(each)
 
+                                    # ================================================================================================================================================================
+                                    # есть ли ссылка в файле проверок
+                                    try:
+                                        with open(os.path.join(path_user_id, "search_id", "id_photos.txt")) as file:
+                                            for line in file:
+                                                if line.replace("\n", "") == link:
+                                                    raise SyntaxError
+                                    except SyntaxError:
+                                        continue
+                                    else:
+                                        PhotosChecks.objects.create(
+                                            social=social,
+                                            link=link
+                                        )
+                                        with open(os.path.join(path_user_id, "search_id", "id_photos.txt"), "a",
+                                                  encoding="utf-8") as file:
+                                            flag = True
 
-                                f.write('%s\n' % link)
-                            except Exception:
-                                pass
-                f.close()
-            except Exception:
+                                            file.write(link + "\n")
+                                    f.write('%s\n' % link)
+                                # ================================================================================================================================================================
+                                except Exception as e:
+                                    print("1", e)
+                                    pass
+            except Exception as e:
                 pass
         else:
             pass
 
-    def get_photos(uid, token, directory_name, path_user_id):
+    def get_photos(uid, token, directory_name, path_user_id, social):
         download_methods = ['getAll']  # , 'getUserPhotos' 'getNewTags'
         album_ids = [-6, -7, -15]
         delim = ';'  # TODO ??
@@ -337,10 +334,8 @@ def downloading_search_photos(user_id, path_user_id, token=config.token):
                 uid_list.append(i)
 
         for uid_line in uid_list:
-            # for index, d_method in enumerate(download_methods):
-            #     get_photos_method(uid_line, token, directory_name, d_method)
             for index, album_num in enumerate(album_ids):
-                get_photos_album(uid_line, token, directory_name, album_num, path_user_id)
+                get_photos_album(uid_line, token, directory_name, album_num, path_user_id, social)
 
     request_interval = 0
     file_with_token = 'token'
@@ -361,31 +356,42 @@ def downloading_search_photos(user_id, path_user_id, token=config.token):
     if not os.path.exists(path_photos):
         os.makedirs(path_photos)
 
+    social = Social.objects.filter(Q(value=user_id)).first()
     # получение ссылок на фото
-    get_photos(user_id, token, file_with_photos, path_user_id)
+    get_photos(user_id, token, file_with_photos, path_user_id, social)
     f = open(file_with_photos, 'r')
     photos_txt = f.read()
     f.close()
     links = photos_txt.split('\n')
     links = links[:-1]
-    total = len(links)
+    # total = len(links)
+
+    model = models.load_model(os.path.abspath(os.path.join("genering_profils_vk", "files", "resnet101_csv_06.h5")),
+                              backbone_name='resnet101')
+    model = models.convert_model(model)
 
     # скачивание фото
     for number, link in enumerate(links):
         try:
             url_as = link
-            file_name = str(number+1) + ".jpg"
+            file_name = str(number + 1) + ".jpg"
             file_name_abs = os.path.join(path_photos, file_name)
             if not os.path.isfile(file_name_abs):
                 resource = urlopen(url_as)
                 out = open(file_name_abs, 'wb')
-                # ============================================================================
-                #     сюда проверку модели нейронки (полный путь до фото file_name_abs
-                #       потом удаляем сразу, если не нашли
-                # =============================================================================
-                #print(file_name_abs)
+
                 out.write(resource.read())
                 out.close()
+
+                # проверка нейронкой
+                if not detect_photo(model, file_name_abs):
+                    os.remove(file_name_abs)
+                else:
+                    Photos.objects.create(
+                        social=social,
+                        link=link
+                    )
+
         except Exception:
             pass
 
@@ -400,7 +406,7 @@ def downloading_search_photos(user_id, path_user_id, token=config.token):
 
 # поиск по ключевым словам среди списка сообществ
 def search_name_groups_vk_id(user_id, abs_dir_path_user, lst_dict=config.lst_dict, token=config.token):
-    flag = False
+    result = []
     url = "https://api.vk.com/method/execute?"
     api = 'API.groups.get({"user_id":"' + str(user_id) + '", "count":"1"})'
     code = f'return [{api}];'
@@ -413,6 +419,8 @@ def search_name_groups_vk_id(user_id, abs_dir_path_user, lst_dict=config.lst_dic
     global path_file_text_groups_global
     path_file_text_groups_global = os.path.join(abs_dir_path_user, f"groups_user_{user_id}.txt")
 
+    social = Social.objects.filter(Q(value=user_id)).first()
+
     for i in range(count_record):
         url = "https://api.vk.com/method/execute?"
         api = 'API.groups.get({"user_id":"' + str(user_id) + '", "count":"1", "extended":"1", "offset":"' + str(
@@ -424,7 +432,9 @@ def search_name_groups_vk_id(user_id, abs_dir_path_user, lst_dict=config.lst_dic
 
         try:
             for i_resp in range(len((resp["response"][0]["items"]))):
+                value = dict()
 
+                # =================================================ПРОВЕРКА В БАЗЕ ИМЕЮЩИХСЯ ID==============================================================================
                 # проверяем на наличие id  в файле (если есть, то генерим исключение
                 # на его обработке continue
                 # если нету, то записываем в файл (БД)
@@ -436,27 +446,39 @@ def search_name_groups_vk_id(user_id, abs_dir_path_user, lst_dict=config.lst_dic
                 except SyntaxError:
                     continue
                 else:
+                    GroupsChecks.objects.create(
+                        social=social,
+                        id_groups=resp["response"][0]["items"][0]["id"]
+                    )
                     with open(os.path.join(abs_dir_path_user, "search_id", f"id_groups.txt"), "a") as id_file:
                         id_file.write(str(resp["response"][0]["items"][0]["id"]) + "\n")
-
-
+                # =================================================ПРОВЕРКА В БАЗЕ ИМЕЮЩИХСЯ ID==============================================================================
 
                 for word_dict in lst_dict:
                     if word_dict.lower() in resp["response"][0]["items"][i_resp]["name"].lower():
-                        with open(os.path.join(abs_dir_path_user, f"groups_user_{user_id}.txt"), "a",
-                                  encoding="utf-8") as file:
-                            flag = True
-                            file.write(resp["response"][0]["items"][i_resp]["name"] + "\n" + "=" * 1000 + "\n")
+                        value["id"] = resp["response"][0]["items"][i_resp]["id"]
+                        value["name"] = resp["response"][0]["items"][i_resp]["name"]
+                        result.append(value)
+
+                        Groups.objects.create(
+                            social=social,
+                            id_groups=int(resp["response"][0]["items"][i_resp]["id"]),
+                            name=resp["response"][0]["items"][i_resp]["name"]
+                        )
+
                         break
         except Exception:
             pass
 
-    return flag
+    if not result:
+        return None
+    else:
+        return result
 
 
 # поиск по ключевым словами среди списка видеозаписей + {дата: имя}
 def search_name_videos_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict, token=config.token):
-    flag = False
+    result = []
     url = "https://api.vk.com/method/execute?"
     api = 'API.video.get({"user_id":"' + str(owner_id) + '", "count":"1"})'
     code = f'return [{api}];'
@@ -469,19 +491,21 @@ def search_name_videos_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_di
     global path_file_video_global
     path_file_video_global = os.path.join(abs_dir_path_user, f"videos_user_{owner_id}.txt")
 
+    social = Social.objects.filter(Q(value=owner_id)).first()
+
     for i in range(count_record):
         url = "https://api.vk.com/method/execute?"
-        api = 'API.video.get({"user_id":"' + str(owner_id) + '", "count":"1", "extended":"1", "offset":"' + str(i) + '"})'
+        api = 'API.video.get({"user_id":"' + str(owner_id) + '", "count":"1", "extended":"1", "offset":"' + str(
+            i) + '"})'
         code = f'return [{api}];'
         data = dict(code=code, access_token=token, v='5.131')
         resp = requests.post(url=url, data=data)
         resp = resp.json()
 
-
-
         try:
             for i_resp in range(len((resp["response"][0]["items"]))):
-
+                value = dict()
+                # =================================================ПРОВЕРКА В БАЗЕ ИМЕЮЩИХСЯ ID==============================================================================
                 # проверяем на наличие id  в файле (если есть, то генерим исключение
                 # на его обработке continue
                 # если нету, то записываем в файл (БД)
@@ -493,215 +517,229 @@ def search_name_videos_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_di
                 except SyntaxError:
                     continue
                 else:
+                    VideoChecks.objects.create(
+                        social=social,
+                        id_video=resp["response"][0]["items"][i_resp]["id"]
+                    )
                     with open(os.path.join(abs_dir_path_user, "search_id", f"id_videos.txt"), "a") as id_file:
                         id_file.write(str(resp["response"][0]["items"][i_resp]["id"]) + "\n")
-
-
+                # =================================================ПРОВЕРКА В БАЗЕ ИМЕЮЩИХСЯ ID==============================================================================
 
                 for word_dict in lst_dict:
                     if word_dict.lower() in resp["response"][0]["items"][0]["title"].lower():
-                        with open(os.path.join(abs_dir_path_user, f"videos_user_{owner_id}.txt"), "a", encoding="utf-8") as file:
-                            dt = (resp["response"][0]["items"][0]["date"])
-                            flag = True
-                            file.write(datetime.utcfromtimestamp(dt).strftime('%Y-%m-%d %H:%M:%S') + ": " + resp["response"][0]["items"][0]["title"] + "\n" + "=" * 1000 + "\n")
+                        id_video = resp["response"][0]["items"][0]["id"]
+                        date_video = (resp["response"][0]["items"][0]["date"])
+                        player_video = resp["response"][0]["items"][0]["player"]
+                        name_video = resp["response"][0]["items"][0]["title"]
+                        value["owner_id"] = id_video
+                        value["date"] = date_video
+                        value["text"] = name_video
+                        value["player"] = player_video
+
+                        Video.objects.create(
+                            social=social,
+                            id_video=int(id_video),
+                            date=datetime.utcfromtimestamp(date_video),
+                            name=name_video,
+                            link=player_video
+                        )
+
+                        result.append(value)
                         break
         except Exception as e:
             print(e)
             pass
 
-    return flag
+    if not result:
+        return None
+    else:
+        return result
 
 
 # поиск по всей указанной информации о пользователе
 def search_inf_users_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict, token=config.token):
-    flag = False
+    result = set()
     global path_file_inf_users_global
     global count_key_data_global
     url = "https://api.vk.com/method/execute?"
-    api = 'API.users.get({"user_ids":"' + str(owner_id) + '", "fields": "about, activities, books, games, interests, movies, music, nickname, quotes, status, tv"})'
+    api = 'API.users.get({"user_ids":"' + str(
+        owner_id) + '", "fields": "id, about, activities, books, games, interests, movies, music, nickname, quotes, status, tv"})'
     code = f'return [{api}];'
     data = dict(code=code, access_token=token, v='5.131')
     resp = requests.post(url=url, data=data)
     resp = resp.json()
     data = {
-        "О себе": resp.get("response")[0][0].get("about", False),
-        "Деятельность": resp.get("response")[0][0].get("activities", False),
-        "Любимые книги": resp.get("response")[0][0].get("books", False),
-        "Любимые игры": resp.get("response")[0][0].get("games", False),
-        "Интересы": resp.get("response")[0][0].get("interests", False),
-        "Любимые фильмы": resp.get("response")[0][0].get("movies", False),
-        "Любимая музыка": resp.get("response")[0][0].get("music", False),
-        "Никнейм": resp.get("response")[0][0].get("nickname", False),
-        "Любимые цитаты": resp.get("response")[0][0].get("quotes", False),
-        "Статус пользователя": resp.get("response")[0][0].get("status", False),
-        "Любимые телешоу": resp.get("response")[0][0].get("tv", False)
+        "О себе": resp.get("response")[0][0].get("about", None),
+        "Деятельность": resp.get("response")[0][0].get("activities", None),
+        "Любимые книги": resp.get("response")[0][0].get("books", None),
+        "Любимые игры": resp.get("response")[0][0].get("games", None),
+        "Интересы": resp.get("response")[0][0].get("interests", None),
+        "Любимые фильмы": resp.get("response")[0][0].get("movies", None),
+        "Любимая музыка": resp.get("response")[0][0].get("music", None),
+        "Никнейм": resp.get("response")[0][0].get("nickname", None),
+        "Любимые цитаты": resp.get("response")[0][0].get("quotes", None),
+        "Статус пользователя": resp.get("response")[0][0].get("status", None),
+        "Любимые телешоу": resp.get("response")[0][0].get("tv", None)
     }
 
-    for key, value in list(data.items()):
-        if not value:
-            del data[key]
-
+    social = Social.objects.filter(Q(value=owner_id)).first()
 
     if not data:
         path_file_inf_users_global = ""
-        count_key_data_global  = 0
-        return
+        count_key_data_global = 0
+        return None
     else:
-
-
-
         try:
             for key, value in data.items():
-                try:
-                    with open(os.path.join(abs_dir_path_user, "search_id", "data_inf_user", f"{key}.txt"), "r", encoding="utf-8") as file:
-                        for line in file:
-                            if line.replace("\n", "") == value:
-                                raise SyntaxError
-                except SyntaxError:
-                    continue
-                else:
-                    with open(os.path.join(abs_dir_path_user, "search_id", "data_inf_user", f"{key}.txt"), "a") as file:
-                        file.write(str(value) + "\n")
-
-
-
-
                 path_file_inf_users_global = os.path.join(abs_dir_path_user, f"inf_user_{owner_id}.txt")
                 count_key_data_global = len(data.keys())
                 for word in lst_dict:
-                    if word.lower() in value.lower():
-                        with open(os.path.join(abs_dir_path_user, f"inf_user_{owner_id}.txt"), "a",
-                                  encoding="utf-8") as file:
-                            flag = True
-                            file.write(key + ": " + value + "\n" + "=" * 1000 + "\n")
+                    if str(word.lower()) in str(value.lower()):
+
+                        Inf.objects.create(
+                            social=social,
+                            about=data["О себе"],
+                            activities=data["Деятельность"],
+                            books=data["Любимые книги"],
+                            games=data["Любимые игры"],
+                            interests=data["Интересы"],
+                            movies=data["Любимые фильмы"],
+                            music=data["Любимая музыка"],
+                            nickname=data["Никнейм"],
+                            quotes=data["Любимые цитаты"],
+                            status=data["Статус пользователя"],
+                            tv=data["Любимые телешоу"]
+                        )
+
+                        return data
+
 
         except Exception as e:
             print(e)
             pass
 
-    return flag
 # ====================================================================ОБОБЩАЮЩАЯ ФУНКЦИЯ================================
 # пробег по всем пользователям вк c использованием поиска фото, постов
-def collector(list_token, dir_path_date_and_time, dt):
-    # nest_asyncio.apply()
-    data_photos = {}
-    data_posts = {}
-    data_groups = {}
-    data_videos = {}
-    data_inf_users = {}
-
-    async def bound_fetch_zero(sem, id, session):
-        async with sem:
-            await fetch_zero(id, session)
-
-    #ЗДЕСЬ ДОБАВЛЯЕМ ПОИСК ПО ФОТО И ВСЁ ОСТАЛЬНОЕ
-    async def fetch_zero(id, session):
-        url = build_url(id)
-        try:
-            async with session.get(url) as response:
-                # Считываем json
-                resp = await response.text()
-                js = json.loads(resp)
-                list_users = [x for x in js['response'] if x != False]
-
-                # Проверяем если город=1(Москва) тогда добавляем в лист
-                for it in list_users:
-                    list_data.append(it[0]['id'])
-                    try:
-                        # если город Москва
-                        # if it[0]['city']['id'] == 1 and it[0]['id'] == 18:
-                        if it[0]['id'] == 23:
-                            # ДОБАВЛЕНИЕ В СПИСОК ID СТРАНИЦЫ (ЗДЕСЬ НАЧИНАЕМ ПРОВЕРЯТЬ ИНФОРМАЦИЮ) TODO
-
-                            # выкачивание фото
-                            # downloading_search_photos(str(it[0]['id']), dir_path_date_and_time)
-
-                            dir_id_path = os.path.join(dir_path_date_and_time, str(it[0]['id']))
-                            if not os.path.exists(dir_id_path):
-                                os.makedirs(dir_id_path)
-
-                            # выкачивание и проверка постов
-                            search_post_vk_id(it[0]['id'], dir_id_path)
-
-                            # выкачивание и проверка названий групп и сообществ
-                            search_name_groups_vk_id(it[0]['id'], dir_id_path)
-
-                            # выкачивание и проверка названий видеозаписей
-                            search_name_videos_vk_id(it[0]['id'], dir_id_path)
-
-                            # выкачивание и провекра всей информации о пользователе
-                            search_inf_users_vk_id(it[0]['id'], dir_id_path)
-
-                            # если каталог пуст, удаляем
-                            if not os.listdir(dir_id_path):
-                                os.rmdir(dir_id_path)
-
-
-
-                            # инфомация для заполненеия базы
-                            url = f"https://vk.com/id{it[0]['id']}"
-                            check_date = dt
-                            count_record = count_photo_global
-                            path_dir_photos = path_dir_photos_global
-                            category = "Раскрытие принадлежности к центральному аппарату МО РФ"
-
-                            create_dict_data(url, check_date, count_record, path_dir_photos, category, data_photos)
-                            create_dict_data_post(url, check_date, count_text_global, path_file_text_global, "Новая категория (ПОСТЫ)", data_posts)
-                            create_dict_data_name_grops(url, check_date, count_text_groups_global, path_file_text_groups_global, "Новая категория (ГРУППЫ)", data_groups)
-                            create_dict_data_name_videos(url, check_date, count_video_global, path_file_video_global, "Категория ВИДЕО", data_videos)
-                            create_dict_data_inf_users(url, check_date, count_key_data_global, path_file_inf_users_global, "Категория ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЯХ", data_inf_users)
-
-
-                    except Exception:
-                        pass
-        except Exception as ex:
-            print(resp)
-
-    def build_url(id):
-        api = "API.users.get({{'user_ids':{},'fields':'deactivated, is_closed, first_name, last_name, bdate, city, home_town'}})".format(
-            id * 25 + 1)
-        for i in range(2, 26):
-            api += ",API.users.get({{'user_ids':{},'fields':'deactivated, is_closed, first_name, last_name, bdate, city, home_town'}})".format(
-                id * 25 + i)
-        url = 'https://api.vk.com/method/execute?access_token={}&v=5.101&code=return%20[{}];'.format(
-            list_token[id % len(list_token)], api)
-        return url
-
-    async def run_zero(id):
-        tasks = []
-        sem = asyncio.Semaphore(1000)
-
-        async with ClientSession() as session:
-            #  Значение 3200 зависит от вашего числа токенов
-            param3200 = 250000
-            for id in range((id - 1) * param3200, id * param3200):
-                task = asyncio.ensure_future(bound_fetch_zero(sem, id, session))
-                tasks.append(task)
-
-            responses = asyncio.gather(*tasks)
-            await responses
-            del responses
-            await session.close()
-
-
-    # Запускаем  сборщик
-    # threshold = 17
-    # param_count = 554
-    st = time()
-    threshold = 3
-    for i in range(threshold):
-        param_count = 40
-        for query in range(i * param_count + 1, (i + 1) * param_count + 1):
-            print(query, time()-st)
-            st = time()
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(run_zero(query))
-
-    print(len(list_data))
-
-    return {"photos":data_photos,
-            "posts":data_posts,
-            "groups":data_groups,
-            "videos":data_videos,
-            "inf_user":data_inf_users}
+# def collector(list_token, dir_path_date_and_time, dt):
+#     # nest_asyncio.apply()
+#     data_photos = {}
+#     data_posts = {}
+#     data_groups = {}
+#     data_videos = {}
+#     data_inf_users = {}
+#
+#     async def bound_fetch_zero(sem, id, session):
+#         async with sem:
+#             await fetch_zero(id, session)
+#
+#     #ЗДЕСЬ ДОБАВЛЯЕМ ПОИСК ПО ФОТО И ВСЁ ОСТАЛЬНОЕ
+#     async def fetch_zero(id, session):
+#         url = build_url(id)
+#         try:
+#             async with session.get(url) as response:
+#                 # Считываем json
+#                 resp = await response.text()
+#                 js = json.loads(resp)
+#                 list_users = [x for x in js['response'] if x != False]
+#
+#                 # Проверяем если город=1(Москва) тогда добавляем в лист
+#                 for it in list_users:
+#                     list_data.append(it[0]['id'])
+#                     try:
+#                         # если город Москва
+#                         # if it[0]['city']['id'] == 1 and it[0]['id'] == 18:
+#                         if it[0]['id'] == 23:
+#                             # ДОБАВЛЕНИЕ В СПИСОК ID СТРАНИЦЫ (ЗДЕСЬ НАЧИНАЕМ ПРОВЕРЯТЬ ИНФОРМАЦИЮ) TODO
+#
+#                             # выкачивание фото
+#                             # downloading_search_photos(str(it[0]['id']), dir_path_date_and_time)
+#
+#                             dir_id_path = os.path.join(dir_path_date_and_time, str(it[0]['id']))
+#                             if not os.path.exists(dir_id_path):
+#                                 os.makedirs(dir_id_path)
+#
+#                             # выкачивание и проверка постов
+#                             search_post_vk_id(it[0]['id'], dir_id_path)
+#
+#                             # выкачивание и проверка названий групп и сообществ
+#                             search_name_groups_vk_id(it[0]['id'], dir_id_path)
+#
+#                             # выкачивание и проверка названий видеозаписей
+#                             search_name_videos_vk_id(it[0]['id'], dir_id_path)
+#
+#                             # выкачивание и провекра всей информации о пользователе
+#                             search_inf_users_vk_id(it[0]['id'], dir_id_path)
+#
+#                             # если каталог пуст, удаляем
+#                             if not os.listdir(dir_id_path):
+#                                 os.rmdir(dir_id_path)
+#
+#
+#
+#                             # инфомация для заполненеия базы
+#                             url = f"https://vk.com/id{it[0]['id']}"
+#                             check_date = dt
+#                             count_record = count_photo_global
+#                             path_dir_photos = path_dir_photos_global
+#                             category = "Раскрытие принадлежности к центральному аппарату МО РФ"
+#
+#                             create_dict_data(url, check_date, count_record, path_dir_photos, category, data_photos)
+#                             create_dict_data_post(url, check_date, count_text_global, path_file_text_global, "Новая категория (ПОСТЫ)", data_posts)
+#                             create_dict_data_name_grops(url, check_date, count_text_groups_global, path_file_text_groups_global, "Новая категория (ГРУППЫ)", data_groups)
+#                             create_dict_data_name_videos(url, check_date, count_video_global, path_file_video_global, "Категория ВИДЕО", data_videos)
+#                             create_dict_data_inf_users(url, check_date, count_key_data_global, path_file_inf_users_global, "Категория ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЯХ", data_inf_users)
+#
+#
+#                     except Exception:
+#                         pass
+#         except Exception as ex:
+#             print(resp)
+#
+#     def build_url(id):
+#         api = "API.users.get({{'user_ids':{},'fields':'deactivated, is_closed, first_name, last_name, bdate, city, home_town'}})".format(
+#             id * 25 + 1)
+#         for i in range(2, 26):
+#             api += ",API.users.get({{'user_ids':{},'fields':'deactivated, is_closed, first_name, last_name, bdate, city, home_town'}})".format(
+#                 id * 25 + i)
+#         url = 'https://api.vk.com/method/execute?access_token={}&v=5.101&code=return%20[{}];'.format(
+#             list_token[id % len(list_token)], api)
+#         return url
+#
+#     async def run_zero(id):
+#         tasks = []
+#         sem = asyncio.Semaphore(1000)
+#
+#         async with ClientSession() as session:
+#             #  Значение 3200 зависит от вашего числа токенов
+#             param3200 = 250000
+#             for id in range((id - 1) * param3200, id * param3200):
+#                 task = asyncio.ensure_future(bound_fetch_zero(sem, id, session))
+#                 tasks.append(task)
+#
+#             responses = asyncio.gather(*tasks)
+#             await responses
+#             del responses
+#             await session.close()
+#
+#
+#     # Запускаем  сборщик
+#     # threshold = 17
+#     # param_count = 554
+#     st = time()
+#     threshold = 3
+#     for i in range(threshold):
+#         param_count = 40
+#         for query in range(i * param_count + 1, (i + 1) * param_count + 1):
+#             print(query, time()-st)
+#             st = time()
+#             loop = asyncio.new_event_loop()
+#             asyncio.set_event_loop(loop)
+#             loop.run_until_complete(run_zero(query))
+#
+#     print(len(list_data))
+#
+#     return {"photos":data_photos,
+#             "posts":data_posts,
+#             "groups":data_groups,
+#             "videos":data_videos,
+#             "inf_user":data_inf_users}

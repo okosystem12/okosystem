@@ -2370,13 +2370,13 @@ tokenize = Sizzle.tokenize = function( selector, parseOnly ) {
 
 	// Return the length of the invalid excess
 	// if we're just parsing
-	// Otherwise, throw an error or return tokens
+	// Otherwise, throw an error or return files
 	return parseOnly ?
 		soFar.length :
 		soFar ?
 			Sizzle.error( selector ) :
 
-			// Cache the tokens
+			// Cache the files
 			tokenCache( selector, groups ).slice( 0 );
 };
 
@@ -2879,7 +2879,7 @@ select = Sizzle.select = function( selector, context, results, seed ) {
 						context
 				) ) ) {
 
-					// If seed is empty or no tokens remain, we can return early
+					// If seed is empty or no files remain, we can return early
 					tokens.splice( i, 1 );
 					selector = seed.length && toSelector( tokens );
 					if ( !selector ) {

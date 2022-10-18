@@ -1,4 +1,6 @@
 ﻿
+./genering_profils_vk/files/resnet101_csv_06.h5
+
 .idea/
 **/node_modules/
 

@@ -1,6 +1,6 @@
 import {componentsData} from "../componentsData";
 import {table} from "../../../../storage/config/vch/table";
-import {makeTable} from "../../../../table/makeTable";
+import {makeTable} from "../../../../utils/table/makeTable";
 import {remove} from "./callback/remove";
 import {edit} from "./callback/edit";
 

@@ -1,5 +1,5 @@
 post = {
-    "owner_id": int
+    "id": int
     "date": str
     "text": str
 }

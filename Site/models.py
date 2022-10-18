@@ -6,6 +6,21 @@ from Site.apps import *
 from mysite.settings import MEDIA_ROOT
 
 
+class CorruptInfo(models.Model):
+    value = models.CharField(max_length=200, verbose_name='Значение', default='')
+    info = models.TextField(verbose_name='Информация', default='', blank=True)
+
+    removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
+
+    def __str__(self):
+        return self.value
+
+    class Meta:
+        ordering = ['value', 'pk']
+        verbose_name_plural = 'Данные'
+        verbose_name = 'Данные'
+
+
 class StatusStage(models.Model):
     type = models.CharField(max_length=200, verbose_name='Тип', default='', unique=True)
     name = models.CharField(max_length=200, verbose_name='Название', default='')
@@ -103,7 +118,8 @@ class Column(models.Model):
     fixed = models.BooleanField(verbose_name='Зафиксировать', default=False)
     hide = models.BooleanField(verbose_name='Не скрываемый', default=False)
     visible = models.BooleanField(verbose_name='Отображаемый (по умолчанию)', default=True)
-    render = models.ForeignKey(Render, verbose_name='Рендер', on_delete=models.CASCADE, default=None, blank=True, null=True)
+    render = models.ForeignKey(Render, verbose_name='Рендер', on_delete=models.CASCADE, default=None, blank=True,
+                               null=True)
 
     def __str__(self):
         return self.title
@@ -263,7 +279,6 @@ class ControlUser(models.Model):
                + ((' ' + self.firstName[0]) if self.firstName != '' else '') \
                + ((' ' + self.patronymic[0]) if self.patronymic != '' else '')
 
-
     class Meta:
         ordering = ['lastName', 'firstName', 'patronymic']
         verbose_name_plural = 'Сотрудники'
@@ -338,3 +353,127 @@ class Social(models.Model):
         ordering = ['value']
         verbose_name_plural = 'Социальные сети'
         verbose_name = 'Социальная сеть'
+
+
+class Post(models.Model):
+    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    id_post = models.IntegerField(verbose_name='Номер поста', blank=True, default=0)
+    date = models.DateTimeField(verbose_name='Дата добавления', default=None, blank=True, null=True)
+    text = models.TextField(verbose_name='Текст поста', default='', blank=True)
+
+    def __str__(self):
+        return self.id_post.__str__()
+
+    class Meta:
+        verbose_name_plural = 'Посты'
+        verbose_name = 'Пост'
+
+
+class Video(models.Model):
+    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    id_video = models.IntegerField(verbose_name='Номер видеозаписи', blank=True, default=0)
+    date = models.DateTimeField(verbose_name='Дата добавления', default=None, blank=True, null=True)
+    name = models.TextField(verbose_name='Название видеозаписи', default='', blank=True)
+    link = models.TextField(verbose_name='Ссылка на видеозапись', default='', blank=True)
+
+    def __str__(self):
+        return self.id_video.__str__()
+
+    class Meta:
+        verbose_name_plural = 'Видеозаписи'
+        verbose_name = 'Видеозапись'
+
+
+class Groups(models.Model):
+    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    id_groups = models.IntegerField(verbose_name='Номер сообщества', blank=True, default=0)
+    name = models.TextField(verbose_name='Название сообщества', default='', blank=True)
+
+    def __str__(self):
+        return self.id_groups.__str__()
+
+    class Meta:
+        verbose_name_plural = 'Сообщества'
+        verbose_name = 'Сообщество'
+
+
+class Inf(models.Model):
+    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    about = models.TextField(verbose_name='О себе', default='', blank=True)
+    activities = models.TextField(verbose_name='Деятельность', default='', blank=True)
+    books = models.TextField(verbose_name='Любимые книги', default='', blank=True)
+    games = models.TextField(verbose_name='Любимые игры', default='', blank=True)
+    interests = models.TextField(verbose_name='Интересы', default='', blank=True)
+    movies = models.TextField(verbose_name='Любимые фильмы', default='', blank=True)
+    music = models.TextField(verbose_name='Любимая музыка', default='', blank=True)
+    nickname = models.TextField(verbose_name='Никнейм', default='', blank=True)
+    quotes = models.TextField(verbose_name='Любимые цитаты', default='', blank=True)
+    status = models.TextField(verbose_name='Статус пользователя', default='', blank=True)
+    tv = models.TextField(verbose_name='Любимые телешоу', default='', blank=True)
+
+    def __str__(self):
+        return self.social.__str__()
+
+    class Meta:
+        verbose_name_plural = 'Информация о пользователях'
+        verbose_name = 'Информация о пользователе'
+
+
+class Photos(models.Model):
+    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    link = models.TextField(verbose_name='Ссылка на фотоизображение', default='', blank=True)
+
+    def __str__(self):
+        return self.social.__str__()
+
+    class Meta:
+        verbose_name_plural = 'Фотоизображения'
+        verbose_name = 'Фотоизображение'
+
+
+class PostsChecks(models.Model):
+    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    id_post = models.IntegerField(verbose_name='Номер поста', blank=True, default=0)
+
+    def __str__(self):
+        return self.id_post.__str__()
+
+    class Meta:
+        verbose_name_plural = 'Проверенные посты'
+        verbose_name = 'Проверенный пост'
+
+
+class VideoChecks(models.Model):
+    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    id_video = models.IntegerField(verbose_name='Номер видеозаписи', blank=True, default=0)
+
+    def __str__(self):
+        return self.id_video.__str__()
+
+    class Meta:
+        verbose_name_plural = 'Проверенные видеозаписи'
+        verbose_name = 'Проверенная видеозапись'
+
+
+class GroupsChecks(models.Model):
+    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    id_groups = models.IntegerField(verbose_name='Номер сообщества', blank=True, default=0)
+
+    def __str__(self):
+        return self.id_groups.__str__()
+
+    class Meta:
+        verbose_name_plural = 'Проверенные сообщества'
+        verbose_name = 'Проверенное сообщество'
+
+
+class PhotosChecks(models.Model):
+    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    link = models.TextField(verbose_name='Ссылка на фотоизображение', default='', blank=True)
+
+    def __str__(self):
+        return self.social.__str__()
+
+    class Meta:
+        verbose_name_plural = 'Проверенные фотоизображения'
+        verbose_name = 'Проверенное фотоизображение'

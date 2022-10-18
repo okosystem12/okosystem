@@ -225,6 +225,7 @@ div.dt-buttons {
 .form-textarea {
     resize: vertical;
     max-height: 100px;
+    min-height: 34px;
 }
 
 .form-group .form-transliteration {
