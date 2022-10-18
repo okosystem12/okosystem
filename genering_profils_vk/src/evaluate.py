@@ -1,8 +1,6 @@
 from keras_retinanet.utils.image import read_image_bgr, preprocess_image, resize_image
 
 import matplotlib.pyplot as plt
-import cv2
-import os
 import numpy as np
 
 def detect_photo(model, image_path):

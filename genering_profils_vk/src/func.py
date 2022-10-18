@@ -7,9 +7,9 @@ from aiohttp import ClientSession
 import os
 import requests
 import json
+from manage import model
 
 from django.db.models import Q
-from keras_retinanet import models
 from time import sleep, time
 
 from Site.models import Social, Post, Video, Groups, Inf, Photos, PostsChecks, PhotosChecks, GroupsChecks, VideoChecks
@@ -155,21 +155,7 @@ def search_post_vk_id(owner_id, lst_dict=config.lst_dict, token=config.token):
 
 
 # скачивание всех фото пользователя + обработка + сохранение
-def downloading_search_photos(user_id, path_user_id, token=config.token):
-    flag = False
-
-    def touch(path):
-        with open(path, 'a'):
-            os.utime(path, None)
-
-    # создание файла со сслыками на фото
-    def create_file(file_path, deleteIfExists):
-        if os.path.exists(file_path):
-            if deleteIfExists:
-                os.remove(file_path)
-                touch(file_path)
-        else:
-            touch(file_path)
+def downloading_search_photos(user_id, token=config.token):
 
     def emoji_wipe(plain):
         array = bytearray(plain)
@@ -220,7 +206,7 @@ def downloading_search_photos(user_id, path_user_id, token=config.token):
         except:
             return '???'
 
-    def get_photos_album(uid, token, file_name, album_id, path_user_id, social):
+    def get_photos_album(uid, token, file_name, album_id, social):
         req_count = 200
         params = {}
         params['access_token'] = token
@@ -231,36 +217,36 @@ def downloading_search_photos(user_id, path_user_id, token=config.token):
         path = file_name
         if photos_count:
             try:
-                with open(path, 'a') as f:
-                    fave_iterations = int(photos_count / req_count) + 1
-                    params['count'] = req_count
-                    for i in range(0, fave_iterations, 1):
-                        params['offset'] = req_count * i
-                        photos_response = request('photos.get', params, is_one=False)
-                        for each in photos_response:
-                            if each != 'error':
-                                try:
-                                    link = extract_pirture_url(each)
-                                    photos_list = PhotosChecks.objects.filter(
-                                        Q(social=social)
-                                        & Q(link=link)
+                fave_iterations = int(photos_count / req_count) + 1
+                params['count'] = req_count
+                for i in range(0, fave_iterations, 1):
+                    params['offset'] = req_count * i
+                    photos_response = request('photos.get', params, is_one=False)
+                    for each in photos_response:
+                        if each != 'error':
+                            try:
+                                link = extract_pirture_url(each) # получили ссылку на фото Todo
+
+                                photos_list = PhotosChecks.objects.filter(
+                                    Q(social=social)
+                                    & Q(link=link)
+                                )
+
+                                if photos_list.count() == 0:
+                                    PhotosChecks.objects.create(
+                                        social=social,
+                                        link=link
                                     )
-                                    if photos_list.count() == 0:
-                                        PhotosChecks.objects.create(
-                                            social=social,
-                                            link=link
-                                        )
-                                    f.write('%s\n' % link)
-# ================================================================================================================================================================
-                                except Exception as e:
-                                    pass
+                                    with open(path, 'a') as f:
+                                        f.write('%s\n' % link)
+                            except Exception as e:
+                                pass
             except Exception as e:
                 pass
         else:
             pass
 
-    def get_photos(uid, token, directory_name, path_user_id, social):
-        download_methods = ['getAll']  # , 'getUserPhotos' 'getNewTags'
+    def get_photos(uid, token, directory_name, social):
         album_ids = [-6, -7, -15]
         delim = ';'  # TODO ??
         uid_list = []
@@ -273,68 +259,57 @@ def downloading_search_photos(user_id, path_user_id, token=config.token):
 
         for uid_line in uid_list:
             for index, album_num in enumerate(album_ids):
-                get_photos_album(uid_line, token, directory_name, album_num, path_user_id, social)
+                get_photos_album(uid_line, token, directory_name, album_num, social)
 
     request_interval = 0
 
-    # создание файла со ссылками в этом каталоге
-    file_with_photos = os.path.abspath(os.path.join(path_user_id, '%s.txt' % f"photos_user_{str(user_id)}"))
-    create_file(file_with_photos, True)
-
     # создание каталога для фоток в каталоге с id пользователя
-    path_photos = os.path.abspath(os.path.join(path_user_id, "photos"))
-    global path_dir_photos_global
-    path_dir_photos_global = path_photos
-    if not os.path.exists(path_photos):
-        os.makedirs(path_photos)
+    dir_for_photos_tmp = os.path.abspath("tmp")
+    if not os.path.exists(dir_for_photos_tmp):
+        os.makedirs(dir_for_photos_tmp)
+
+    # создание файла со ссылками в этом каталоге
+    file_with_photos = os.path.abspath(os.path.join("tmp", '%s.txt' % f"photos_user_{str(user_id)}"))
 
     social = Social.objects.filter(Q(value=user_id)).first()
+
     # получение ссылок на фото
-    get_photos(user_id, token, file_with_photos, path_user_id, social)
-    f = open(file_with_photos, 'r')
-    photos_txt = f.read()
-    f.close()
+    get_photos(user_id, token, file_with_photos, social)
+    if os.path.exists(file_with_photos):
+        f = open(file_with_photos, 'r')
+        photos_txt = f.read()
+        f.close()
+    else:
+        os.rmdir(dir_for_photos_tmp)
+        return
+    os.remove(file_with_photos)
     links = photos_txt.split('\n')
     links = links[:-1]
-    # total = len(links)
-
-    model = models.load_model(os.path.abspath(os.path.join("genering_profils_vk", "files", "resnet101_csv_06.h5")),
-                              backbone_name='resnet101')
-    model = models.convert_model(model)
 
     # скачивание фото
     for number, link in enumerate(links):
         try:
             url_as = link
             file_name = str(number + 1) + ".jpg"
-            file_name_abs = os.path.join(path_photos, file_name)
+            file_name_abs = os.path.join(dir_for_photos_tmp, file_name)
             if not os.path.isfile(file_name_abs):
                 resource = urlopen(url_as)
                 out = open(file_name_abs, 'wb')
-
                 out.write(resource.read())
                 out.close()
 
                 # проверка нейронкой
-                if not detect_photo(model, file_name_abs):
-                    os.remove(file_name_abs)
-                else:
+                if detect_photo(model, file_name_abs):
                     Photos.objects.create(
                         social=social,
                         link=link
                     )
-
-
+                os.remove(file_name_abs)
         except Exception:
             pass
 
-    # если нет фото (или страница закрыта) удаляем каталог и файл со ссылками
-    if not os.listdir(path_photos):
-        os.rmdir(path_photos)
-        os.remove(file_with_photos)
-        # os.rmdir(path_user_id)
-
-    return flag
+    os.rmdir(dir_for_photos_tmp)
+    return
 
 
 # поиск по ключевым словам среди списка сообществ
@@ -369,15 +344,15 @@ def search_name_groups_vk_id(user_id, lst_dict=config.lst_dict, token=config.tok
                         social=social,
                         id_groups=resp["response"][0]["items"][0]["id"]
                     )
-                for word_dict in lst_dict:
-                    if word_dict.lower() in resp["response"][0]["items"][i_resp]["name"].lower():
-                        Groups.objects.create(
-                            social=social,
-                            id_groups=int(resp["response"][0]["items"][i_resp]["id"]),
-                            name=resp["response"][0]["items"][i_resp]["name"]
-                        )
+                    for word_dict in lst_dict:
+                        if word_dict.lower() in resp["response"][0]["items"][i_resp]["name"].lower():
+                            Groups.objects.create(
+                                social=social,
+                                id_groups=int(resp["response"][0]["items"][i_resp]["id"]),
+                                name=resp["response"][0]["items"][i_resp]["name"]
+                            )
 
-                        break
+                            break
         except Exception:
             return
 
@@ -414,16 +389,16 @@ def search_name_videos_vk_id(owner_id, lst_dict=config.lst_dict, token=config.to
                         social=social,
                         id_video=resp["response"][0]["items"][i_resp]["id"]
                     )
-                for word_dict in lst_dict:
-                    if word_dict.lower() in resp["response"][0]["items"][0]["title"].lower():
-                        Video.objects.create(
-                            social=social,
-                            id_video=int(resp["response"][0]["items"][0]["id"]),
-                            date=datetime.utcfromtimestamp(resp["response"][0]["items"][0]["date"]),
-                            name=resp["response"][0]["items"][0]["title"],
-                            link=resp["response"][0]["items"][0]["player"]
-                        )
-                        break
+                    for word_dict in lst_dict:
+                        if word_dict.lower() in resp["response"][0]["items"][0]["title"].lower():
+                            Video.objects.create(
+                                social=social,
+                                id_video=int(resp["response"][0]["items"][0]["id"]),
+                                date=datetime.utcfromtimestamp(resp["response"][0]["items"][0]["date"]),
+                                name=resp["response"][0]["items"][0]["title"],
+                                link=resp["response"][0]["items"][0]["player"]
+                            )
+                            break
         except Exception as e:
             print(e)
             return
