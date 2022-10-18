@@ -25,27 +25,6 @@ except ImportError:
 
 list_data = []
 
-# глобальные переменные ддя словаря (общее кол-во фото и путь до директории с фото)
-count_photo_global = 0
-path_dir_photos_global = ""
-
-# глобальные переменные ддя словаря (общее кол-во ПОСТОВ и путь до файла с найденными постами)
-count_text_global = 0
-path_file_text_global = ""
-
-# глобальные переменные ддя словаря (общее кол-во ГРУПП и путь до файла с найденными названиями групп)
-count_text_groups_global = 0
-path_file_text_groups_global = ""
-
-# глобальные переменные ддя словаря (общее кол-во ВИДЕО и путь до файла с найденными названиями ВИДЕО)
-count_video_global = 0
-path_file_video_global = ""
-
-# глобальные переменные для словаря (общее кол-во НАЙДЕННЫХ ЗАПИСЕЙ В СЛОВАРЕ и путь до файла с найденными ЗАПИСЯМИ)
-count_key_data_global = 0
-path_file_inf_users_global = ""
-
-
 # ====================================================================СОЗДАНИЕ СЛОВАРЕЙ ДЛЯ БАЗЫ========================
 # создание словаря для базы (ФОТО)
 def create_dict_data(url, check_date, count_record, path_dir_photos, category, data):
@@ -132,8 +111,7 @@ def create_dir_current_date_and_time(datetime):
 
 # ===========================================================================ПОИСК ПО КРИТЕРИЯМ=========================
 # поиск по ключевым словам среди постов + {дата: имя}
-def search_post_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict, token=config.token):
-    result = []
+def search_post_vk_id(owner_id, lst_dict=config.lst_dict, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.wall.get({"owner_id":"' + str(owner_id) + '", "count":"1"})'
     code = f'return [{api}];'
@@ -141,10 +119,6 @@ def search_post_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict, tok
     resp = requests.post(url=url, data=data)
     resp = resp.json()
     count_record = resp["response"][0]["count"]
-    global count_text_global
-    count_text_global = count_record
-    global path_file_text_global
-    path_file_text_global = os.path.join(abs_dir_path_user, f"post_user_{owner_id}.txt")
 
     social = Social.objects.filter(Q(value=owner_id)).first()
 
@@ -157,51 +131,27 @@ def search_post_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict, tok
         resp = resp.json()
         try:
             for i_resp in range(len((resp["response"][0]["items"]))):
-                value = dict()
-
-                # =================================================ПРОВЕРКА В БАЗЕ ИМЕЮЩИХСЯ ID==============================================================================
-                # проверяем на наличие id  в файле (если есть, то генерим исключение
-                # на его обработке continue
-                # если нету, то записываем в файл (БД)
-                try:
-                    with open(os.path.join(abs_dir_path_user, "search_id", f"id_posts.txt"), "r") as id_file:
-                        for line in id_file:
-                            if line.replace("\n", "") == str(resp["response"][0]["items"][i_resp]["id"]):
-                                raise SyntaxError
-                except SyntaxError:
-                    continue
-                else:
+                post_list = PostsChecks.objects.filter(
+                    Q(social=social)
+                    & Q(id_post=resp["response"][0]["items"][i_resp]["id"])
+                )
+                if post_list.count() == 0:
                     PostsChecks.objects.create(
                         social=social,
                         id_post=resp["response"][0]["items"][i_resp]["id"]
                     )
-                    with open(os.path.join(abs_dir_path_user, "search_id", f"id_posts.txt"), "a") as id_file:
-                        id_file.write(str(resp["response"][0]["items"][i_resp]["id"]) + "\n")
-                # =================================================ПРОВЕРКА В БАЗЕ ИМЕЮЩИХСЯ ID==============================================================================
-
-                for word_dict in lst_dict:
-                    if word_dict.lower() in resp["response"][0]["items"][i_resp]["text"].lower():
-                        id_post = resp["response"][0]["items"][i_resp]["owner_id"]
-                        date_post = (resp["response"][0]["items"][i_resp]["date"])
-                        text_post = resp["response"][0]["items"][i_resp]["text"]
-
-
-                        Post.objects.create(
-                            social=social,
-                            id_post=resp["response"][0]["items"][i_resp]["id"],
-                            date=datetime.utcfromtimestamp(date_post),
-                            text=text_post
-                        )
-                        result.append(value)
-                        break
+                    for word_dict in lst_dict:
+                        if word_dict.lower() in resp["response"][0]["items"][i_resp]["text"].lower():
+                            Post.objects.create(
+                                social=social,
+                                id_post=resp["response"][0]["items"][i_resp]["id"],
+                                date=datetime.utcfromtimestamp(resp["response"][0]["items"][i_resp]["date"]),
+                                text=resp["response"][0]["items"][i_resp]["text"]
+                            )
+                            break
         except Exception as e:
             print(e)
-            break
-
-    if not result:
-        return None
-    else:
-        return result
+            return
 
 
 # скачивание всех фото пользователя + обработка + сохранение
@@ -291,30 +241,18 @@ def downloading_search_photos(user_id, path_user_id, token=config.token):
                             if each != 'error':
                                 try:
                                     link = extract_pirture_url(each)
-
-                                    # ================================================================================================================================================================
-                                    # есть ли ссылка в файле проверок
-                                    try:
-                                        with open(os.path.join(path_user_id, "search_id", "id_photos.txt")) as file:
-                                            for line in file:
-                                                if line.replace("\n", "") == link:
-                                                    raise SyntaxError
-                                    except SyntaxError:
-                                        continue
-                                    else:
+                                    photos_list = PhotosChecks.objects.filter(
+                                        Q(social=social)
+                                        & Q(link=link)
+                                    )
+                                    if photos_list.count() == 0:
                                         PhotosChecks.objects.create(
                                             social=social,
                                             link=link
                                         )
-                                        with open(os.path.join(path_user_id, "search_id", "id_photos.txt"), "a",
-                                                  encoding="utf-8") as file:
-                                            flag = True
-
-                                            file.write(link + "\n")
                                     f.write('%s\n' % link)
-                                # ================================================================================================================================================================
+# ================================================================================================================================================================
                                 except Exception as e:
-                                    print("1", e)
                                     pass
             except Exception as e:
                 pass
@@ -338,12 +276,6 @@ def downloading_search_photos(user_id, path_user_id, token=config.token):
                 get_photos_album(uid_line, token, directory_name, album_num, path_user_id, social)
 
     request_interval = 0
-    file_with_token = 'token'
-
-    # создание каталога с id пользователя
-    # path_user_id = os.path.abspath(os.path.join(dir_path_date_and_time, str(user_id)))
-    # if not os.path.exists(path_user_id):
-    #     os.makedirs(path_user_id)
 
     # создание файла со ссылками в этом каталоге
     file_with_photos = os.path.abspath(os.path.join(path_user_id, '%s.txt' % f"photos_user_{str(user_id)}"))
@@ -392,6 +324,7 @@ def downloading_search_photos(user_id, path_user_id, token=config.token):
                         link=link
                     )
 
+
         except Exception:
             pass
 
@@ -405,8 +338,7 @@ def downloading_search_photos(user_id, path_user_id, token=config.token):
 
 
 # поиск по ключевым словам среди списка сообществ
-def search_name_groups_vk_id(user_id, abs_dir_path_user, lst_dict=config.lst_dict, token=config.token):
-    result = []
+def search_name_groups_vk_id(user_id, lst_dict=config.lst_dict, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.groups.get({"user_id":"' + str(user_id) + '", "count":"1"})'
     code = f'return [{api}];'
@@ -414,10 +346,6 @@ def search_name_groups_vk_id(user_id, abs_dir_path_user, lst_dict=config.lst_dic
     resp = requests.post(url=url, data=data)
     resp = resp.json()
     count_record = resp["response"][0]["count"]
-    global count_text_groups_global
-    count_text_groups_global = count_record
-    global path_file_text_groups_global
-    path_file_text_groups_global = os.path.join(abs_dir_path_user, f"groups_user_{user_id}.txt")
 
     social = Social.objects.filter(Q(value=user_id)).first()
 
@@ -432,34 +360,17 @@ def search_name_groups_vk_id(user_id, abs_dir_path_user, lst_dict=config.lst_dic
 
         try:
             for i_resp in range(len((resp["response"][0]["items"]))):
-                value = dict()
-
-                # =================================================ПРОВЕРКА В БАЗЕ ИМЕЮЩИХСЯ ID==============================================================================
-                # проверяем на наличие id  в файле (если есть, то генерим исключение
-                # на его обработке continue
-                # если нету, то записываем в файл (БД)
-                try:
-                    with open(os.path.join(abs_dir_path_user, "search_id", f"id_groups.txt"), "r") as id_file:
-                        for line in id_file:
-                            if line.replace("\n", "") == str(resp["response"][0]["items"][0]["id"]):
-                                raise SyntaxError
-                except SyntaxError:
-                    continue
-                else:
+                groups_list = GroupsChecks.objects.filter(
+                    Q(social=social)
+                    & Q(id_groups=resp["response"][0]["items"][0]["id"])
+                )
+                if groups_list.count() == 0:
                     GroupsChecks.objects.create(
                         social=social,
                         id_groups=resp["response"][0]["items"][0]["id"]
                     )
-                    with open(os.path.join(abs_dir_path_user, "search_id", f"id_groups.txt"), "a") as id_file:
-                        id_file.write(str(resp["response"][0]["items"][0]["id"]) + "\n")
-                # =================================================ПРОВЕРКА В БАЗЕ ИМЕЮЩИХСЯ ID==============================================================================
-
                 for word_dict in lst_dict:
                     if word_dict.lower() in resp["response"][0]["items"][i_resp]["name"].lower():
-                        value["id"] = resp["response"][0]["items"][i_resp]["id"]
-                        value["name"] = resp["response"][0]["items"][i_resp]["name"]
-                        result.append(value)
-
                         Groups.objects.create(
                             social=social,
                             id_groups=int(resp["response"][0]["items"][i_resp]["id"]),
@@ -468,17 +379,11 @@ def search_name_groups_vk_id(user_id, abs_dir_path_user, lst_dict=config.lst_dic
 
                         break
         except Exception:
-            pass
-
-    if not result:
-        return None
-    else:
-        return result
+            return
 
 
 # поиск по ключевым словами среди списка видеозаписей + {дата: имя}
-def search_name_videos_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict, token=config.token):
-    result = []
+def search_name_videos_vk_id(owner_id, lst_dict=config.lst_dict, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.video.get({"user_id":"' + str(owner_id) + '", "count":"1"})'
     code = f'return [{api}];'
@@ -486,10 +391,6 @@ def search_name_videos_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_di
     resp = requests.post(url=url, data=data)
     resp = resp.json()
     count_record = resp["response"][0]["count"]
-    global count_video_global
-    count_video_global = count_record
-    global path_file_video_global
-    path_file_video_global = os.path.join(abs_dir_path_user, f"videos_user_{owner_id}.txt")
 
     social = Social.objects.filter(Q(value=owner_id)).first()
 
@@ -504,63 +405,32 @@ def search_name_videos_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_di
 
         try:
             for i_resp in range(len((resp["response"][0]["items"]))):
-                value = dict()
-                # =================================================ПРОВЕРКА В БАЗЕ ИМЕЮЩИХСЯ ID==============================================================================
-                # проверяем на наличие id  в файле (если есть, то генерим исключение
-                # на его обработке continue
-                # если нету, то записываем в файл (БД)
-                try:
-                    with open(os.path.join(abs_dir_path_user, "search_id", f"id_videos.txt"), "r") as id_file:
-                        for line in id_file:
-                            if line.replace("\n", "") == str(resp["response"][0]["items"][i_resp]["id"]):
-                                raise SyntaxError
-                except SyntaxError:
-                    continue
-                else:
+                video_list = VideoChecks.objects.filter(
+                    Q(social=social)
+                    & Q(id_video=resp["response"][0]["items"][i_resp]["id"])
+                )
+                if video_list.count() == 0:
                     VideoChecks.objects.create(
                         social=social,
                         id_video=resp["response"][0]["items"][i_resp]["id"]
                     )
-                    with open(os.path.join(abs_dir_path_user, "search_id", f"id_videos.txt"), "a") as id_file:
-                        id_file.write(str(resp["response"][0]["items"][i_resp]["id"]) + "\n")
-                # =================================================ПРОВЕРКА В БАЗЕ ИМЕЮЩИХСЯ ID==============================================================================
-
                 for word_dict in lst_dict:
                     if word_dict.lower() in resp["response"][0]["items"][0]["title"].lower():
-                        id_video = resp["response"][0]["items"][0]["id"]
-                        date_video = (resp["response"][0]["items"][0]["date"])
-                        player_video = resp["response"][0]["items"][0]["player"]
-                        name_video = resp["response"][0]["items"][0]["title"]
-                        value["owner_id"] = id_video
-                        value["date"] = date_video
-                        value["text"] = name_video
-                        value["player"] = player_video
-
                         Video.objects.create(
                             social=social,
-                            id_video=int(id_video),
-                            date=datetime.utcfromtimestamp(date_video),
-                            name=name_video,
-                            link=player_video
+                            id_video=int(resp["response"][0]["items"][0]["id"]),
+                            date=datetime.utcfromtimestamp(resp["response"][0]["items"][0]["date"]),
+                            name=resp["response"][0]["items"][0]["title"],
+                            link=resp["response"][0]["items"][0]["player"]
                         )
-
-                        result.append(value)
                         break
         except Exception as e:
             print(e)
-            pass
-
-    if not result:
-        return None
-    else:
-        return result
+            return
 
 
 # поиск по всей указанной информации о пользователе
-def search_inf_users_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict, token=config.token):
-    result = set()
-    global path_file_inf_users_global
-    global count_key_data_global
+def search_inf_users_vk_id(owner_id, lst_dict=config.lst_dict, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.users.get({"user_ids":"' + str(
         owner_id) + '", "fields": "id, about, activities, books, games, interests, movies, music, nickname, quotes, status, tv"})'
@@ -585,17 +455,12 @@ def search_inf_users_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict
     social = Social.objects.filter(Q(value=owner_id)).first()
 
     if not data:
-        path_file_inf_users_global = ""
-        count_key_data_global = 0
-        return None
+        return
     else:
         try:
             for key, value in data.items():
-                path_file_inf_users_global = os.path.join(abs_dir_path_user, f"inf_user_{owner_id}.txt")
-                count_key_data_global = len(data.keys())
                 for word in lst_dict:
                     if str(word.lower()) in str(value.lower()):
-
                         Inf.objects.create(
                             social=social,
                             about=data["О себе"],
@@ -610,13 +475,10 @@ def search_inf_users_vk_id(owner_id, abs_dir_path_user, lst_dict=config.lst_dict
                             status=data["Статус пользователя"],
                             tv=data["Любимые телешоу"]
                         )
-
-                        return data
-
-
+                        return
         except Exception as e:
             print(e)
-            pass
+            return
 
 # ====================================================================ОБОБЩАЮЩАЯ ФУНКЦИЯ================================
 # пробег по всем пользователям вк c использованием поиска фото, постов
