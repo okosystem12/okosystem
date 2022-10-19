@@ -1,0 +1,1 @@
+export const link = (href = '', value = '') => `<a href="${href}" target="_blank">${value || href}</a>`;

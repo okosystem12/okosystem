@@ -7,6 +7,7 @@ import {prepUri} from "../../../utils/file/prepUri";
 import {initGallery} from "../../../utils/file/initGallery";
 import {info} from "../../../components/card/info";
 import {btnToggle} from "./btnToggle";
+import {panelFill} from "./panelFill";
 
 
 export const setViewValue = (data = null) => {
@@ -41,5 +42,7 @@ export const setViewValue = (data = null) => {
         viewInfo.html(info(data));
 
         btnToggle(data);
+
+        panelFill(data);
     }
 };

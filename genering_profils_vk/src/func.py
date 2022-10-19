@@ -7,7 +7,7 @@ from aiohttp import ClientSession
 import os
 import requests
 import json
-from manage import model
+# from manage import model
 
 from django.db.models import Q
 from time import sleep, time

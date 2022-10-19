@@ -19,6 +19,13 @@ def control(request):
 
 
 @csrf_exempt
+def archive(request):
+    if request.user.pk is None:
+        return render(request, 'Site/login.html')
+    return render(request, 'Site/archive.html')
+
+
+@csrf_exempt
 def corrupt(request):
     if request.user.pk is None:
         return render(request, 'Site/login.html')

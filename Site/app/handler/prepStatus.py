@@ -7,9 +7,9 @@ def prepStatus(_id=None):
     result = {}
     status = Status.objects.filter(Q(pk=_id)).first()
     if status:
-        result['value'] = status.value
-        result['color'] = status.color
-        result['title'] = status.stage.name + ': ' + status.name
-        result['blockSearch'] = status.type == 'search'
-        # result['blockAnalysis'] = status.type == 'analysis'
+        result.update(status.__dict__)
+        result.update({
+            'stage': status.stage.type,
+            'title': f'{status.stage.name}: {status.name}'
+        })
     return result

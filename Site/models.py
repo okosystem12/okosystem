@@ -36,7 +36,7 @@ class StatusStage(models.Model):
 
 
 class Status(models.Model):
-    type = models.CharField(max_length=200, verbose_name='Тип', default='', unique=True)
+    type = models.CharField(max_length=200, verbose_name='Тип', default='')
     name = models.CharField(max_length=200, verbose_name='Название', default='')
     stage = models.ForeignKey(StatusStage, verbose_name='Этап', on_delete=models.CASCADE, default=None, blank=True,
                               null=True)
@@ -344,7 +344,10 @@ class ControlUserPlace(models.Model):
 
 class Social(models.Model):
     controlUser = models.ForeignKey(ControlUser, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    prefix = models.CharField(max_length=200, verbose_name='Префикс', default='https://vk.com/id')
     value = models.CharField(max_length=200, verbose_name='Значение', default='')
+
+    confirmedAt = models.DateTimeField(verbose_name='Дата подтверждения', default=None, blank=True, null=True)
 
     def __str__(self):
         return self.value

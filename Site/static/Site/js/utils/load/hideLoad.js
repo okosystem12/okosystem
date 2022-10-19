@@ -1,4 +1,4 @@
 import {hide} from "../display/hide";
 
 
-export const hideLoad = () => hide($('.load'));
+export const hideLoad = () => hide($('#globalLoader'));

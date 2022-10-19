@@ -3,7 +3,7 @@ from django.db.models import Q
 from Site.app.table.tableConfig import tableConfig
 
 
-def data(_post, _object, search, order):
+def data(_post, _object, search, order, value):
     tc = tableConfig(_post)
 
     oList = _object.objects.filter(Q(removeAt=None))
@@ -24,5 +24,5 @@ def data(_post, _object, search, order):
         "draw": tc['draw'],
         "iTotalRecords": iTotalRecords,
         "iTotalDisplayRecords": iTotalDisplayRecords,
-        'data': list(oList.values()),
+        'data': value(oList),
     }

@@ -1,6 +1,6 @@
 const exportOptions = {
     orthogonal: 'export',
-    columns: 'th:not(.noExport)'
+    columns: 'th:not(.noExport):visible'
 };
 
 export const buttonsExport =

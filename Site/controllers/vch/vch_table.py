@@ -8,6 +8,7 @@ from Site.app.datetime.my_convert_datetime import my_convert_datetime
 from Site.app.table.data import data
 from Site.app.table.vch.order import order
 from Site.app.table.vch.search import search
+from Site.app.table.vch.value import value
 from Site.models import Vch
 
 
@@ -16,6 +17,6 @@ def vch_table(request):
     if request.user.pk is None:
         return render(request, 'Site/login.html')
 
-    args = data(request.POST, Vch, search, order)
+    args = data(request.POST, Vch, search, order, value)
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

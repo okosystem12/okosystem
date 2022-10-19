@@ -1,3 +1,3 @@
 import {show} from "../display/show";
 
-export const showLoad = () => show($('.load'));
+export const showLoad = () => show($('#globalLoader'));

@@ -6,9 +6,9 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
-from Site.app.handler.prepControlUserList import prepControlUserList
 from Site.app.object.elem import elem
-from Site.models import ControlUser, ControlUserImg, File, Phone, Mail, Place
+from Site.app.table.control.value import value
+from Site.models import ControlUser, ControlUserImg, File, Phone, Mail, Place, Social
 
 
 @csrf_exempt
@@ -30,15 +30,17 @@ def control_get(request):
             Q(pk__in=controlUserList.values_list('birthPlace', flat=True))
             | Q(pk__in=controlUserList.values_list('livePlace', flat=True))
         )
+        socialList = Social.objects.filter(Q(controlUser__in=controlUserList))
 
         args = {
-            'user': prepControlUserList(controlUserList),
+            'user': value(controlUserList),
             'fileList': list(fileList.values()),
             'controlUserImgList': list(controlUserImgList.values()),
             'controlUserList': list(controlUserList.values()),
             'phoneList': list(phoneList.values()),
             'mailList': list(mailList.values()),
             'placeList': list(placeList.values()),
+            'socialList': list(socialList.values())
         }
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

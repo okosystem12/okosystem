@@ -284,25 +284,70 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-12">
 
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <p class="lead">Список социальных сетей</p>
+                                </div>
+                                <div class="col-sm-4 text-right">
+                                    <button id="viewSearchBtn" type="button" class="btn btn-info">
+                                        <span class="btn-label">
+                                            <span class="glyphicon glyphicon-search"></span>
+                                        </span>
+                                        Поиск
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="viewSearch"></div>
+                        </div>
+                        <div class="panel-footer text-right">
+                            <button id="viewSearchAddBtn" type="button" class="btn btn-success">
+                                        <span class="btn-label">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </span>
+                                        Довавить
+                                    </button>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="viewSearch" type="button" class="btn btn-info">
-                        <span class="btn-label">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </span>
-                        Поиск
-                    </button>
-                    <button id="viewAnalysis" type="button" class="btn btn-primary">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <p class="lead">Выявленные нарушения</p>
+                                </div>
+                                <div class="col-sm-6 text-right">
+                                    <button id="viewAnalysisBtn" type="button" class="btn btn-primary">
                         <span class="btn-label">
                             <span class="glyphicon glyphicon-play"></span>
                         </span>
-                        Анализ
-                    </button>
+                                        Анализ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="viewAnalysis"></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 text-right">
+                            <button id="viewArchiveBtn" type="button" class="btn btn-primary" data-href="{% url 'archive' %}">
+                                <span class="btn-label">
+                                    <span class="glyphicon glyphicon-folder-close"></span>
+                                </span>
+                                Архив нарушении
+                            </button>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>

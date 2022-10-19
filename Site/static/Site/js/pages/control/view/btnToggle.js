@@ -1,18 +1,18 @@
 import {componentsData} from "../componentsData";
 
 export const btnToggle = (data = {}) => {
-    const {viewSearch, viewAnalysis} = componentsData;
+    const {viewSearchBtn, viewAnalysisBtn} = componentsData;
 
-    viewSearch.removeAttr('disabled');
-    viewAnalysis.removeAttr('disabled');
+    viewSearchBtn.attr('disabled', 'disabled');
+    viewAnalysisBtn.attr('disabled', 'disabled');
 
 
-    if (data?.status?.blockSearch) {
-        viewSearch.attr('disabled', 'disabled');
+    if ((data?.status.stage === 'prepare' && data?.status.type !== 'search') || (data?.status.stage === 'work' && data?.status.type !== 'analysis')) {
+        viewSearchBtn.removeAttr('disabled');
     }
 
 
-    if (data?.status?.blockAnalysis) {
-        viewAnalysis.attr('disabled', 'disabled');
+    if (data?.status.stage === 'work' && data?.status.type !== 'analysis') {
+        viewAnalysisBtn.removeAttr('disabled');
     }
 };
