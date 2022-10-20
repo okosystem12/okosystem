@@ -196,6 +196,7 @@ def downloading_search_photos(user_id, token=config.token):
 
     photo_type_sort_arr = ['w', 'z', 'y', 'x', 'r', 'q', 'p', 'o', 'm', 's']
 
+
     def extract_pirture_url(response):
         try:
             sizes = response['sizes']
