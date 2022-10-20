@@ -1,7 +1,15 @@
 from django.contrib import admin
 
 from Site.models import Status, Render, Table, Column, PatternColumn, PatternTable, LastUpdateConfig, ControlUser, File, \
-    Phone, Place, StatusStage, Social, Post, Video, Groups, Inf, Photos, VideoChecks, PhotosChecks, GroupsChecks, PostsChecks
+    Phone, Place, StatusStage, Social, Post, Video, Groups, Inf, Photos, VideoChecks, PhotosChecks, GroupsChecks, \
+    PostsChecks, AllUsersVK
+
+
+class AllUsersVKPanel(admin.ModelAdmin):
+    list_display = [field.name for field in AllUsersVK._meta.fields]
+
+
+admin.site.register(AllUsersVK, AllUsersVKPanel)
 
 
 class VideoChecksPanel(admin.ModelAdmin):

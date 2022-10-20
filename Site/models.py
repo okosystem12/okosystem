@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.db.models import Q
 
 from Site.apps import *
@@ -480,3 +480,20 @@ class PhotosChecks(models.Model):
     class Meta:
         verbose_name_plural = 'Проверенные фотоизображения'
         verbose_name = 'Проверенное фотоизображение'
+
+
+class AllUsersVK(models.Model):
+    id_user = models.IntegerField(verbose_name='id пользователя', default=0, blank=True)
+    first_name = models.TextField(verbose_name='Имя', default='', blank=True)
+    last_name = models.TextField(verbose_name='Фамилия', default='', blank=True)
+    bdate = models.TextField(verbose_name='Дата рождения', default="", blank=True)
+    home_town = models.TextField(verbose_name='Место рождения', default='', blank=True)
+    city = models.TextField(verbose_name='Место жительства', default='', blank=True)
+
+
+    def __str__(self):
+        return self.id_user.__str__()
+
+    class Meta:
+        verbose_name_plural = 'Пользователи VK'
+        verbose_name = 'Пользователь VK'
