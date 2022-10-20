@@ -7,6 +7,7 @@ from aiohttp import ClientSession
 import os
 import requests
 import json
+import sys
 # from manage import model
 
 from django.db.models import Q

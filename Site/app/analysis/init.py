@@ -18,9 +18,9 @@ def initT(user=None):
             print("start")
 
             search_post_vk_id(one.value)
-            search_name_groups_vk_id(one.value)
-            search_name_videos_vk_id(one.value)
-            search_inf_users_vk_id(one.value)
+            # search_name_groups_vk_id(one.value)
+            # search_name_videos_vk_id(one.value)
+            # search_inf_users_vk_id(one.value)
             # downloading_search_photos(one.value)
 
         else:
