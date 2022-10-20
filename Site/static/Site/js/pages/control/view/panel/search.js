@@ -4,9 +4,10 @@ import {fillSearchSocial} from "./search/fillSearchSocial";
 
 
 export const search = (data = {}) => {
-    const {viewSearch} = componentsData;
+    const {viewSearch, viewSearchAdd} = componentsData;
 
     viewSearch.html('');
+    viewSearchAdd.html('');
 
     switch (data?.status.stage) {
         case 'prepare':

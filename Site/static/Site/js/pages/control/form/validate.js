@@ -1,6 +1,6 @@
 import {componentsData} from "../componentsData";
 import {init as initHandler} from "../../../utils/form/init";
-import {submit as submitControlForm} from "../../../pages/control/form/submit";
+import {submit} from "../../../pages/control/form/submit";
 
 export const validate = () => {
     const {controlForm} = componentsData;
@@ -32,6 +32,6 @@ export const validate = () => {
             },
         },
         ...initHandler,
-        submitHandler:submitControlForm
+        submitHandler:submit
     });
 };

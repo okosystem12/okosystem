@@ -255,7 +255,7 @@ div.dt-buttons {
     display: grid;
     grid-template-columns: 1fr 1fr auto;
     grid-gap: 15px;
-    align-items: center;
+    align-items: start;
 }
 
 .social-item__input {

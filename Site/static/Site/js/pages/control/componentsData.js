@@ -8,6 +8,7 @@ export const componentsData = {
 
     viewModal: $('#viewModal'),
     viewSearch: $('#viewSearch'),
+    viewSearchAdd: $('#viewSearchAdd'),
     viewAnalysis: $('#viewAnalysis'),
     viewSearchBtn: $('#viewSearchBtn'),
     viewSearchAddBtn: $('#viewSearchAddBtn'),

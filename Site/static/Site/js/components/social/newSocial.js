@@ -3,7 +3,7 @@ import {nanoid} from '../../../../../../webpack/node_modules/nanoid/non-secure/i
 export const newSocial = (id = nanoid()) =>
     `<form class="social-item" data-social="${id}">
 <div class="form-group social-item__input">
-<input type="text" class="form-control" name="socialValue">
+<input type="text" class="form-control" name="socialValue" placeholder="Ссылка на соц.сеть...">
 </div>
 <div></div>
 <div>

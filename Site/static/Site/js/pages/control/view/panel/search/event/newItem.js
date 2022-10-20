@@ -3,7 +3,7 @@ import {componentsData} from "../../../../componentsData";
 import {makeAddEvent} from "../makeAddEvent";
 
 export const newItem = () => {
-    const {viewSearch} = componentsData;
-    viewSearch.append(newSocial());
+    const {viewSearchAdd} = componentsData;
+    viewSearchAdd.append(newSocial());
     makeAddEvent();
 };
