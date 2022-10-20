@@ -1,6 +1,8 @@
 import json
 
 from django.contrib import auth
+from django.contrib.auth.models import User
+from django.db.models import Q
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -20,6 +22,10 @@ def auth_login(request):
         auth.login(request, user)
         args['redirect'] = path
     else:
-        args['errorText'] = "Неправильный логин или пароль"
+        checkUser = User.objects.filter(Q(username=username)).first()
+        if checkUser:
+            args['errorPasswordHighlight'] = "Неправильный пароль"
+        else:
+            args['errorUsernameHighlight'] = "Неправильный логин"
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

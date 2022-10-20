@@ -1,0 +1,1 @@
+export const socialPrefix = '^https?:\/\/vk\.com\/id';

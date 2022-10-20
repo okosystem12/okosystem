@@ -1,6 +1,7 @@
 import {componentsData} from "../../componentsData";
 import {loader} from "../../../../components/loader";
 import {fillSearchSocial} from "./search/fillSearchSocial";
+import {socialList} from "../../../../storage/control/socialList";
 
 
 export const search = (data = {}) => {
@@ -11,19 +12,23 @@ export const search = (data = {}) => {
 
     switch (data?.status.stage) {
         case 'prepare':
-            switch (data?.status.type) {
-                case 'init':
-                    viewSearch.html('<p class="lead text-center">Запустите поиск сотрудника</p>');
-                    break;
-                case 'search':
-                    viewSearch.html(loader('Ожидайте завершения поиска'));
-                    break;
-                case 'equal':
-                    fillSearchSocial();
-                    break;
-                case 'notEqual':
-                    viewSearch.html('<p class="lead text-center">Совпадений не выявлено</p>');
-                    break;
+            if(socialList.value.length === 0) {
+                switch (data?.status.type) {
+                    case 'init':
+                        viewSearch.html('<p class="lead text-center">Список пуст</p>');
+                        break;
+                    case 'search':
+                        viewSearch.html(loader('Ожидайте завершения поиска'));
+                        break;
+                    case 'equal':
+                        break;
+                    case 'notEqual':
+                        viewSearch.html('<p class="lead text-center">Совпадений не выявлено</p>');
+                        break;
+                }
+            }
+            else {
+                fillSearchSocial();
             }
             break;
         case 'work':

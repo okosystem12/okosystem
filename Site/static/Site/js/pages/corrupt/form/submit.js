@@ -17,7 +17,7 @@ export const submit = (form, e) => {
             close();
         }
         else {
-            highlight(corruptValue);
+            highlight(corruptValue, msg.errorHighlight);
         }
     });
 };

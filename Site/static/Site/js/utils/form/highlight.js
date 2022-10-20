@@ -1,6 +1,13 @@
-export const highlight = (element, ...args) => {
-    $(element).parents(".form-group").addClass("has-error").addClass("has-feedback");
-    if(!$(element).is('select')) {
-        $(element).next("span").addClass("glyphicon-remove");
+export const highlight = (element, text = '') => {
+    const _e = $(element);
+    const parent = _e.parents(".form-group");
+    parent.addClass("has-error").addClass("has-feedback");
+
+    if (!_e.is('select')) {
+       _e.next("span").addClass("glyphicon-remove");
+    }
+
+    if (text) {
+        parent.find(".help-block").html(text);
     }
 };

@@ -16,8 +16,12 @@ export const submit = (form, e) => {
             window.location.href = msg.redirect;
         }
         else {
-            highlight(username);
-            highlight(password);
+            if (msg.errorUsernameHighlight) {
+                highlight(username, msg.errorUsernameHighlight);
+            }
+            if (msg.errorPasswordHighlight) {
+                highlight(password, msg.errorPasswordHighlight);
+            }
         }
     })
 };

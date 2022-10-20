@@ -5,6 +5,7 @@ import {makeBtnEvent} from "./makeBtnEvent";
 
 export const fillSearchSocial = () => {
     const {viewSearch} = componentsData;
+    viewSearch.html('');
     socialList.value.forEach(el => {
         viewSearch.append(social(el));
     });

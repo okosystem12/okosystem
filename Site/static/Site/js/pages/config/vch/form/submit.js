@@ -16,7 +16,7 @@ export const submit = (form, e) => {
             close();
         }
         else {
-            highlight(vchNumber);
+            highlight(vchNumber, msg.errorHighlight);
         }
     });
 };

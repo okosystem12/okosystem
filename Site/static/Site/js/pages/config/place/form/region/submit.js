@@ -19,7 +19,7 @@ export const submit = (form, e) => {
             placeInfo();
         }
         else {
-            highlight(regionName);
+            highlight(regionName, msg.errorHighlight);
         }
     });
 };

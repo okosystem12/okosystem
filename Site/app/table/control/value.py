@@ -16,7 +16,7 @@ def value(oList):
         cur.update(user.__dict__)
         cur.update({
             'fullName': user.fullName(),
-            'shortName': user.shortName(),
+            'shortName': user.shortName,
             'birthDate': bDate(user.birthDay, user.birthMonth, user.birthYear),
             'phoneList': list(Phone.objects.filter(Q(controlUser=user)).values()),
             'mailList': list(Mail.objects.filter(Q(controlUser=user)).values()),

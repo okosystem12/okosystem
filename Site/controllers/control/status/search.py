@@ -26,7 +26,7 @@ def search(request):
             setStatus(controlUser, 'search')
 
             args = {
-                'successText': 'Поиск сотрудника ' + controlUser.shortName(),
+                'successText': 'Поиск сотрудника ' + controlUser.shortName,
             }
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

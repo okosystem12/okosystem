@@ -8,6 +8,6 @@ export const init = {
     errorElement: "em",
     errorPlacement: errorPlacement,
     success: success,
-    highlight: highlight,
+    highlight: (element) => highlight(element),
     unhighlight: unhighlight
 };

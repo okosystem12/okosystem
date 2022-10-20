@@ -271,13 +271,13 @@ class ControlUser(models.Model):
 
     def fullName(self):
         return self.lastName \
-               + ((' ' + self.firstName) if self.firstName != '' else '') \
-               + ((' ' + self.patronymic) if self.patronymic != '' else '')
+               + (f' {self.firstName}' if self.firstName != '' else '') \
+               + (f' {self.patronymic}' if self.patronymic != '' else '')
 
     def shortName(self):
         return self.lastName \
-               + ((' ' + self.firstName[0]) if self.firstName != '' else '') \
-               + ((' ' + self.patronymic[0]) if self.patronymic != '' else '')
+               + (f' {self.firstName[0]}.' if self.firstName != '' else '') \
+               + (f'{self.patronymic[0]}.' if self.patronymic != '' else '')
 
     class Meta:
         ordering = ['lastName', 'firstName', 'patronymic']
