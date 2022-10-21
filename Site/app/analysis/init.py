@@ -3,13 +3,16 @@ from threading import Thread
 from django.db.models import Q
 
 from Site.app.status.setStatus import setStatus
-from Site.models import Social
+from Site.models import Social, CorruptInfo
 from genering_profils_vk.src.func import *
 
 
 def init(user=None):
     Thread(target=initT, args=[user]).start()
-
+    # update_inf_users(756000000, list_token=config.list_token)
+    # delete()
+    # word_list = list(CorruptInfo.objects.all().values())
+    pass
 
 def initT(user=None):
     if user:
@@ -17,7 +20,7 @@ def initT(user=None):
         for one in socialList:
             print("start")
 
-            search_post_vk_id(one.value)
+            # search_post_vk_id(one.value)
             # search_name_groups_vk_id(one.value)
             # search_name_videos_vk_id(one.value)
             # search_inf_users_vk_id(one.value)

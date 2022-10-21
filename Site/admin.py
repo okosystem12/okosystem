@@ -2,8 +2,28 @@ from django.contrib import admin
 
 from Site.models import Status, Render, Table, Column, PatternColumn, PatternTable, LastUpdateConfig, ControlUser, File, \
     Phone, Place, StatusStage, Social, Post, Video, Groups, Inf, Photos, VideoChecks, PhotosChecks, GroupsChecks, \
-    PostsChecks, AllUsersVK
+    PostsChecks, AllUsersVK, CorruptInfo, TokenAdmin, TokensForVkUpdate
 
+
+class CorruptInfoPanel(admin.ModelAdmin):
+    list_display = [field.name for field in CorruptInfo._meta.fields]
+
+
+admin.site.register(CorruptInfo, CorruptInfoPanel)
+
+
+class TokensForVkUpdatePanel(admin.ModelAdmin):
+    list_display = [field.name for field in TokensForVkUpdate._meta.fields]
+
+
+admin.site.register(TokensForVkUpdate, TokensForVkUpdatePanel)
+
+
+class TokenAdminPanel(admin.ModelAdmin):
+    list_display = [field.name for field in TokenAdmin._meta.fields]
+
+
+admin.site.register(TokenAdmin, TokenAdminPanel)
 
 class AllUsersVKPanel(admin.ModelAdmin):
     list_display = [field.name for field in AllUsersVK._meta.fields]

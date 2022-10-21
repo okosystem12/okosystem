@@ -1,12 +1,15 @@
 import os
+from pprint import pprint
 
+from django.db.models import Q
 
-token = ""
-with open(os.path.abspath(os.path.join("genering_profils_vk", "files", "token.txt"))) as file:
-    for line in file:
-        token = line
+from Site.models import CorruptInfo, TokenAdmin, TokensForVkUpdate
 
-lst_dict = []
-with open(os.path.abspath(os.path.join("genering_profils_vk", "files", "dict.txt"))) as file:
-    for line in file:
-        lst_dict.append(line.replace("\n", ""))
+token = TokenAdmin.objects.order_by("tokenVK").last()
+dict_word = {}
+word_list = list(CorruptInfo.objects.all().values())
+for word in word_list:
+    if isinstance(word, dict):
+        dict_word[word.get("value", "")] = word.get("info", "")
+
+list_token = [dict_token.get("tokenVK", "") for dict_token in list(TokensForVkUpdate.objects.all().values())]

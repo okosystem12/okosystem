@@ -17,8 +17,8 @@ class CorruptInfo(models.Model):
 
     class Meta:
         ordering = ['value', 'pk']
-        verbose_name_plural = 'Данные'
-        verbose_name = 'Данные'
+        verbose_name_plural = 'Ключевые слова'
+        verbose_name = 'Ключевое слово'
 
 
 class StatusStage(models.Model):
@@ -363,6 +363,7 @@ class Post(models.Model):
     id_post = models.IntegerField(verbose_name='Номер поста', blank=True, default=0)
     date = models.DateTimeField(verbose_name='Дата добавления', default=None, blank=True, null=True)
     text = models.TextField(verbose_name='Текст поста', default='', blank=True)
+    degree_violation = models.TextField(verbose_name='Степень нарушения', default='', blank=True)
 
     def __str__(self):
         return self.id_post.__str__()
@@ -378,6 +379,7 @@ class Video(models.Model):
     date = models.DateTimeField(verbose_name='Дата добавления', default=None, blank=True, null=True)
     name = models.TextField(verbose_name='Название видеозаписи', default='', blank=True)
     link = models.TextField(verbose_name='Ссылка на видеозапись', default='', blank=True)
+    degree_violation = models.TextField(verbose_name='Степень нарушения', default='', blank=True)
 
     def __str__(self):
         return self.id_video.__str__()
@@ -391,6 +393,7 @@ class Groups(models.Model):
     social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
     id_groups = models.IntegerField(verbose_name='Номер сообщества', blank=True, default=0)
     name = models.TextField(verbose_name='Название сообщества', default='', blank=True)
+    degree_violation = models.TextField(verbose_name='Степень нарушения', default='', blank=True)
 
     def __str__(self):
         return self.id_groups.__str__()
@@ -413,6 +416,7 @@ class Inf(models.Model):
     quotes = models.TextField(verbose_name='Любимые цитаты', default='', blank=True)
     status = models.TextField(verbose_name='Статус пользователя', default='', blank=True)
     tv = models.TextField(verbose_name='Любимые телешоу', default='', blank=True)
+    degree_violation = models.TextField(verbose_name='Степень нарушения', default='', blank=True)
 
     def __str__(self):
         return self.social.__str__()
@@ -425,6 +429,7 @@ class Inf(models.Model):
 class Photos(models.Model):
     social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
     link = models.TextField(verbose_name='Ссылка на фотоизображение', default='', blank=True)
+    degree_violation = models.TextField(verbose_name='Степень нарушения', default='', blank=True)
 
     def __str__(self):
         return self.social.__str__()
@@ -497,3 +502,25 @@ class AllUsersVK(models.Model):
     class Meta:
         verbose_name_plural = 'Пользователи VK'
         verbose_name = 'Пользователь VK'
+
+
+class TokenAdmin(models.Model):
+    tokenVK = models.TextField(verbose_name='Токен администратора', default='', blank=True)
+
+    def __str__(self):
+        return self.tokenVK.__str__()
+
+    class Meta:
+        verbose_name_plural = 'Токены администратора'
+        verbose_name = 'Токен администратора'
+
+
+class TokensForVkUpdate(models.Model):
+    tokenVK = models.TextField(verbose_name='Токен', default='', blank=True)
+
+    def __str__(self):
+        return self.tokenVK.__str__()
+
+    class Meta:
+        verbose_name_plural = 'Токены для обновления базы пользователей VK'
+        verbose_name = 'Токен для обновления базы пользователей VK'

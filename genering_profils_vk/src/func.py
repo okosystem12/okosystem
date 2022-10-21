@@ -4,7 +4,7 @@ from datetime import datetime
 import requests
 
 from django.db.models import Q
-
+# from manage import model
 from Site.models import Social, Post, Video, Groups, Inf, Photos, PostsChecks, PhotosChecks, GroupsChecks, VideoChecks, \
     AllUsersVK
 from genering_profils_vk.src import config
@@ -25,93 +25,10 @@ except ImportError:
 
 list_data = []
 
-# ====================================================================СОЗДАНИЕ СЛОВАРЕЙ ДЛЯ БАЗЫ========================
-# создание словаря для базы (ФОТО)
-def create_dict_data(url, check_date, count_record, path_dir_photos, category, data):
-    data[url] = {"check_date": check_date,
-                 "inf_profile": {
-                     "materials_profiles": {
-                         "count_record": count_record,
-                         "check_record": {
-                             "path_dir_photos": path_dir_photos,
-                             "category": category,
-                         }
-                     }
-                 }
-                 }
-
-
-# создание словаря для базы (ПОСТЫ)
-def create_dict_data_post(url_user, check_date, count_record, path_post, category, database):
-    database[url_user] = {"check_date": check_date,
-                          "inf_profile": {
-                              "materials_profiles": {
-                                  "count_record": count_record,
-                                  "check_record": {
-                                      "path_post": path_post,
-                                      "category": category,
-                                  }
-                              }
-                          }
-                          }
-
-
-# создание словаря для базы (НАЗВАНИЯ ГРУПП)
-def create_dict_data_name_grops(url_user, check_date, count_record, path_groups, category, database):
-    database[url_user] = {"check_date": check_date,
-                          "inf_profile": {
-                              "materials_profiles": {
-                                  "count_record": count_record,
-                                  "check_record": {
-                                      "path_groups": path_groups,
-                                      "category": category,
-                                  }
-                              }
-                          }
-                          }
-
-
-# создание словаря для базы (НАЗВАНИЯ ВИДЕО)
-def create_dict_data_name_videos(url_user, check_date, count_record, path_videos, category, database):
-    database[url_user] = {"check_date": check_date,
-                          "inf_profile": {
-                              "materials_profiles": {
-                                  "count_record": count_record,
-                                  "check_record": {
-                                      "path_videos": path_videos,
-                                      "category": category,
-                                  }
-                              }
-                          }
-                          }
-
-
-# создание словаря для базы (ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ)
-def create_dict_data_inf_users(url_user, check_date, count_key_data, path_inf_user, category, database):
-    database[url_user] = {"check_date": check_date,
-                          "inf_profile": {
-                              "materials_profiles": {
-                                  "count_record": count_key_data,
-                                  "check_record": {
-                                      "path_videos": path_inf_user,
-                                      "category": category,
-                                  }
-                              }
-                          }
-                          }
-
-
-# создание каталога с датой и временем проверки
-def create_dir_current_date_and_time(datetime):
-    newpath = os.path.abspath(os.path.join("..", "verification_result", datetime))
-    if not os.path.exists(newpath):
-        os.makedirs(newpath)
-    return newpath
-
 
 # ===========================================================================ПОИСК ПО КРИТЕРИЯМ=========================
 # поиск по ключевым словам среди постов + {дата: имя}
-def search_post_vk_id(owner_id, lst_dict=config.lst_dict, token=config.token):
+def search_post_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.wall.get({"owner_id":"' + str(owner_id) + '", "count":"1"})'
     code = f'return [{api}];'
@@ -140,13 +57,14 @@ def search_post_vk_id(owner_id, lst_dict=config.lst_dict, token=config.token):
                         social=social,
                         id_post=resp["response"][0]["items"][i_resp]["id"]
                     )
-                    for word_dict in lst_dict:
+                    for word_dict in dict_word:
                         if word_dict.lower() in resp["response"][0]["items"][i_resp]["text"].lower():
                             Post.objects.create(
                                 social=social,
                                 id_post=resp["response"][0]["items"][i_resp]["id"],
                                 date=datetime.utcfromtimestamp(resp["response"][0]["items"][i_resp]["date"]),
-                                text=resp["response"][0]["items"][i_resp]["text"]
+                                text=resp["response"][0]["items"][i_resp]["text"],
+                                degree_violation=dict_word.get(word_dict, "")
                             )
                             break
         except Exception as e:
@@ -303,7 +221,8 @@ def downloading_search_photos(user_id, token=config.token):
                 if detect_photo(model, file_name_abs):
                     Photos.objects.create(
                         social=social,
-                        link=link
+                        link=link,
+                        degree_violation="Раскрытие принадлежности к 12 ГУ МО"
                     )
                 os.remove(file_name_abs)
         except Exception:
@@ -314,7 +233,7 @@ def downloading_search_photos(user_id, token=config.token):
 
 
 # поиск по ключевым словам среди списка сообществ
-def search_name_groups_vk_id(user_id, lst_dict=config.lst_dict, token=config.token):
+def search_name_groups_vk_id(user_id, dict_word=config.dict_word, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.groups.get({"user_id":"' + str(user_id) + '", "count":"1"})'
     code = f'return [{api}];'
@@ -345,12 +264,13 @@ def search_name_groups_vk_id(user_id, lst_dict=config.lst_dict, token=config.tok
                         social=social,
                         id_groups=resp["response"][0]["items"][0]["id"]
                     )
-                    for word_dict in lst_dict:
+                    for word_dict in dict_word:
                         if word_dict.lower() in resp["response"][0]["items"][i_resp]["name"].lower():
                             Groups.objects.create(
                                 social=social,
                                 id_groups=int(resp["response"][0]["items"][i_resp]["id"]),
-                                name=resp["response"][0]["items"][i_resp]["name"]
+                                name=resp["response"][0]["items"][i_resp]["name"],
+                                degree_violation=dict_word.get(word_dict, "")
                             )
 
                             break
@@ -359,7 +279,7 @@ def search_name_groups_vk_id(user_id, lst_dict=config.lst_dict, token=config.tok
 
 
 # поиск по ключевым словами среди списка видеозаписей + {дата: имя}
-def search_name_videos_vk_id(owner_id, lst_dict=config.lst_dict, token=config.token):
+def search_name_videos_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.video.get({"user_id":"' + str(owner_id) + '", "count":"1"})'
     code = f'return [{api}];'
@@ -390,14 +310,15 @@ def search_name_videos_vk_id(owner_id, lst_dict=config.lst_dict, token=config.to
                         social=social,
                         id_video=resp["response"][0]["items"][i_resp]["id"]
                     )
-                    for word_dict in lst_dict:
+                    for word_dict in dict_word:
                         if word_dict.lower() in resp["response"][0]["items"][0]["title"].lower():
                             Video.objects.create(
                                 social=social,
                                 id_video=int(resp["response"][0]["items"][0]["id"]),
                                 date=datetime.utcfromtimestamp(resp["response"][0]["items"][0]["date"]),
                                 name=resp["response"][0]["items"][0]["title"],
-                                link=resp["response"][0]["items"][0]["player"]
+                                link=resp["response"][0]["items"][0]["player"],
+                                degree_violation=dict_word.get(word_dict, "")
                             )
                             break
         except Exception as e:
@@ -406,7 +327,7 @@ def search_name_videos_vk_id(owner_id, lst_dict=config.lst_dict, token=config.to
 
 
 # поиск по всей указанной информации о пользователе
-def search_inf_users_vk_id(owner_id, lst_dict=config.lst_dict, token=config.token):
+def search_inf_users_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.users.get({"user_ids":"' + str(
         owner_id) + '", "fields": "id, about, activities, books, games, interests, movies, music, nickname, quotes, status, tv"})'
@@ -429,14 +350,15 @@ def search_inf_users_vk_id(owner_id, lst_dict=config.lst_dict, token=config.toke
     }
 
     social = Social.objects.filter(Q(value=owner_id)).first()
-
+    degree_violation = ""
     if not data:
         return
     else:
         try:
             for key, value in data.items():
-                for word in lst_dict:
+                for word in dict_word:
                     if str(word.lower()) in str(value.lower()):
+                        degree_violation += dict_word.get(word, "") + "\n"
                         Inf.objects.create(
                             social=social,
                             about=data["О себе"],
@@ -449,7 +371,8 @@ def search_inf_users_vk_id(owner_id, lst_dict=config.lst_dict, token=config.toke
                             nickname=data["Никнейм"],
                             quotes=data["Любимые цитаты"],
                             status=data["Статус пользователя"],
-                            tv=data["Любимые телешоу"]
+                            tv=data["Любимые телешоу"],
+                            degree_violation=degree_violation
                         )
                         return
         except Exception as e:
@@ -458,9 +381,8 @@ def search_inf_users_vk_id(owner_id, lst_dict=config.lst_dict, token=config.toke
 
 
 # обновление базы пользователей
-# доделать вывод в базу, а не в файл!!! todo
 # id_user_last = AllUsersVK.objects.order_by("id_user").last()
-def update_inf_users(list_token, id_user_last):
+def update_inf_users(id_user_last, list_token=config.list_token):
     nest_asyncio.apply()
 
     async def bound_fetch_zero(sem, id, session):
@@ -518,15 +440,36 @@ def update_inf_users(list_token, id_user_last):
     for i in range(threshold, threshold + 3):
         param_count = 900
         for query in range(i * param_count + 1, (i + 1) * param_count + 1):
-            string = json.dumps(list_data)
-            with open(os.path.join("database", f"database-VK-users_{query}.txt"), "a", encoding="utf-8") as file:
-                file.write(string + "\n")
-            list_data.clear()
-            print(query, time()-st)
-            st = time()
-            loop = asyncio.get_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(run_zero(query))
+            try:
+                data_update = [elem for elem in list_data if
+                               elem.get("deactivated") not in ("deleted", "banned") and not elem.get("is_closed")]
+                print(data_update)
+                for l in data_update:
+                    bdate = l.get("bdate", "")
+                    city = l.get("city", "")
+                    if isinstance(city, dict):
+                        city = city.get("title")
+
+                    AllUsersVK.objects.create(
+                        id_user=l.get("id", ""),
+                        first_name=l.get("first_name", ""),
+                        last_name=l.get("last_name", ""),
+                        bdate=bdate,
+                        home_town=l.get("home_town", ""),
+                        city=city
+                    )
+
+                list_data.clear()
+                data_update.clear()
+                print(query, time()-st)
+                st = time()
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                loop.run_until_complete(run_zero(query))
+            except:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                loop.run_until_complete(run_zero(query))
 
 
 # полное заполнение базы данных ВК
