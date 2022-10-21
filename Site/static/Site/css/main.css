@@ -46,8 +46,8 @@
 .btn .btn-label {
     border-right: 1px solid;
     border-color: inherit;
-    margin-right: 6px;
-    padding: 6px 6px 6px 0;
+    margin-right: 5px;
+    padding-right: 5px;
 }
 
 .btn:hover .btn-label {

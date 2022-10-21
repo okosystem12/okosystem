@@ -17,8 +17,12 @@ export const setViewValue = (data = null) => {
             viewModalLabel,
             viewMainPhoto,
             viewPhotoList,
-            viewInfo
+            viewInfo,
+            panelCollapse,
         } = componentsData;
+
+        panelCollapse.removeClass('in');
+
         viewModalLabel.html(`Карточка ${userShortName(data)}`);
 
         controlUserImgList.value.filter(el => el.controlUser_id === data.id).forEach(el => {

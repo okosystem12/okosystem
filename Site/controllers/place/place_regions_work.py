@@ -43,7 +43,7 @@ def place_regions_work(request):
                 }
             else:
                 args = {
-                    'errorText': 'Регион с названием "' + title + '" для страны "' + country.title + '" уже присутствует в системе',
+                    'errorHighlight': 'Регион с названием "' + title + '" для страны "' + country.title + '" уже присутствует в системе',
                 }
         else:
             args = {

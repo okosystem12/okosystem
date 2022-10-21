@@ -14,8 +14,8 @@ from Site.models import AllUsersVK
 
 def read_files_for_bd(path_dir):
 
-    AllUsersVK.objects.all().delete()
-    return
+    # AllUsersVK.objects.all().delete()
+    # return
 
     for namefile in os.listdir(path_dir):
         with open(os.path.join(path_dir, namefile), "r", encoding="utf-8") as file:
@@ -41,4 +41,4 @@ def read_files_for_bd(path_dir):
         data.clear()
         data_update.clear()
 
-read_files_for_bd(os.path.abspath(os.path.join("..", "database")))
+# read_files_for_bd(os.path.abspath(os.path.join("..", "database")))

@@ -256,7 +256,7 @@
 
     <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -265,64 +265,48 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-xs-4">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <img src="#" id="viewMainPhoto" class="img img-thumbnail"/>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <img src="#" id="viewMainPhoto" class="img img-thumbnail"/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div id="viewPhotoList"></div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div id="viewPhotoList"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-8">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div id="viewInfo"></div>
+                            <div class="panel-group" id="accordionMain" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingMain">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse"
+                                               data-parent="#accordionMain"
+                                               href="#collapseMain" aria-expanded="false"
+                                               aria-controls="collapseMain">
+                                                Основная информация
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseMain" class="panel-collapse collapse" role="tabpanel"
+                                         aria-labelledby="headingMain">
+                                        <div class="panel-body">
+                                            <div id="viewInfo"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
                             <div class="row">
-                                <div class="col-sm-8">
-                                    <p class="lead">Список социальных сетей</p>
-                                </div>
-                                <div class="col-sm-4 text-right">
+                                <div class="col-lg-12 text-right form-group">
                                     <button id="viewSearchBtn" type="button" class="btn btn-info">
                                         <span class="btn-label">
                                             <span class="glyphicon glyphicon-search"></span>
                                         </span>
                                         Поиск
                                     </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <div id="viewSearch"></div>
-                            <div id="viewSearchAdd"></div>
-                        </div>
-                        <div class="panel-footer text-right">
-                            <button id="viewSearchAddBtn" type="button" class="btn btn-success">
-                                        <span class="btn-label">
-                                            <span class="glyphicon glyphicon-plus"></span>
-                                        </span>
-                                        Добавить
-                                    </button>
-                        </div>
-                    </div>
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <p class="lead">Выявленные нарушения</p>
-                                </div>
-                                <div class="col-sm-6 text-right">
                                     <button id="viewAnalysisBtn" type="button" class="btn btn-primary">
                         <span class="btn-label">
                             <span class="glyphicon glyphicon-play"></span>
@@ -332,22 +316,73 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-body">
-                            <div id="viewAnalysis"></div>
-                        </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-lg-12 text-right">
-                            <button id="viewArchiveBtn" type="button" class="btn btn-primary" data-href="{% url 'archive' %}">
-                                <span class="btn-label">
-                                    <span class="glyphicon glyphicon-folder-close"></span>
-                                </span>
-                                Архив нарушений
-                            </button>
+
+                    <div class="panel-group" id="accordionInfo" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingSearch">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse"
+                                       data-parent="#accordionInfo"
+                                       href="#collapseSearch" aria-expanded="false"
+                                       aria-controls="collapseOne">
+                                        Список социальных сетей
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseSearch" class="panel-collapse collapse" role="tabpanel"
+                                 aria-labelledby="headingSearch">
+                                <div class="panel-body">
+                                    <div id="viewSearch"></div>
+                                    <div id="viewSearchAdd"></div>
+                                </div>
+                                <div class="panel-footer text-right">
+                                    <button id="viewSearchAddBtn" type="button" class="btn btn-success">
+                                        <span class="btn-label">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </span>
+                                        Добавить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingAnalysis">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse"
+                                       data-parent="#accordionInfo"
+                                       href="#collapseAnalysis" aria-expanded="false"
+                                       aria-controls="collapseTwo">
+                                        Выявленные нарушения
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseAnalysis" class="panel-collapse collapse" role="tabpanel"
+                                 aria-labelledby="headingAnalysis">
+                                <div class="panel-body">
+                                    <div id="viewAnalysis"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingArchive">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse"
+                                       data-parent="#accordionInfo"
+                                       href="#collapseArchive" aria-expanded="false" aria-controls="collapseThree">
+                                        Архив нарушений
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseArchive" class="panel-collapse collapse" role="tabpanel"
+                                 aria-labelledby="headingArchive">
+                                <div class="panel-body">
+                                    <div id="viewArchive"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
 
                 </div>
             </div>
