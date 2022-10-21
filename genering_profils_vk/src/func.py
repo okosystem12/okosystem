@@ -1,22 +1,21 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
-import asyncio
 from datetime import datetime
-
-from aiohttp import ClientSession
-import os
 import requests
-import json
-import sys
-# from manage import model
 
 from django.db.models import Q
-from time import sleep, time
 
-from Site.models import Social, Post, Video, Groups, Inf, Photos, PostsChecks, PhotosChecks, GroupsChecks, VideoChecks
+from Site.models import Social, Post, Video, Groups, Inf, Photos, PostsChecks, PhotosChecks, GroupsChecks, VideoChecks, \
+    AllUsersVK
 from genering_profils_vk.src import config
 from genering_profils_vk.src.evaluate import detect_photo
 
+import asyncio
+from aiohttp import ClientSession
+import nest_asyncio
+import json
+import os
+from time import sleep, time
 try:
     from urllib import urlopen as urlopen
     from urllib import urlencode as urlencode
@@ -457,128 +456,105 @@ def search_inf_users_vk_id(owner_id, lst_dict=config.lst_dict, token=config.toke
             print(e)
             return
 
-# ====================================================================ОБОБЩАЮЩАЯ ФУНКЦИЯ================================
-# пробег по всем пользователям вк c использованием поиска фото, постов
-# def collector(list_token, dir_path_date_and_time, dt):
-#     # nest_asyncio.apply()
-#     data_photos = {}
-#     data_posts = {}
-#     data_groups = {}
-#     data_videos = {}
-#     data_inf_users = {}
-#
-#     async def bound_fetch_zero(sem, id, session):
-#         async with sem:
-#             await fetch_zero(id, session)
-#
-#     #ЗДЕСЬ ДОБАВЛЯЕМ ПОИСК ПО ФОТО И ВСЁ ОСТАЛЬНОЕ
-#     async def fetch_zero(id, session):
-#         url = build_url(id)
-#         try:
-#             async with session.get(url) as response:
-#                 # Считываем json
-#                 resp = await response.text()
-#                 js = json.loads(resp)
-#                 list_users = [x for x in js['response'] if x != False]
-#
-#                 # Проверяем если город=1(Москва) тогда добавляем в лист
-#                 for it in list_users:
-#                     list_data.append(it[0]['id'])
-#                     try:
-#                         # если город Москва
-#                         # if it[0]['city']['id'] == 1 and it[0]['id'] == 18:
-#                         if it[0]['id'] == 23:
-#                             # ДОБАВЛЕНИЕ В СПИСОК ID СТРАНИЦЫ (ЗДЕСЬ НАЧИНАЕМ ПРОВЕРЯТЬ ИНФОРМАЦИЮ) TODO
-#
-#                             # выкачивание фото
-#                             # downloading_search_photos(str(it[0]['id']), dir_path_date_and_time)
-#
-#                             dir_id_path = os.path.join(dir_path_date_and_time, str(it[0]['id']))
-#                             if not os.path.exists(dir_id_path):
-#                                 os.makedirs(dir_id_path)
-#
-#                             # выкачивание и проверка постов
-#                             search_post_vk_id(it[0]['id'], dir_id_path)
-#
-#                             # выкачивание и проверка названий групп и сообществ
-#                             search_name_groups_vk_id(it[0]['id'], dir_id_path)
-#
-#                             # выкачивание и проверка названий видеозаписей
-#                             search_name_videos_vk_id(it[0]['id'], dir_id_path)
-#
-#                             # выкачивание и провекра всей информации о пользователе
-#                             search_inf_users_vk_id(it[0]['id'], dir_id_path)
-#
-#                             # если каталог пуст, удаляем
-#                             if not os.listdir(dir_id_path):
-#                                 os.rmdir(dir_id_path)
-#
-#
-#
-#                             # инфомация для заполненеия базы
-#                             url = f"https://vk.com/id{it[0]['id']}"
-#                             check_date = dt
-#                             count_record = count_photo_global
-#                             path_dir_photos = path_dir_photos_global
-#                             category = "Раскрытие принадлежности к центральному аппарату МО РФ"
-#
-#                             create_dict_data(url, check_date, count_record, path_dir_photos, category, data_photos)
-#                             create_dict_data_post(url, check_date, count_text_global, path_file_text_global, "Новая категория (ПОСТЫ)", data_posts)
-#                             create_dict_data_name_grops(url, check_date, count_text_groups_global, path_file_text_groups_global, "Новая категория (ГРУППЫ)", data_groups)
-#                             create_dict_data_name_videos(url, check_date, count_video_global, path_file_video_global, "Категория ВИДЕО", data_videos)
-#                             create_dict_data_inf_users(url, check_date, count_key_data_global, path_file_inf_users_global, "Категория ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЯХ", data_inf_users)
-#
-#
-#                     except Exception:
-#                         pass
-#         except Exception as ex:
-#             print(resp)
-#
-#     def build_url(id):
-#         api = "API.users.get({{'user_ids':{},'fields':'deactivated, is_closed, first_name, last_name, bdate, city, home_town'}})".format(
-#             id * 25 + 1)
-#         for i in range(2, 26):
-#             api += ",API.users.get({{'user_ids':{},'fields':'deactivated, is_closed, first_name, last_name, bdate, city, home_town'}})".format(
-#                 id * 25 + i)
-#         url = 'https://api.vk.com/method/execute?access_token={}&v=5.101&code=return%20[{}];'.format(
-#             list_token[id % len(list_token)], api)
-#         return url
-#
-#     async def run_zero(id):
-#         tasks = []
-#         sem = asyncio.Semaphore(1000)
-#
-#         async with ClientSession() as session:
-#             #  Значение 3200 зависит от вашего числа токенов
-#             param3200 = 250000
-#             for id in range((id - 1) * param3200, id * param3200):
-#                 task = asyncio.ensure_future(bound_fetch_zero(sem, id, session))
-#                 tasks.append(task)
-#
-#             responses = asyncio.gather(*tasks)
-#             await responses
-#             del responses
-#             await session.close()
-#
-#
-#     # Запускаем  сборщик
-#     # threshold = 17
-#     # param_count = 554
-#     st = time()
-#     threshold = 3
-#     for i in range(threshold):
-#         param_count = 40
-#         for query in range(i * param_count + 1, (i + 1) * param_count + 1):
-#             print(query, time()-st)
-#             st = time()
-#             loop = asyncio.new_event_loop()
-#             asyncio.set_event_loop(loop)
-#             loop.run_until_complete(run_zero(query))
-#
-#     print(len(list_data))
-#
-#     return {"photos":data_photos,
-#             "posts":data_posts,
-#             "groups":data_groups,
-#             "videos":data_videos,
-#             "inf_user":data_inf_users}
+
+# обновление базы пользователей
+# доделать вывод в базу, а не в файл!!! todo
+# id_user_last = AllUsersVK.objects.order_by("id_user").last()
+def update_inf_users(list_token, id_user_last):
+    nest_asyncio.apply()
+
+    async def bound_fetch_zero(sem, id, session):
+        async with sem:
+            await fetch_zero(id, session)
+
+    async def fetch_zero(id, session):
+        url = build_url(id)
+        try:
+            async with session.get(url) as response:
+                # Считываем json
+                resp = await response.text()
+                js = json.loads(resp)
+                for it in range(25):
+                    list_data.append(js["response"][it][0])
+
+        except Exception as ex:
+            print(resp)
+            return
+
+    def build_url(id):
+        api = "API.users.get({{'user_ids':{},'fields':'deactivated, is_closed, first_name, last_name, bdate, city, home_town'}})".format(
+            id * 25 + 1)
+        for i in range(2, 26):
+            api += ",API.users.get({{'user_ids':{},'fields':'deactivated, is_closed, first_name, last_name, bdate, city, home_town'}})".format(
+                id * 25 + i)
+        url = 'https://api.vk.com/method/execute?access_token={}&v=5.101&code=return%20[{}];'.format(
+            list_token[id % len(list_token)], api)
+        return url
+
+    async def run_zero(id):
+        tasks = []
+        sem = asyncio.Semaphore(1000)
+
+        async with ClientSession() as session:
+            #  Значение 3200 зависит от вашего числа токенов
+            param3200 = 320
+            for id in range((id - 1) * param3200, id * param3200):
+                task = asyncio.ensure_future(bound_fetch_zero(sem, id, session))
+                tasks.append(task)
+
+            responses = asyncio.gather(*tasks)
+            await responses
+            del responses
+            await session.close()
+
+
+    # Запускаем  сборщик
+    # threshold = 17
+    # param_count = 554
+    st = time()
+    # 105 and 900
+    all = 320*25*900
+    threshold = id_user_last // all
+    for i in range(threshold, threshold + 3):
+        param_count = 900
+        for query in range(i * param_count + 1, (i + 1) * param_count + 1):
+            string = json.dumps(list_data)
+            with open(os.path.join("database", f"database-VK-users_{query}.txt"), "a", encoding="utf-8") as file:
+                file.write(string + "\n")
+            list_data.clear()
+            print(query, time()-st)
+            st = time()
+            loop = asyncio.get_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(run_zero(query))
+
+
+# полное заполнение базы данных ВК
+def read_files_for_bd(path_dir):
+
+    # AllUsersVK.objects.all().delete()
+    # return
+
+    for namefile in os.listdir(path_dir):
+        with open(os.path.join(path_dir, namefile), "r", encoding="utf-8") as file:
+            data = [json.loads(line) for line in file]
+
+        data_update = [elem for l in data for elem in l if
+                       elem.get("deactivated") not in ("deleted", "banned") and not elem.get("is_closed")]
+        for l in data_update:
+            bdate = l.get("bdate", "")
+            city = l.get("city", "")
+            if isinstance(city, dict):
+                city = city.get("title")
+
+            # вап
+            AllUsersVK.objects.create(
+                id_user=l.get("id", ""),
+                first_name=l.get("first_name", ""),
+                last_name=l.get("last_name", ""),
+                bdate=bdate,
+                home_town=l.get("home_town", ""),
+                city=city
+            )
+        data.clear()
+        data_update.clear()
