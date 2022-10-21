@@ -8,8 +8,5 @@ def prepStatus(_id=None):
     status = Status.objects.filter(Q(pk=_id)).first()
     if status:
         result.update(status.__dict__)
-        result.update({
-            'stage': status.stage.type,
-            'title': f'{status.stage.name}: {status.name}'
-        })
+        result.update({'stage': status.stage.type, 'title': status.stage.name + ': ' + status.name})
     return result

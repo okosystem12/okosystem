@@ -28,7 +28,7 @@ def analysis(request):
             init(controlUser)
 
             args = {
-                'successText': 'Анализ сотрудника ' + controlUser.shortName,
+                'successText': 'Анализ сотрудника ' + controlUser.shortName(),
             }
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

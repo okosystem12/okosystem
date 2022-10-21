@@ -39,7 +39,7 @@ def place_countries_work(request):
             }
         else:
             args = {
-                'errorText': 'Страна с названием "' + title + '" уже присутствует в системе',
+                'errorHighlight': 'Страна с названием "' + title + '" уже присутствует в системе',
             }
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

@@ -1,8 +1,6 @@
 from django.conf.urls import url
-from django.conf import settings
 from django.conf.urls.static import static
 
-# Список URL адресов сервиса
 from Site.controllers.auth.auth_login import auth_login
 from Site.controllers.auth.auth_logout import auth_logout
 from Site.controllers.control.control_get import control_get
@@ -32,6 +30,7 @@ from Site.controllers.vch.vch_remove import vch_remove
 from Site.controllers.vch.vch_table import vch_table
 from Site.controllers.vch.vch_work import vch_work
 from Site.views import index, control, actions, reports, config, place, login, tester, vch, corrupt, archive
+from mysite import settings
 
 urlpatterns = [
                   url(r'^$', index, name='index'),
@@ -84,4 +83,4 @@ urlpatterns = [
 
                   url(r'^tester/$', tester, name='tester'),
 
-              ] + static(settings.MEDIA_ROOT, document_root=settings.MEDIA_ROOT)
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

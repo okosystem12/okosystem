@@ -47,7 +47,7 @@ def work(request):
                     else:
                         return HttpResponse(json.dumps({
                             'errorHighlight':
-                                f'Соц.сеть закреплена за пользователем {_check_value.controlUser.shortName()}'
+                                'Соц.сеть закреплена за пользователем ' +_check_value.controlUser.shortName()
                         }, default=my_convert_datetime))
             else:
                 if _action == 'confirm' or _social.value == _value:

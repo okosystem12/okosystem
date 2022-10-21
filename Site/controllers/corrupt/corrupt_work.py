@@ -38,7 +38,7 @@ def corrupt_work(request):
             }
         else:
             args = {
-                'errorText': 'Ключевое слово "' + value + '" уже присутствует в системе',
+                'errorHighlight': 'Ключевое слово "' + value + '" уже присутствует в системе',
             }
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

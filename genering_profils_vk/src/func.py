@@ -31,7 +31,7 @@ list_data = []
 def search_post_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.wall.get({"owner_id":"' + str(owner_id) + '", "count":"1"})'
-    code = f'return [{api}];'
+    code = 'return [{'+api+'}];'
     data = dict(code=code, access_token=token, v='5.131')
     resp = requests.post(url=url, data=data)
     resp = resp.json()
@@ -42,7 +42,7 @@ def search_post_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
     for i in range(count_record):
         url = "https://api.vk.com/method/execute?"
         api = 'API.wall.get({"owner_id":"' + str(owner_id) + '", "count":"1", "offset":"' + str(i) + '"})'
-        code = f'return [{api}];'
+        code = 'return [{'+api+'}];'
         data = dict(code=code, access_token=token, v='5.131')
         resp = requests.post(url=url, data=data)
         resp = resp.json()
@@ -188,7 +188,7 @@ def downloading_search_photos(user_id, token=config.token):
         os.makedirs(dir_for_photos_tmp)
 
     # создание файла со ссылками в этом каталоге
-    file_with_photos = os.path.abspath(os.path.join("tmp", '%s.txt' % f"photos_user_{str(user_id)}"))
+    file_with_photos = os.path.abspath(os.path.join("tmp", '%s.txt' % 'photos_user_' +str(user_id)))
 
     social = Social.objects.filter(Q(value=user_id)).first()
 
@@ -236,7 +236,7 @@ def downloading_search_photos(user_id, token=config.token):
 def search_name_groups_vk_id(user_id, dict_word=config.dict_word, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.groups.get({"user_id":"' + str(user_id) + '", "count":"1"})'
-    code = f'return [{api}];'
+    code = 'return [{'+api+'}];'
     data = dict(code=code, access_token=token, v='5.131')
     resp = requests.post(url=url, data=data)
     resp = resp.json()
@@ -248,7 +248,7 @@ def search_name_groups_vk_id(user_id, dict_word=config.dict_word, token=config.t
         url = "https://api.vk.com/method/execute?"
         api = 'API.groups.get({"user_id":"' + str(user_id) + '", "count":"1", "extended":"1", "offset":"' + str(
             i) + '"})'
-        code = f'return [{api}];'
+        code ='return [{'+api+'}];'
         data = dict(code=code, access_token=token, v='5.131')
         resp = requests.post(url=url, data=data)
         resp = resp.json()
@@ -282,7 +282,7 @@ def search_name_groups_vk_id(user_id, dict_word=config.dict_word, token=config.t
 def search_name_videos_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.video.get({"user_id":"' + str(owner_id) + '", "count":"1"})'
-    code = f'return [{api}];'
+    code = 'return [{'+api+'}];'
     data = dict(code=code, access_token=token, v='5.131')
     resp = requests.post(url=url, data=data)
     resp = resp.json()
@@ -294,7 +294,7 @@ def search_name_videos_vk_id(owner_id, dict_word=config.dict_word, token=config.
         url = "https://api.vk.com/method/execute?"
         api = 'API.video.get({"user_id":"' + str(owner_id) + '", "count":"1", "extended":"1", "offset":"' + str(
             i) + '"})'
-        code = f'return [{api}];'
+        code = 'return [{'+api+'}];'
         data = dict(code=code, access_token=token, v='5.131')
         resp = requests.post(url=url, data=data)
         resp = resp.json()
@@ -331,7 +331,7 @@ def search_inf_users_vk_id(owner_id, dict_word=config.dict_word, token=config.to
     url = "https://api.vk.com/method/execute?"
     api = 'API.users.get({"user_ids":"' + str(
         owner_id) + '", "fields": "id, about, activities, books, games, interests, movies, music, nickname, quotes, status, tv"})'
-    code = f'return [{api}];'
+    code = 'return [{'+api+'}];'
     data = dict(code=code, access_token=token, v='5.131')
     resp = requests.post(url=url, data=data)
     resp = resp.json()

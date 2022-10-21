@@ -36,7 +36,7 @@ def vch_work(request):
             }
         else:
             args = {
-                'errorText': 'ВЧ с номером "' + number + '" уже присутствует в системе',
+                'errorHighlight': 'ВЧ с номером "' + number + '" уже присутствует в системе',
             }
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

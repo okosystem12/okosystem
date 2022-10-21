@@ -11,7 +11,6 @@ export const validate = () => {
             cityCountry: {
                 required: true,
             },
-
             cityName: {
                 required: true,
                 minlength: cityNameLength,

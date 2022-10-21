@@ -47,7 +47,7 @@ def place_city_work(request):
                 }
             else:
                 args = {
-                    'errorText': 'Город с названием "'
+                    'errorHighlight': 'Город с названием "'
                                  + title
                                  + '" для страны "'
                                  + country.title
