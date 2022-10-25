@@ -68,7 +68,7 @@ class LastUpdateConfig(models.Model):
 
 class File(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название', default='')
-    file = models.FileField(upload_to=MEDIA_ROOT, verbose_name='Файл')
+    file = models.FileField(verbose_name='Файл')
 
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
@@ -494,7 +494,6 @@ class AllUsersVK(models.Model):
     bdate = models.TextField(verbose_name='Дата рождения', default="", blank=True)
     home_town = models.TextField(verbose_name='Место рождения', default='', blank=True)
     city = models.TextField(verbose_name='Место жительства', default='', blank=True)
-
 
     def __str__(self):
         return self.id_user.__str__()

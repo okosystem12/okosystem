@@ -2,7 +2,6 @@ export const highlight = (element, text = '') => {
     const _e = $(element);
     const parent = _e.parents(".form-group");
 
-    console.log(text);
     if (text) {
         _e.valid();
     }

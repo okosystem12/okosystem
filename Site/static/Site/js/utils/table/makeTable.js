@@ -5,6 +5,7 @@ import {buttonsColvis} from "./handler/buttonsColvis";
 import {colvisGroup} from "./configTable/colvisGroup";
 import {prepColumnsList} from "./configTable/prepColumnsList";
 import {buttonsInit} from "./handler/buttonsInit";
+import {filter} from "./handler/filter";
 
 export const makeTable = (table, options = {}) => {
 
@@ -13,7 +14,6 @@ export const makeTable = (table, options = {}) => {
     const prepList = prepColumnsList(options.table);
 
     const visList = prepList.filter(el => !el.hide);
-
 
     return table.DataTable({
         ...settings,
@@ -45,7 +45,7 @@ export const makeTable = (table, options = {}) => {
                         action: (e, dt, node, config) => {
                             dt.state.clear().destroy();
                             options.destroyCallback();
-                            dt.ajax.reload(false);
+                            if('ajax' in options) dt.ajax.reload(false);
                         }
                     },
                     ...(buttonsColvis(visList)?.buttons || []),
@@ -53,10 +53,17 @@ export const makeTable = (table, options = {}) => {
                 ]
 
             },
+            filter(options),
             {
                 text: 'Обновить',
-                action: (e, dt, node, config) =>
-                    dt.ajax.reload(false)
+                action: (e, dt, node, config) =>{
+                    if('ajax' in options) {
+                        dt.ajax.reload(false)
+                    }
+                    else {
+                        options.destroyCallback()
+                    }
+                }
             }
         ]
     })

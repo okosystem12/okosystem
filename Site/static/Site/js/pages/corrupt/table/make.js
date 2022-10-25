@@ -12,10 +12,19 @@ export const make = () => {
         {
             table: table.value,
             ajax: {
-                "url": "/corrupt/table/",
-                "dataSrc": "data"
+                url: `/corrupt/table/`,
+                dataSrc: "data"
             },
             btnList: ['edit', 'remove'],
+            filter: [{
+                text: 'remove',
+                action: (e, dt, node, config) => {
+                    dt.state.clear().destroy();
+                    make();
+                    dt.ajax.url(`/corrupt/table/?id=1`);
+                    dt.ajax.reload(false);
+                }
+            },],
             destroyCallback: make,
             removeCallback: remove,
             editCallback: edit,

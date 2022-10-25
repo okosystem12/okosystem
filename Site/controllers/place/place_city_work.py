@@ -25,8 +25,7 @@ def place_city_work(request):
         country = Countries.objects.filter(Q(removeAt=None) & Q(pk=country_id)).first()
         if country:
             region = Regions.objects.filter(Q(removeAt=None) & Q(pk=region_id)).first()
-            if Cities.objects.filter(
-                    Q(removeAt=None) & Q(country=country) & Q(region=region) & Q(title=title)).exclude(
+            if Cities.objects.filter(Q(removeAt=None) & Q(country=country) & Q(region=region) & Q(title=title)).exclude(
                 Q(pk=id)).count() == 0:
                 _new = False
                 city = Cities.objects.filter(Q(removeAt=None) & Q(pk=id)).first()
@@ -41,22 +40,12 @@ def place_city_work(request):
 
                 citiesList = Cities.objects.filter(Q(removeAt=None) & Q(pk=city.pk))
 
-                args = {
-                    'successText': 'Запись обновлена' if _new else 'Запись добавлена',
-                    'citiesList': list(citiesList.values()),
-                }
+                args = {'successText': 'Запись обновлена' if _new else 'Запись добавлена',
+                    'citiesList': list(citiesList.values()), }
             else:
-                args = {
-                    'errorHighlight': 'Город с названием "'
-                                 + title
-                                 + '" для страны "'
-                                 + country.title
-                                 + (('" и региона "' + region.title) if region else '')
-                                 + '" уже присутствует в системе',
-                }
+                args = {'errorHighlight': 'Город с названием "' + title + '" для страны "' + country.title + (
+                    ('" и региона "' + region.title) if region else '') + '" уже присутствует в системе', }
         else:
-            args = {
-                'errorText': 'Ошибка',
-            }
+            args = {'errorText': 'Ошибка', }
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

@@ -2,16 +2,19 @@
 
 {% load static %}
 {% block title %}
-События
+    События
 {% endblock %}
 
 {% block nav-actions %}
-active
+    active
 {% endblock %}
 
 
 {% block content %}
-
+    <ol class="breadcrumb">
+        <li><a href="{% url 'index' %}">Главная</a></li>
+        <li class="active">События</li>
+    </ol>
 
 
 {% endblock %}

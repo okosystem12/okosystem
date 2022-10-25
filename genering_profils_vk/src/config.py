@@ -3,7 +3,7 @@ from pprint import pprint
 
 from django.db.models import Q
 
-from Site.models import CorruptInfo, TokenAdmin, TokensForVkUpdate
+from Site.models import CorruptInfo, TokensForVkUpdate, TokenAdmin
 
 token = TokenAdmin.objects.order_by("tokenVK").last()
 dict_word = {}

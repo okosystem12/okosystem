@@ -17,6 +17,6 @@ def corrupt_table(request):
     if request.user.pk is None:
         return render(request, 'Site/login.html')
 
-    args = data(request.POST, CorruptInfo, search, order,  value)
+    args = data(request, CorruptInfo, search, order,  value)
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

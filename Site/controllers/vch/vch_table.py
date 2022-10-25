@@ -17,6 +17,6 @@ def vch_table(request):
     if request.user.pk is None:
         return render(request, 'Site/login.html')
 
-    args = data(request.POST, Vch, search, order, value)
+    args = data(request, Vch, search, order, value)
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

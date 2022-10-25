@@ -3,8 +3,8 @@ from django.db.models import Q
 from Site.app.table.tableConfig import tableConfig
 
 
-def data(_post, _object, search, order, value):
-    tc = tableConfig(_post)
+def data(_request, _object, search, order, value):
+    tc = tableConfig(_request.POST)
 
     oList = _object.objects.filter(Q(removeAt=None))
 

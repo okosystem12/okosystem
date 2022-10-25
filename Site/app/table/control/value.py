@@ -26,6 +26,7 @@ def value(oList):
             'status': prepStatus(user.status_id),
             'control': user.pk,
             'socialsList': prepSocial(user),
+            'postList': []
         })
 
         result.append(cur)
