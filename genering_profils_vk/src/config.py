@@ -5,7 +5,8 @@ from django.db.models import Q
 
 from Site.models import CorruptInfo, TokensForVkUpdate, TokenAdmin
 
-token = TokenAdmin.objects.order_by("tokenVK").last()
+token = str(TokenAdmin.objects.order_by("tokenVK").last())
+
 dict_word = {}
 word_list = list(CorruptInfo.objects.all().values())
 for word in word_list:

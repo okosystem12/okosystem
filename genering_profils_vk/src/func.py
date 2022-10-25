@@ -6,7 +6,7 @@ import requests
 from django.db.models import Q
 # from manage import model
 from Site.models import Social, Post, Video, Groups, Inf, Photos, PostsChecks, PhotosChecks, GroupsChecks, VideoChecks, \
-    AllUsersVK
+    AllUsersVK, TokensForVkUpdate
 from genering_profils_vk.src import config
 from genering_profils_vk.src.evaluate import detect_photo
 
@@ -16,6 +16,7 @@ import nest_asyncio
 import json
 import os
 from time import sleep, time
+
 try:
     from urllib import urlopen as urlopen
     from urllib import urlencode as urlencode
@@ -31,7 +32,7 @@ list_data = []
 def search_post_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.wall.get({"owner_id":"' + str(owner_id) + '", "count":"1"})'
-    code = 'return [{'+api+'}];'
+    code = f'return [{api}];'
     data = dict(code=code, access_token=token, v='5.131')
     resp = requests.post(url=url, data=data)
     resp = resp.json()
@@ -42,7 +43,7 @@ def search_post_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
     for i in range(count_record):
         url = "https://api.vk.com/method/execute?"
         api = 'API.wall.get({"owner_id":"' + str(owner_id) + '", "count":"1", "offset":"' + str(i) + '"})'
-        code = 'return [{'+api+'}];'
+        code = f'return [{api}];'
         data = dict(code=code, access_token=token, v='5.131')
         resp = requests.post(url=url, data=data)
         resp = resp.json()
@@ -236,7 +237,7 @@ def search_post_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
 def search_name_groups_vk_id(user_id, dict_word=config.dict_word, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.groups.get({"user_id":"' + str(user_id) + '", "count":"1"})'
-    code = 'return [{'+api+'}];'
+    code = f'return [{api}];'
     data = dict(code=code, access_token=token, v='5.131')
     resp = requests.post(url=url, data=data)
     resp = resp.json()
@@ -248,7 +249,7 @@ def search_name_groups_vk_id(user_id, dict_word=config.dict_word, token=config.t
         url = "https://api.vk.com/method/execute?"
         api = 'API.groups.get({"user_id":"' + str(user_id) + '", "count":"1", "extended":"1", "offset":"' + str(
             i) + '"})'
-        code ='return [{'+api+'}];'
+        code = f'return [{api}];'
         data = dict(code=code, access_token=token, v='5.131')
         resp = requests.post(url=url, data=data)
         resp = resp.json()
@@ -282,7 +283,7 @@ def search_name_groups_vk_id(user_id, dict_word=config.dict_word, token=config.t
 def search_name_videos_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.video.get({"user_id":"' + str(owner_id) + '", "count":"1"})'
-    code = 'return [{'+api+'}];'
+    code = f'return [{api}];'
     data = dict(code=code, access_token=token, v='5.131')
     resp = requests.post(url=url, data=data)
     resp = resp.json()
@@ -294,7 +295,7 @@ def search_name_videos_vk_id(owner_id, dict_word=config.dict_word, token=config.
         url = "https://api.vk.com/method/execute?"
         api = 'API.video.get({"user_id":"' + str(owner_id) + '", "count":"1", "extended":"1", "offset":"' + str(
             i) + '"})'
-        code = 'return [{'+api+'}];'
+        code = f'return [{api}];'
         data = dict(code=code, access_token=token, v='5.131')
         resp = requests.post(url=url, data=data)
         resp = resp.json()
@@ -331,7 +332,7 @@ def search_inf_users_vk_id(owner_id, dict_word=config.dict_word, token=config.to
     url = "https://api.vk.com/method/execute?"
     api = 'API.users.get({"user_ids":"' + str(
         owner_id) + '", "fields": "id, about, activities, books, games, interests, movies, music, nickname, quotes, status, tv"})'
-    code = 'return [{'+api+'}];'
+    code = f'return [{api}];'
     data = dict(code=code, access_token=token, v='5.131')
     resp = requests.post(url=url, data=data)
     resp = resp.json()
@@ -429,13 +430,12 @@ def update_inf_users(id_user_last, list_token=config.list_token):
             del responses
             await session.close()
 
-
     # Запускаем  сборщик
     # threshold = 17
     # param_count = 554
     st = time()
     # 105 and 900
-    all = 320*25*900
+    all = 320 * 25 * 900
     threshold = id_user_last // all
     for i in range(threshold, threshold + 3):
         param_count = 900
@@ -461,7 +461,7 @@ def update_inf_users(id_user_last, list_token=config.list_token):
 
                 list_data.clear()
                 data_update.clear()
-                print(query, time()-st)
+                print(query, time() - st)
                 st = time()
                 loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
@@ -474,7 +474,6 @@ def update_inf_users(id_user_last, list_token=config.list_token):
 
 # полное заполнение базы данных ВК
 def read_files_for_bd(path_dir):
-
     # AllUsersVK.objects.all().delete()
     # return
 
@@ -501,3 +500,12 @@ def read_files_for_bd(path_dir):
             )
         data.clear()
         data_update.clear()
+
+
+# занесение в базу токенов приложения
+def add_token_apps():
+    with open(os.path.abspath(os.path.join("genering_profils_vk", "files", "tokens.txt"))) as file:
+        for line in file:
+            TokensForVkUpdate.objects.create(
+                tokenVK=line.replace("\n", "")
+            )

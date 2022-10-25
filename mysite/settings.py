@@ -99,8 +99,8 @@ DATABASES = {
         'NAME': 'oko',
         'USER': 'postgres',
         'PASSWORD': '1',
-        # 'HOST': '192.168.1.230',
-        'HOST': '127.0.0.1',
+        # 'HOST': '192.168.1.180',
+        'HOST': '192.168.1.180',
         'PORT': '5432',
     }
 }
@@ -155,7 +155,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/uploads/'
-MEDIA_ROOT = 'uploads'
+MEDIA_ROOT = 'Site/uploads/'
 MEDIA_ROOT_TASKS = '/'
 
 LOGS_URL = '/logs/'
