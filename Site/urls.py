@@ -19,11 +19,13 @@ from Site.controllers.corrupt.corrupt_table import corrupt_table
 from Site.controllers.corrupt.corrupt_work import corrupt_work
 from Site.controllers.place.place_city_remove import place_city_remove
 from Site.controllers.place.place_city_work import place_city_work
-from Site.controllers.place.place_countries_remove import place_countries_remove
-from Site.controllers.place.place_countries_work import place_countries_work
+from Site.controllers.place.country.place_countries_remove import place_countries_remove
+from Site.controllers.place.country.place_countries_work import place_countries_work
+from Site.controllers.place.country.get import get as place_countries_get
 from Site.controllers.place.place_info import place_info
 from Site.controllers.place.place_regions_remove import place_regions_remove
 from Site.controllers.place.place_regions_work import place_regions_work
+from Site.controllers.place.place_table import place_table
 from Site.controllers.table.table_info import table_info
 from Site.controllers.vch.vch_get import vch_get
 from Site.controllers.vch.vch_remove import vch_remove
@@ -62,6 +64,8 @@ urlpatterns = [
                   url(r'^config/$', config, name='config'),
                   url(r'^config/place/$', place, name='place'),
                   url(r'^config/place/info/$', place_info, name='place_info'),
+                  url(r'^config/place/table/$', place_table, name='place_table'),
+                  url(r'^config/place/countries/get/$', place_countries_get, name='place_countries_get'),
                   url(r'^config/place/countries/work/$', place_countries_work, name='place_countries_work'),
                   url(r'^config/place/countries/remove/$', place_countries_remove, name='place_countries_remove'),
                   url(r'^config/place/regions/work/$', place_regions_work, name='place_regions_work'),

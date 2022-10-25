@@ -3,7 +3,7 @@ import {componentsData} from "../componentsData";
 import {init as initHandler} from "../../../utils/form/init";
 
 export const validate = () => {
-    const usernameLength = 5;
+    const usernameLength = 3;
     const passwordLength = 6;
     const {loginForm} = componentsData;
 

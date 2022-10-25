@@ -17,4 +17,4 @@ def place_info(request):
     _data = json.loads(elem(request.POST, 'data', '{}'))
     _type = elem(_data, 'type')
 
-    return HttpResponse(json.dumps(placeObject(_type), default=my_convert_datetime))
+    return HttpResponse(json.dumps(placeObject('regions'), default=my_convert_datetime))

@@ -10,8 +10,6 @@ export const placeInfo = () =>
     getPlaceInfo({type: type.value}, (msg) => {
         countriesList.value = msg.countriesList;
         regionsList.value = msg.regionsList;
-        citiesList.value = msg.citiesList;
 
-        prepInfo();
         init();
     });

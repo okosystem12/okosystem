@@ -12,7 +12,7 @@ import {citiesList} from "../../../../../storage/app/citiesList";
 
 const callback = (dataList = null, id = null) => {
     dataList?.remove('id', id);
-    prepInfo();
+    // prepInfo();
     init();
 };
 
