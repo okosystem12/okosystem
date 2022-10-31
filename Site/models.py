@@ -4,12 +4,21 @@ from django.db import models
 from Site.apps import *
 
 
-class CorruptInfo(models.Model):
-    value = models.CharField(max_length=200, verbose_name='Значение', default='')
-    info = models.TextField(verbose_name='Информация', default='', blank=True)
-    # TODO don't forget
-    # byAdmin = models.BooleanField(verbose_name='Управление администратором', default=False)
+class Environments(models.Model):
+    key = models.CharField(max_length=200, default='', db_index=True, unique=True)
+    value = models.TextField(default='')
 
+    def __str__(self):
+        return self.key
+
+    class Meta:
+        ordering = ['key', 'pk']
+
+
+class CorruptInfo(models.Model):
+    value = models.CharField(max_length=200, verbose_name='Значение', default='', db_index=True)
+    info = models.TextField(verbose_name='Информация', default='', blank=True)
+    # tech = models.BooleanField(verbose_name='Управление администратором', default=False)
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
     def __str__(self):

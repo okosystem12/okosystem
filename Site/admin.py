@@ -3,7 +3,14 @@ from django.contrib import admin
 from Site.models import Status, Render, Table, Column, PatternColumn, PatternTable, LastUpdateConfig, ControlUser, File, \
     Phone, Place, StatusStage, Social, Post, Video, Groups, Inf, Photos, VideoChecks, PhotosChecks, GroupsChecks, \
     PostsChecks, AllUsersVK, CorruptInfo, TokensForVkUpdate, TokenAdmin, PostCorrupt, VideoCorrupt, GroupsCorrupt, \
-    PhotosCorrupt, InfCorrupt
+    PhotosCorrupt, InfCorrupt, Environments
+
+
+class EnvironmentsPanel(admin.ModelAdmin):
+    list_display = [field.name for field in Environments._meta.fields]
+
+
+admin.site.register(Environments, EnvironmentsPanel)
 
 
 class CorruptInfoPanel(admin.ModelAdmin):
