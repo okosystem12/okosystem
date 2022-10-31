@@ -104,7 +104,7 @@ class Render(models.Model):
 
 
 class Table(models.Model):
-    type = models.CharField(max_length=200, verbose_name='Тип', default='', unique=True)
+    type = models.CharField(max_length=200, verbose_name='Тип', default='', unique=True, db_index=True)
     name = models.CharField(max_length=200, verbose_name='Название', default='')
 
     def __str__(self):
