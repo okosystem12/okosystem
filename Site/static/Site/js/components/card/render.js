@@ -1,4 +1,4 @@
-import {render as globalRender} from "../../utils/render";
+import {render as globalRender} from "../../utils/render/render";
 
 export const render = (render) => {
     switch (render?.type) {

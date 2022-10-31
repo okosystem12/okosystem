@@ -1,14 +1,14 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Q
 
 from Site.apps import *
-from mysite.settings import MEDIA_ROOT
 
 
 class CorruptInfo(models.Model):
     value = models.CharField(max_length=200, verbose_name='Значение', default='')
     info = models.TextField(verbose_name='Информация', default='', blank=True)
+    # TODO don't forget
+    # byAdmin = models.BooleanField(verbose_name='Управление администратором', default=False)
 
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
@@ -115,6 +115,7 @@ class Column(models.Model):
     view = models.BooleanField(verbose_name='Отображаемый в карточке', default=True)
     viewOrder = models.IntegerField(verbose_name='Позиция в карточке', default=0)
     orderable = models.BooleanField(verbose_name='Сортируемый', default=True)
+    searchable = models.BooleanField(verbose_name='Поиск в столбце', default=True)
     fixed = models.BooleanField(verbose_name='Зафиксировать', default=False)
     hide = models.BooleanField(verbose_name='Не скрываемый', default=False)
     visible = models.BooleanField(verbose_name='Отображаемый (по умолчанию)', default=True)
@@ -363,7 +364,6 @@ class Post(models.Model):
     id_post = models.IntegerField(verbose_name='Номер поста', blank=True, default=0)
     date = models.DateTimeField(verbose_name='Дата добавления', default=None, blank=True, null=True)
     text = models.TextField(verbose_name='Текст поста', default='', blank=True)
-    degree_violation = models.TextField(verbose_name='Степень нарушения', default='', blank=True)
 
     def __str__(self):
         return self.id_post.__str__()
@@ -373,13 +373,18 @@ class Post(models.Model):
         verbose_name = 'Пост'
 
 
+class PostCorrupt(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    confirmedAt = models.DateTimeField(verbose_name='Дата подтверждения', default=None, blank=True, null=True)
+
+
 class Video(models.Model):
     social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
     id_video = models.IntegerField(verbose_name='Номер видеозаписи', blank=True, default=0)
     date = models.DateTimeField(verbose_name='Дата добавления', default=None, blank=True, null=True)
     name = models.TextField(verbose_name='Название видеозаписи', default='', blank=True)
     link = models.TextField(verbose_name='Ссылка на видеозапись', default='', blank=True)
-    degree_violation = models.TextField(verbose_name='Степень нарушения', default='', blank=True)
 
     def __str__(self):
         return self.id_video.__str__()
@@ -389,11 +394,16 @@ class Video(models.Model):
         verbose_name = 'Видеозапись'
 
 
+class VideoCorrupt(models.Model):
+    video = models.ForeignKey(Video, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    confirmedAt = models.DateTimeField(verbose_name='Дата подтверждения', default=None, blank=True, null=True)
+
+
 class Groups(models.Model):
     social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
     id_groups = models.IntegerField(verbose_name='Номер сообщества', blank=True, default=0)
     name = models.TextField(verbose_name='Название сообщества', default='', blank=True)
-    degree_violation = models.TextField(verbose_name='Степень нарушения', default='', blank=True)
 
     def __str__(self):
         return self.id_groups.__str__()
@@ -401,6 +411,12 @@ class Groups(models.Model):
     class Meta:
         verbose_name_plural = 'Сообщества'
         verbose_name = 'Сообщество'
+
+
+class GroupsCorrupt(models.Model):
+    groups = models.ForeignKey(Groups, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    confirmedAt = models.DateTimeField(verbose_name='Дата подтверждения', default=None, blank=True, null=True)
 
 
 class Inf(models.Model):
@@ -416,7 +432,6 @@ class Inf(models.Model):
     quotes = models.TextField(verbose_name='Любимые цитаты', default='', blank=True)
     status = models.TextField(verbose_name='Статус пользователя', default='', blank=True)
     tv = models.TextField(verbose_name='Любимые телешоу', default='', blank=True)
-    degree_violation = models.TextField(verbose_name='Степень нарушения', default='', blank=True)
 
     def __str__(self):
         return self.social.__str__()
@@ -426,10 +441,15 @@ class Inf(models.Model):
         verbose_name = 'Информация о пользователе'
 
 
+class InfCorrupt(models.Model):
+    inf = models.ForeignKey(Inf, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    confirmedAt = models.DateTimeField(verbose_name='Дата подтверждения', default=None, blank=True, null=True)
+
+
 class Photos(models.Model):
     social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
     link = models.TextField(verbose_name='Ссылка на фотоизображение', default='', blank=True)
-    degree_violation = models.TextField(verbose_name='Степень нарушения', default='', blank=True)
 
     def __str__(self):
         return self.social.__str__()
@@ -437,6 +457,12 @@ class Photos(models.Model):
     class Meta:
         verbose_name_plural = 'Фотоизображения'
         verbose_name = 'Фотоизображение'
+
+
+class PhotosCorrupt(models.Model):
+    photo = models.ForeignKey(Photos, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    confirmedAt = models.DateTimeField(verbose_name='Дата подтверждения', default=None, blank=True, null=True)
 
 
 class PostsChecks(models.Model):

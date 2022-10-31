@@ -21,7 +21,7 @@ def place_countries_work(request):
         id = elem(_data, 'id', None)
         title = elem(_data, 'title')
 
-        if Countries.objects.filter(Q(removeAt=None) & Q(title=title)).exclude(Q(pk=id)).count() == 0:
+        if not Countries.objects.filter(Q(removeAt=None) & Q(title=title)).exclude(Q(pk=id)).exists():
             _new = False
             country = Countries.objects.filter(Q(removeAt=None) & Q(pk=id)).first()
             if not country:

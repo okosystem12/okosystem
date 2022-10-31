@@ -82,7 +82,7 @@
                     </li>
                     <li class="{% block nav-corrupt %}{% endblock %}"><a href="{% url 'corrupt' %}">Ключевые слова</a>
                     </li>
-                    <li class="{% block nav-reports %}{% endblock %}"><a href="{% url 'reports' %}">Отчёты</a></li>
+{#                    <li class="{% block nav-reports %}{% endblock %}"><a href="{% url 'reports' %}">Отчёты</a></li>#}
                     {% if user.is_superuser %}
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -105,7 +105,7 @@
                             <li><a href="{% url 'control' %}">Данные ЛС</a></li>
                             <li><a href="{% url 'archive' %}">Архив нарушений</a></li>
                             <li><a href="{% url 'corrupt' %}">Ключевые слова</a></li>
-                            <li><a href="{% url 'reports' %}">Отчёты</a></li>
+{#                            <li><a href="{% url 'reports' %}">Отчёты</a></li>#}
                             {% if user.is_superuser %}
                                 <li class="divider"></li>
                                 <li class="dropdown-submenu">

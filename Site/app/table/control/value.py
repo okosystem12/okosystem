@@ -11,7 +11,7 @@ from Site.models import Phone, Mail
 def value(oList):
     result = []
 
-    for user in oList:
+    for user in oList.iterator():
         cur = {}
         cur.update(user.__dict__)
         cur.update({

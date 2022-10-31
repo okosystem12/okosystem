@@ -6,6 +6,5 @@ import {table} from "../../../../storage/config/vch/table";
 export const init = () =>
     getVchTable((msg) => {
         table.setTable(msg);
-
         make();
     });

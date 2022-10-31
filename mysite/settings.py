@@ -155,7 +155,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/uploads/'
-MEDIA_ROOT = 'Site/uploads/'
+MEDIA_ROOT = 'uploads'
 MEDIA_ROOT_TASKS = '/'
 
 LOGS_URL = '/logs/'

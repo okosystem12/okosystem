@@ -3,10 +3,10 @@ import {editId} from "../../../../../storage/config/place/editId";
 import {label} from "../../../../../utils/modal/label";
 
 export const setFormValue = (data = {}) => {
-    editId.value = data.realId || null;
+    editId.value = data.id || null;
     const {countryName, countryModalLabel} = componentsData;
 
-    label(countryModalLabel, editId.value, 'страну', data.country);
+    label(countryModalLabel, editId.id, 'страну', data.title);
 
-    countryName.val(data.country || '');
+    countryName.val(data.title || '');
 };

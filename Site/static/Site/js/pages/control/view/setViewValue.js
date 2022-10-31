@@ -21,6 +21,7 @@ export const setViewValue = (data = null) => {
             panelCollapse,
         } = componentsData;
 
+
         panelCollapse.removeClass('in');
 
         viewModalLabel.html(`Карточка ${userShortName(data)}`);

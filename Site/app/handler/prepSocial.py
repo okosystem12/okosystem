@@ -6,9 +6,9 @@ from Site.models import Social
 def prepSocial(user=None):
     result = []
 
-    for one in Social.objects.filter(Q(controlUser=user) & Q(confirmedAt__isnull=False)):
+    for one in Social.objects.filter(Q(controlUser=user) & Q(confirmedAt__isnull=False)).iterator():
         result.append({
-            'href': one.prefix + one.value
+            'link': one.prefix + one.value
         })
 
     return result

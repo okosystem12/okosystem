@@ -23,8 +23,8 @@ def place_regions_work(request):
         title = elem(_data, 'title')
         country = Countries.objects.filter(Q(removeAt=None) & Q(pk=country_id)).first()
         if country:
-            if Regions.objects.filter(Q(removeAt=None) & Q(country=country) & Q(title=title)).exclude(
-                    Q(pk=id)).count() == 0:
+            if not Regions.objects.filter(Q(removeAt=None) & Q(country=country) & Q(title=title)).exclude(
+                    Q(pk=id)).exists():
                 _new = False
                 region = Regions.objects.filter(Q(removeAt=None) & Q(pk=id)).first()
                 if not region:

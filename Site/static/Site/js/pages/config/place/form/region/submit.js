@@ -1,9 +1,9 @@
 import {componentsData} from "../../componentsData";
 import {work} from "../../../../../req/config/place/regions/work";
 import {editId} from "../../../../../storage/config/place/editId";
-import {placeInfo} from "../../../../app/placeInfo";
 import {highlight} from "../../../../../utils/form/highlight";
-import {hide} from "../../../../../utils/modal/hide";
+import {close} from "./close";
+import {placeInfo} from "../../../../app/placeInfo";
 
 export const submit = (form, e) => {
     e.preventDefault();
@@ -15,7 +15,7 @@ export const submit = (form, e) => {
         title: regionName.val().trim(),
     }, (msg) => {
         if (msg.successText) {
-            hide(regionModal);
+            close();
             placeInfo();
         }
         else {

@@ -12,7 +12,7 @@ export const search = (data = {}) => {
 
     switch (data?.status.stage) {
         case 'prepare':
-            if(socialList.value.length === 0) {
+            if (socialList.value.length === 0) {
                 switch (data?.status.type) {
                     case 'init':
                         viewSearch.html('<p class="lead text-center">Список пуст</p>');
@@ -26,13 +26,12 @@ export const search = (data = {}) => {
                         viewSearch.html('<p class="lead text-center">Совпадений не выявлено</p>');
                         break;
                 }
-            }
-            else {
-                fillSearchSocial();
+            } else {
+                fillSearchSocial(data);
             }
             break;
         case 'work':
-            fillSearchSocial();
+            fillSearchSocial(data);
             break;
     }
 

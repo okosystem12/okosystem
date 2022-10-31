@@ -2,7 +2,7 @@
 
 {% load static %}
 {% block title %}
-Архив
+Архив нарушений
 {% endblock %}
 
 {% block nav-archive %}
@@ -12,6 +12,10 @@ active
 {% block content %}
     <ol class="breadcrumb">
         <li><a href="{% url 'index' %}">Главная</a></li>
-        <li class="active">Архив</li>
+        <li class="active">Архив нарушений</li>
     </ol>
+
+    <div id="archiveTable"></div>
+
+    <script type="text/javascript" src="{% static 'Site/dist/archive.bundle.js' %}"></script>
 {% endblock %}

@@ -4,8 +4,8 @@ import {get} from "../../../../req/control/get";
 import {fillStorage} from "../../work/fillStorage";
 
 export const edit = (id) =>
-    get({id}, (msg) => {
+    get({id, full: false}, (msg) => {
         userId.value = parseInt(id);
         fillStorage(msg);
-        openForm(msg.user[0]);
+        openForm(msg.controlUser[0]);
     });

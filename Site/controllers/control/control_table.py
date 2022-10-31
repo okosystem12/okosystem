@@ -17,6 +17,6 @@ def control_table(request):
     if request.user.pk is None:
         return render(request, 'Site/login.html')
 
-    args = data(request, ControlUser, search, order, value)
+    args = data(request, ControlUser.objects, search, order, value)
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

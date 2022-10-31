@@ -2,7 +2,8 @@ from django.contrib import admin
 
 from Site.models import Status, Render, Table, Column, PatternColumn, PatternTable, LastUpdateConfig, ControlUser, File, \
     Phone, Place, StatusStage, Social, Post, Video, Groups, Inf, Photos, VideoChecks, PhotosChecks, GroupsChecks, \
-    PostsChecks, AllUsersVK, CorruptInfo, TokensForVkUpdate, TokenAdmin
+    PostsChecks, AllUsersVK, CorruptInfo, TokensForVkUpdate, TokenAdmin, PostCorrupt, VideoCorrupt, GroupsCorrupt, \
+    PhotosCorrupt, InfCorrupt
 
 
 class CorruptInfoPanel(admin.ModelAdmin):
@@ -61,36 +62,66 @@ class PostsChecksPanel(admin.ModelAdmin):
 admin.site.register(PostsChecks, PostsChecksPanel)
 
 
+class TabularInlineVC(admin.TabularInline):
+    model = VideoCorrupt
+    extra = 0
+
+
 class VideoPanel(admin.ModelAdmin):
     list_display = [field.name for field in Video._meta.fields]
+    inlines = [TabularInlineVC]
 
 
 admin.site.register(Video, VideoPanel)
 
 
+class TabularInlinePhC(admin.TabularInline):
+    model = PhotosCorrupt
+    extra = 0
+
+
 class PhotosPanel(admin.ModelAdmin):
     list_display = [field.name for field in Photos._meta.fields]
+    inlines = [TabularInlinePhC]
 
 
 admin.site.register(Photos, PhotosPanel)
 
 
+class TabularInlineGC(admin.TabularInline):
+    model = GroupsCorrupt
+    extra = 0
+
+
 class GroupsPanel(admin.ModelAdmin):
     list_display = [field.name for field in Groups._meta.fields]
+    inlines = [TabularInlineGC]
 
 
 admin.site.register(Groups, GroupsPanel)
 
 
+class TabularInlineIC(admin.TabularInline):
+    model = InfCorrupt
+    extra = 0
+
+
 class InfPanel(admin.ModelAdmin):
     list_display = [field.name for field in Inf._meta.fields]
+    inlines = [TabularInlineIC]
 
 
 admin.site.register(Inf, InfPanel)
 
 
+class TabularInlinePC(admin.TabularInline):
+    model = PostCorrupt
+    extra = 0
+
+
 class PostPanel(admin.ModelAdmin):
     list_display = [field.name for field in Post._meta.fields]
+    inlines = [TabularInlinePC]
 
 
 admin.site.register(Post, PostPanel)
@@ -126,6 +157,8 @@ admin.site.register(Table, TablePanel)
 
 class ColumnPanel(admin.ModelAdmin):
     list_display = [field.name for field in Column._meta.fields]
+    list_filter = ["table"]
+    search_fields = []
 
 
 admin.site.register(Column, ColumnPanel)

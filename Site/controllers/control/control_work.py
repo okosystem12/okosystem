@@ -74,9 +74,8 @@ def control_work(request):
             controlUser.livePlace = livePlace
         controlUser.save()
 
-        for f in File.objects.filter(Q(removeAt=None) & Q(pk__in=elem(_data, 'photoList', []))):
-            isDuplicate = ControlUserImg.objects.filter(Q(file=f)).count() != 0
-            if not isDuplicate:
+        for f in File.objects.filter(Q(removeAt=None) & Q(pk__in=elem(_data, 'photoList', []))).iterator():
+            if not ControlUserImg.objects.filter(Q(file=f)).exists():
                 ControlUserImg.objects.create(
                     controlUser=controlUser,
                     file=f

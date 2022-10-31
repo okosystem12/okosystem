@@ -1,8 +1,6 @@
 import {componentsData} from "../componentsData";
 import {table} from "../../../../storage/config/place/table";
 import {makeTable} from "../../../../utils/table/makeTable";
-import {rowsAdd} from "../../../../utils/table/handler/rowsAdd";
-import {info} from "../../../../storage/config/place/info";
 import {edit} from "./callback/edit";
 import {remove} from "./callback/remove";
 
@@ -23,5 +21,4 @@ export const make = () => {
             editCallback: edit,
         }
     );
-    rowsAdd(table.value.table, info.value, false, false);
 };

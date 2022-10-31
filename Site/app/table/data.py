@@ -6,7 +6,7 @@ from Site.app.table.tableConfig import tableConfig
 def data(_request, _object, search, order, value):
     tc = tableConfig(_request.POST)
 
-    oList = _object.objects.filter(Q(removeAt=None))
+    oList = _object.filter(Q(removeAt=None))
 
     iTotalRecords = oList.count()
 

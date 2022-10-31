@@ -5,8 +5,8 @@ import {fillStorage} from "../../work/fillStorage";
 
 
 export const view = (id) =>
-    get({id}, (msg) => {
+    get({id, full: true}, (msg) => {
         userId.value = parseInt(id);
         fillStorage(msg);
-        openView(msg.user[0]);
+        openView(msg.controlUser[0]);
     });

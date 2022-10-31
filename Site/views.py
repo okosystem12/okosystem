@@ -1,6 +1,11 @@
+from datetime import datetime
+
+from django.db.models import Q
 from django.shortcuts import render
 
 from django.views.decorators.csrf import csrf_exempt
+
+from Site.models import AllUsersVK
 
 
 @csrf_exempt
@@ -8,14 +13,19 @@ def index(request):
     if request.user.pk is None:
         return render(request, 'Site/login.html')
     # return render(request, 'Site/index.html')
-    return render(request, 'Site/control/control.html')
+
+    print(datetime.now())
+    print(AllUsersVK.objects.last().__dict__)
+    print(datetime.now())
+
+    return render(request, 'Site/control.html')
 
 
 @csrf_exempt
 def control(request):
     if request.user.pk is None:
         return render(request, 'Site/login.html')
-    return render(request, 'Site/control/control.html')
+    return render(request, 'Site/control.html')
 
 
 @csrf_exempt

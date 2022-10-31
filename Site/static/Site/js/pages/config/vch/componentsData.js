@@ -1,5 +1,5 @@
 export const componentsData = {
-    placeTable: $('#placeTable'),
+    vchTable: $('#vchTable'),
 
     vchBtnAdd: $('#vchBtnAdd'),
     vchModal: $('#vchModal'),

@@ -1,5 +1,5 @@
 export const componentsData = {
-    placeTable: $('#placeTable'),
+    corruptTable: $('#corruptTable'),
 
     corruptBtnAdd: $('#corruptBtnAdd'),
     corruptModal: $('#corruptModal'),

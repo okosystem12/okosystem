@@ -1,8 +1,9 @@
 import {componentsData} from "../../componentsData";
 import {highlight} from "../../../../../utils/form/highlight";
-import {work} from "../../../../../req/config/place/contries/work";
+import {work} from "../../../../../req/config/place/countries/work";
 import {editId} from "../../../../../storage/config/place/editId";
 import {close} from "./close";
+import {placeInfo} from "../../../../app/placeInfo";
 
 export const submit = (form, e) => {
     e.preventDefault();
@@ -14,6 +15,7 @@ export const submit = (form, e) => {
     }, (msg) => {
         if (msg.successText) {
             close();
+            placeInfo();
         }
         else {
             highlight(countryName, msg.errorHighlight);

@@ -18,10 +18,10 @@ def init(user=None):
 def initT(user=None):
     if user:
         socialList = Social.objects.filter(Q(controlUser=user))
-        for one in socialList:
+        for one in socialList.iterator():
             print("start")
 
-            search_post_vk_id(one.value)
+            # search_post_vk_id(one.value)
             # search_name_groups_vk_id(one.value)
             # search_name_videos_vk_id(one.value)
             # search_inf_users_vk_id(one.value)
@@ -29,4 +29,4 @@ def initT(user=None):
 
         else:
             print('NO initT')
-        setStatus(user, 'warning' if socialList.count() else 'success')
+        setStatus(user, 'warning' if socialList.exists() else 'success')

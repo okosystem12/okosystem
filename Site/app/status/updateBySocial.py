@@ -7,10 +7,10 @@ from Site.models import Social
 def updateBySocial(_user):
     wasUpdate = False
     _social_list = Social.objects.filter(Q(controlUser=_user))
-    if _social_list.count() == 0:
+    if not _social_list.exists():
         setStatus(_user)
         wasUpdate = True
-    elif _social_list.filter(Q(confirmedAt__isnull=True)).count() == 0:
+    elif not _social_list.filter(Q(confirmedAt__isnull=True)).exists():
         setStatus(_user, 'work')
         wasUpdate = True
 

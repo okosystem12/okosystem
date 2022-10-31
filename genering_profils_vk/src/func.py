@@ -53,7 +53,7 @@ def search_post_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
                     Q(social=social)
                     & Q(id_post=resp["response"][0]["items"][i_resp]["id"])
                 )
-                if post_list.count() == 0:
+                if not post_list.exists():
                     PostsChecks.objects.create(
                         social=social,
                         id_post=resp["response"][0]["items"][i_resp]["id"]
@@ -73,7 +73,7 @@ def search_post_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
             return
 
 
-# # скачивание всех фото пользователя + обработка + сохранение
+# скачивание всех фото пользователя + обработка + сохранение
 # def downloading_search_photos(user_id, token=config.token):
 #
 #     def emoji_wipe(plain):
@@ -152,7 +152,7 @@ def search_post_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
 #                                     & Q(link=link)
 #                                 )
 #
-#                                 if photos_list.count() == 0:
+#                                 if not photos_list.exists():
 #                                     PhotosChecks.objects.create(
 #                                         social=social,
 #                                         link=link
@@ -166,71 +166,71 @@ def search_post_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
 #         else:
 #             pass
 #
-#     # def get_photos(uid, token, directory_name, social):
-#     #     album_ids = [-6, -7, -15]
-#     #     delim = ';'  # TODO ??
-#     #     uid_list = []
-#     #     if delim not in uid:
-#     #         uid_list.append(uid)
-#     #     else:
-#     #         uids_b = uid.split(delim)
-#     #         for i in range(int(uids_b[0]), int(uids_b[1]) + 1):
-#     #             uid_list.append(i)
-#     #
-#     #     for uid_line in uid_list:
-#     #         for index, album_num in enumerate(album_ids):
-#     #             get_photos_album(uid_line, token, directory_name, album_num, social)
-#     #
-#     # request_interval = 0
-#     #
-#     # # создание каталога для фоток в каталоге с id пользователя
-#     # dir_for_photos_tmp = os.path.abspath("tmp")
-#     # if not os.path.exists(dir_for_photos_tmp):
-#     #     os.makedirs(dir_for_photos_tmp)
-#     #
-#     # # создание файла со ссылками в этом каталоге
-#     # file_with_photos = os.path.abspath(os.path.join("tmp", '%s.txt' % 'photos_user_' +str(user_id)))
-#     #
-#     # social = Social.objects.filter(Q(value=user_id)).first()
-#     #
-#     # # получение ссылок на фото
-#     # get_photos(user_id, token, file_with_photos, social)
-#     # if os.path.exists(file_with_photos):
-#     #     f = open(file_with_photos, 'r')
-#     #     photos_txt = f.read()
-#     #     f.close()
-#     # else:
-#     #     os.rmdir(dir_for_photos_tmp)
-#     #     return
-#     # os.remove(file_with_photos)
-#     # links = photos_txt.split('\n')
-#     # links = links[:-1]
-#     #
-#     # # скачивание фото
-#     # for number, link in enumerate(links):
-#     #     try:
-#     #         url_as = link
-#     #         file_name = str(number + 1) + ".jpg"
-#     #         file_name_abs = os.path.join(dir_for_photos_tmp, file_name)
-#     #         if not os.path.isfile(file_name_abs):
-#     #             resource = urlopen(url_as)
-#     #             out = open(file_name_abs, 'wb')
-#     #             out.write(resource.read())
-#     #             out.close()
-#     #
-#     #             # проверка нейронкой
-#     #             if detect_photo(model, file_name_abs):
-#     #                 Photos.objects.create(
-#     #                     social=social,
-#     #                     link=link,
-#     #                     degree_violation="Раскрытие принадлежности к 12 ГУ МО"
-#     #                 )
-#     #             os.remove(file_name_abs)
-#     #     except Exception:
-#     #         pass
-#     #
-#     # os.rmdir(dir_for_photos_tmp)
-#     # return
+#     def get_photos(uid, token, directory_name, social):
+#         album_ids = [-6, -7, -15]
+#         delim = ';'  # TODO ??
+#         uid_list = []
+#         if delim not in uid:
+#             uid_list.append(uid)
+#         else:
+#             uids_b = uid.split(delim)
+#             for i in range(int(uids_b[0]), int(uids_b[1]) + 1):
+#                 uid_list.append(i)
+#
+#         for uid_line in uid_list:
+#             for index, album_num in enumerate(album_ids):
+#                 get_photos_album(uid_line, token, directory_name, album_num, social)
+#
+#     request_interval = 0
+#
+#     # создание каталога для фоток в каталоге с id пользователя
+#     dir_for_photos_tmp = os.path.abspath("tmp")
+#     if not os.path.exists(dir_for_photos_tmp):
+#         os.makedirs(dir_for_photos_tmp)
+#
+#     # создание файла со ссылками в этом каталоге
+#     file_with_photos = os.path.abspath(os.path.join("tmp", '%s.txt' % 'photos_user_' +str(user_id)))
+#
+#     social = Social.objects.filter(Q(value=user_id)).first()
+#
+#     # получение ссылок на фото
+#     get_photos(user_id, token, file_with_photos, social)
+#     if os.path.exists(file_with_photos):
+#         f = open(file_with_photos, 'r')
+#         photos_txt = f.read()
+#         f.close()
+#     else:
+#         os.rmdir(dir_for_photos_tmp)
+#         return
+#     os.remove(file_with_photos)
+#     links = photos_txt.split('\n')
+#     links = links[:-1]
+#
+#     # скачивание фото
+#     for number, link in enumerate(links):
+#         try:
+#             url_as = link
+#             file_name = str(number + 1) + ".jpg"
+#             file_name_abs = os.path.join(dir_for_photos_tmp, file_name)
+#             if not os.path.isfile(file_name_abs):
+#                 resource = urlopen(url_as)
+#                 out = open(file_name_abs, 'wb')
+#                 out.write(resource.read())
+#                 out.close()
+#
+#                 # проверка нейронкой
+#                 if detect_photo(model, file_name_abs):
+#                     Photos.objects.create(
+#                         social=social,
+#                         link=link,
+#                         degree_violation="Раскрытие принадлежности к 12 ГУ МО"
+#                     )
+#                 os.remove(file_name_abs)
+#         except Exception:
+#             pass
+#
+#     os.rmdir(dir_for_photos_tmp)
+#     return
 
 
 # поиск по ключевым словам среди списка сообществ
@@ -260,7 +260,7 @@ def search_name_groups_vk_id(user_id, dict_word=config.dict_word, token=config.t
                     Q(social=social)
                     & Q(id_groups=resp["response"][0]["items"][0]["id"])
                 )
-                if groups_list.count() == 0:
+                if not groups_list.exists():
                     GroupsChecks.objects.create(
                         social=social,
                         id_groups=resp["response"][0]["items"][0]["id"]
@@ -306,7 +306,7 @@ def search_name_videos_vk_id(owner_id, dict_word=config.dict_word, token=config.
                     Q(social=social)
                     & Q(id_video=resp["response"][0]["items"][i_resp]["id"])
                 )
-                if video_list.count() == 0:
+                if not video_list.exists():
                     VideoChecks.objects.create(
                         social=social,
                         id_video=resp["response"][0]["items"][i_resp]["id"]

@@ -11,6 +11,10 @@
     left: 0;
 }
 
+.link {
+    word-break: break-all;
+}
+
 .load {
 
     display: flex;

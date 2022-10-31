@@ -19,3 +19,13 @@ div.dt-button-collection.columns>:last-child .dt-button > a {
 div.dataTables_wrapper div.dataTables_processing{
     z-index: 1;
 }
+
+.simple-grid {
+    display: grid;
+    grid-gap: 5px 10px;
+    grid-template-columns: min-content 1fr;
+}
+
+.noHighlight .highlight{
+    background-color: transparent !important;
+}

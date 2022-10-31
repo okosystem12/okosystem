@@ -6,9 +6,9 @@ import {edit} from "./callback/edit";
 
 
 export const make = () => {
-    componentsData.placeTable.html('<table class="table table-striped table-bordered" width="100%"></table>');
+    componentsData.corruptTable.html('<table class="table table-striped table-bordered" width="100%"></table>');
     table.value['table'] = makeTable(
-        componentsData.placeTable.find('.table'),
+        componentsData.corruptTable.find('.table'),
         {
             table: table.value,
             ajax: {

@@ -21,10 +21,10 @@ export const buttonsExport =
                 extend: 'csvHtml5',
                 exportOptions
             },
-            {
-                extend: 'pdfHtml5',
-                exportOptions
-            },
+            // {
+            //     extend: 'pdfHtml5',
+            //     exportOptions
+            // },
             {
                 extend: 'print',
                 exportOptions

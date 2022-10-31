@@ -6,12 +6,12 @@ import {filterRegion} from "../../../../../utils/list/filter/filterRegion";
 import {label} from "../../../../../utils/modal/label";
 
 export const setFormValue = (data = {}) => {
-    editId.value = data.realId || null;
+    editId.value = data.id || null;
     const {cityName, cityCountry, cityRegion, cityModalLabel} = componentsData;
 
-    label(cityModalLabel, editId.value, 'город', data.city);
+    label(cityModalLabel, editId.value, 'город', data.title);
 
-    cityName.val(data.city || '');
+    cityName.val(data.title || '');
 
     initOptionList(cityCountry, countriesList.value, data.country_id);
     initOptionList(

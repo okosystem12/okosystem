@@ -1,0 +1,1 @@
+export const confirmedAt = (date = new Date()) => `подтверждено: ${new Date(date).toLocaleDateString('ru')}г.`;
