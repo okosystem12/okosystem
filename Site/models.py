@@ -18,7 +18,7 @@ class Environments(models.Model):
 class CorruptInfo(models.Model):
     value = models.CharField(max_length=200, verbose_name='Значение', default='', db_index=True)
     info = models.TextField(verbose_name='Информация', default='', blank=True)
-    # tech = models.BooleanField(verbose_name='Управление администратором', default=False)
+    tech = models.BooleanField(verbose_name='Управление администратором', default=False)
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
     def __str__(self):
