@@ -166,7 +166,7 @@ class PatternColumn(models.Model):
 
 
 class Countries(models.Model):
-    title = models.CharField(max_length=200, verbose_name='Страна', default='')
+    title = models.CharField(max_length=200, verbose_name='Страна', default='', db_index=True)
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
     def __str__(self):
@@ -179,7 +179,7 @@ class Countries(models.Model):
 
 
 class Regions(models.Model):
-    title = models.CharField(max_length=200, verbose_name='Регион', default='')
+    title = models.CharField(max_length=200, verbose_name='Регион', default='', db_index=True)
     country = models.ForeignKey(Countries, verbose_name='Страна', on_delete=models.CASCADE, default=None, blank=True,
                                 null=True)
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
@@ -194,7 +194,7 @@ class Regions(models.Model):
 
 
 class Cities(models.Model):
-    title = models.CharField(max_length=200, verbose_name='Город', default='')
+    title = models.CharField(max_length=200, verbose_name='Город', default='', db_index=True)
     country = models.ForeignKey(Countries, verbose_name='Страна', on_delete=models.CASCADE, default=None, blank=True,
                                 null=True)
     region = models.ForeignKey(Regions, verbose_name='Регион', on_delete=models.CASCADE, default=None, blank=True,
@@ -228,7 +228,7 @@ class Place(models.Model):
 
 
 class Vch(models.Model):
-    number = models.CharField(max_length=200, verbose_name='Номер ВЧ', default='')
+    number = models.CharField(max_length=200, verbose_name='Номер ВЧ', default='', db_index=True)
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
     def __str__(self):
@@ -244,8 +244,8 @@ class ControlUser(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE, default=None, blank=True,
                              null=True)
 
-    lastName = models.CharField(max_length=200, verbose_name='Фамилия', default='')
-    firstName = models.CharField(max_length=200, verbose_name='Имя', default='')
+    lastName = models.CharField(max_length=200, verbose_name='Фамилия', default='', db_index=True)
+    firstName = models.CharField(max_length=200, verbose_name='Имя', default='', db_index=True)
     patronymic = models.CharField(max_length=200, verbose_name='Отчество', default='', blank=True)
 
     lastNameT = models.CharField(max_length=200, verbose_name='Фамилия (транслит)', default='', blank=True)
@@ -297,7 +297,7 @@ class ControlUser(models.Model):
 
 class Phone(models.Model):
     controlUser = models.ForeignKey(ControlUser, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    value = models.CharField(max_length=200, verbose_name='Значение', default='')
+    value = models.CharField(max_length=200, verbose_name='Значение', default='', db_index=True)
 
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
@@ -312,7 +312,7 @@ class Phone(models.Model):
 
 class Mail(models.Model):
     controlUser = models.ForeignKey(ControlUser, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    value = models.CharField(max_length=200, verbose_name='Значение', default='')
+    value = models.CharField(max_length=200, verbose_name='Значение', default='', db_index=True)
 
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
@@ -355,7 +355,7 @@ class ControlUserPlace(models.Model):
 class Social(models.Model):
     controlUser = models.ForeignKey(ControlUser, on_delete=models.CASCADE, default=None, blank=True, null=True)
     prefix = models.CharField(max_length=200, verbose_name='Префикс', default='https://vk.com/id')
-    value = models.CharField(max_length=200, verbose_name='Значение', default='')
+    value = models.CharField(max_length=200, verbose_name='Значение', default='', db_index=True)
 
     confirmedAt = models.DateTimeField(verbose_name='Дата подтверждения', default=None, blank=True, null=True)
 
