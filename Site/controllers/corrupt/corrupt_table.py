@@ -18,7 +18,7 @@ def corrupt_table(request):
     if request.user.pk is None:
         return render(request, 'Site/login.html')
 
-    args = data(request, CorruptInfo.objects.filter(Q(removeAt=None)), search, order,  value)
+    args = data(request, CorruptInfo.objects.filter(Q(tech=False)), search, order,  value)
     # args = data(request, CorruptInfo.objects.filter(Q(byAdmin=False)), search, order,  value)
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))
