@@ -5,7 +5,7 @@ from Site.app.handler.valueList import valueList
 from Site.models import VideoCorrupt
 
 
-def oneVideo(video, vc):
+def oneVideo(video):
     return {
         'realId': video.id,
         'materialsType': 'Видео',
@@ -15,8 +15,5 @@ def oneVideo(video, vc):
                 'text': video.name,
                 'link': linklist([video.link])
             }
-        },
-        'social': linklist([video.social.prefix + video.social.value]),
-        'controlUser': video.social.controlUser.fullName(),
-        'corrupt': valueList(vc.values_list('corrupt__info', flat=True))
+        }
     }

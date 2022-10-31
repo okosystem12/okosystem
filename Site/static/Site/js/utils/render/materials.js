@@ -7,7 +7,10 @@ export const materials = (data, type = 'display', ...args) => {
         case 'inf':
             return valueGrid(data?.content.filter(el => el.value));
         case 'group':
-            return data?.content?.name;
+            return [
+                data?.content?.name,
+                linkList(data?.content?.link || [], type, ...args)
+            ].join(type === 'display' ? '<br>' : ', ');
         case 'photo':
             return linkList(data?.content?.link || [], type, ...args);
         case 'post':

@@ -5,7 +5,7 @@ from Site.app.handler.valueList import valueList
 from Site.models import InfCorrupt
 
 
-def oneInf(inf, ic):
+def oneInf(inf):
     return {
         'realId': inf.id,
         'materialsType': 'Личная информация',
@@ -24,8 +24,5 @@ def oneInf(inf, ic):
                 {'key': 'Статус', 'value': inf.status},
                 {'key': 'Любимые телешоу', 'value': inf.tv}
             ]
-        },
-        'social': linklist([inf.social.prefix + inf.social.value]),
-        'controlUser': inf.social.controlUser.fullName(),
-        'corrupt': valueList(ic.values_list('corrupt__info', flat=True))
+        }
     }

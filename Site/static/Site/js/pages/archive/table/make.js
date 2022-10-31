@@ -2,6 +2,7 @@ import {componentsData} from "../componentsData";
 import {table} from "../../../storage/archive/table";
 import {makeTable} from "../../../utils/table/makeTable";
 import {view} from "./callback/view";
+import {remove} from "./callback/remove";
 
 
 export const make = () => {
@@ -14,9 +15,10 @@ export const make = () => {
                 "url": "/archive/table/",
                 "dataSrc": "data"
             },
-            btnList: ['view'],
+            btnList: ['remove'],
             destroyCallback: make,
             viewCallback: view,
+            removeCallback: remove,
         }
     );
 };

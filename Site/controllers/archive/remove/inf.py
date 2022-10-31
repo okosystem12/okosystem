@@ -7,20 +7,19 @@ from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
 from Site.app.object.elem import elem
-from Site.app.object.object import objectRemoveAt
-from Site.models import ControlUser
+from Site.models import Inf
 
 
 @csrf_exempt
-def control_remove(request):
+def inf(request):
     if request.user.pk is None:
         return render(request, 'Site/login.html')
     args = {}
     if request.POST:
         _data = json.loads(elem(request.POST, 'data', '{}'))
-        _id = elem(_data, 'id', None)
-        objectRemoveAt(ControlUser.objects.filter(Q(pk=_id)))
+        _id = elem(_data, 'id')
+
+        print(Inf.objects.filter(Q(pk=_id)))
 
         args['successText'] = 'Запись удалена'
-        args['reload'] = True
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

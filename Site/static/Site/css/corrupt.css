@@ -1,0 +1,6 @@
+.corrupt {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+}

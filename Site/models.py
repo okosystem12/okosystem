@@ -47,7 +47,7 @@ class StatusStage(models.Model):
 class Status(models.Model):
     type = models.CharField(max_length=200, verbose_name='Тип', default='')
     name = models.CharField(max_length=200, verbose_name='Название', default='')
-    stage = models.ForeignKey(StatusStage, verbose_name='Этап', on_delete=models.CASCADE, default=None, blank=True,
+    stage = models.ForeignKey(StatusStage, verbose_name='Этап', on_delete=models.SET_NULL, default=None, blank=True,
                               null=True)
     value = models.IntegerField(verbose_name='Значение (%)', default=0)
     color = models.CharField(max_length=200, verbose_name='Цвет', default='')
@@ -117,7 +117,7 @@ class Table(models.Model):
 
 
 class Column(models.Model):
-    table = models.ForeignKey(Table, verbose_name='Таблица', on_delete=models.CASCADE, default=None)
+    table = models.ForeignKey(Table, verbose_name='Таблица', on_delete=models.SET_NULL, default=None, null=True)
     title = models.CharField(max_length=200, verbose_name='Название', default='')
     data = models.CharField(max_length=200, verbose_name='Набор данных', default='')
     order = models.IntegerField(verbose_name='Позиция', default=0)
@@ -128,7 +128,7 @@ class Column(models.Model):
     fixed = models.BooleanField(verbose_name='Зафиксировать', default=False)
     hide = models.BooleanField(verbose_name='Не скрываемый', default=False)
     visible = models.BooleanField(verbose_name='Отображаемый (по умолчанию)', default=True)
-    render = models.ForeignKey(Render, verbose_name='Рендер', on_delete=models.CASCADE, default=None, blank=True,
+    render = models.ForeignKey(Render, verbose_name='Рендер', on_delete=models.SET_NULL, default=None, blank=True,
                                null=True)
 
     def __str__(self):
@@ -142,7 +142,7 @@ class Column(models.Model):
 
 class PatternTable(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название', default='')
-    table = models.ForeignKey(Table, verbose_name='Таблица', on_delete=models.CASCADE, default=None)
+    table = models.ForeignKey(Table, verbose_name='Таблица', on_delete=models.SET_NULL, default=None, null=True)
 
     def __str__(self):
         return self.name
@@ -154,8 +154,8 @@ class PatternTable(models.Model):
 
 
 class PatternColumn(models.Model):
-    pattern = models.ForeignKey(PatternTable, verbose_name='Шаблон', on_delete=models.CASCADE, default=None)
-    column = models.ForeignKey(Column, verbose_name='Столбец', on_delete=models.CASCADE, default=None)
+    pattern = models.ForeignKey(PatternTable, verbose_name='Шаблон', on_delete=models.SET_NULL, default=None, null=True)
+    column = models.ForeignKey(Column, verbose_name='Столбец', on_delete=models.SET_NULL, default=None, null=True)
 
     def __str__(self):
         return self.pattern.__str__()
@@ -180,7 +180,7 @@ class Countries(models.Model):
 
 class Regions(models.Model):
     title = models.CharField(max_length=200, verbose_name='Регион', default='', db_index=True)
-    country = models.ForeignKey(Countries, verbose_name='Страна', on_delete=models.CASCADE, default=None, blank=True,
+    country = models.ForeignKey(Countries, verbose_name='Страна', on_delete=models.SET_NULL, default=None, blank=True,
                                 null=True)
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
@@ -195,9 +195,9 @@ class Regions(models.Model):
 
 class Cities(models.Model):
     title = models.CharField(max_length=200, verbose_name='Город', default='', db_index=True)
-    country = models.ForeignKey(Countries, verbose_name='Страна', on_delete=models.CASCADE, default=None, blank=True,
+    country = models.ForeignKey(Countries, verbose_name='Страна', on_delete=models.SET_NULL, default=None, blank=True,
                                 null=True)
-    region = models.ForeignKey(Regions, verbose_name='Регион', on_delete=models.CASCADE, default=None, blank=True,
+    region = models.ForeignKey(Regions, verbose_name='Регион', on_delete=models.SET_NULL, default=None, blank=True,
                                null=True)
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
@@ -211,11 +211,11 @@ class Cities(models.Model):
 
 
 class Place(models.Model):
-    country = models.ForeignKey(Countries, verbose_name='Страна', on_delete=models.CASCADE, default=None, blank=True,
+    country = models.ForeignKey(Countries, verbose_name='Страна', on_delete=models.SET_NULL, default=None, blank=True,
                                 null=True)
-    region = models.ForeignKey(Regions, verbose_name='Регион', on_delete=models.CASCADE, default=None, blank=True,
+    region = models.ForeignKey(Regions, verbose_name='Регион', on_delete=models.SET_NULL, default=None, blank=True,
                                null=True)
-    city = models.ForeignKey(Cities, verbose_name='Город', on_delete=models.CASCADE, default=None, blank=True,
+    city = models.ForeignKey(Cities, verbose_name='Город', on_delete=models.SET_NULL, default=None, blank=True,
                              null=True)
 
     def __str__(self):
@@ -241,7 +241,7 @@ class Vch(models.Model):
 
 
 class ControlUser(models.Model):
-    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE, default=None, blank=True,
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.SET_NULL, default=None, blank=True,
                              null=True)
 
     lastName = models.CharField(max_length=200, verbose_name='Фамилия', default='', db_index=True)
@@ -256,10 +256,10 @@ class ControlUser(models.Model):
     birthMonth = models.IntegerField(verbose_name='Месяц рождения', default=0, blank=True)
     birthYear = models.IntegerField(verbose_name='Год рождения', default=0, blank=True)
 
-    birthPlace = models.ForeignKey(Place, verbose_name='Место рождения', on_delete=models.CASCADE, default=None,
+    birthPlace = models.ForeignKey(Place, verbose_name='Место рождения', on_delete=models.SET_NULL, default=None,
                                    blank=True, null=True, related_name='birthPlace')
 
-    livePlace = models.ForeignKey(Place, verbose_name='Место жительства', on_delete=models.CASCADE, default=None,
+    livePlace = models.ForeignKey(Place, verbose_name='Место жительства', on_delete=models.SET_NULL, default=None,
                                   blank=True, null=True, related_name='livePlace')
 
     schools = models.TextField(verbose_name='Школа', default='', blank=True)
@@ -267,10 +267,10 @@ class ControlUser(models.Model):
 
     work = models.TextField(verbose_name='Место работы', default='', blank=True)
 
-    vch = models.ForeignKey(Vch, verbose_name='Место военной службы', on_delete=models.CASCADE, default=None,
+    vch = models.ForeignKey(Vch, verbose_name='Место военной службы', on_delete=models.SET_NULL, default=None,
                             blank=True, null=True)
 
-    status = models.ForeignKey(Status, verbose_name='Статус', on_delete=models.CASCADE,
+    status = models.ForeignKey(Status, verbose_name='Статус', on_delete=models.SET_NULL,
                                default=None, blank=True, null=True)
 
     updatedAt = models.DateTimeField(verbose_name='Дата последнего обновления', default=None, blank=True, null=True)
@@ -296,7 +296,7 @@ class ControlUser(models.Model):
 
 
 class Phone(models.Model):
-    controlUser = models.ForeignKey(ControlUser, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    controlUser = models.ForeignKey(ControlUser, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     value = models.CharField(max_length=200, verbose_name='Значение', default='', db_index=True)
 
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
@@ -311,7 +311,7 @@ class Phone(models.Model):
 
 
 class Mail(models.Model):
-    controlUser = models.ForeignKey(ControlUser, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    controlUser = models.ForeignKey(ControlUser, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     value = models.CharField(max_length=200, verbose_name='Значение', default='', db_index=True)
 
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
@@ -326,8 +326,8 @@ class Mail(models.Model):
 
 
 class ControlUserImg(models.Model):
-    controlUser = models.ForeignKey(ControlUser, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    file = models.ForeignKey(File, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    controlUser = models.ForeignKey(ControlUser, on_delete=models.SET_NULL, default=None, blank=True, null=True)
+    file = models.ForeignKey(File, on_delete=models.SET_NULL, default=None, blank=True, null=True)
 
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
@@ -340,8 +340,8 @@ class ControlUserImg(models.Model):
 
 
 class ControlUserPlace(models.Model):
-    controlUser = models.ForeignKey(ControlUser, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    place = models.ForeignKey(Place, verbose_name='Место', on_delete=models.CASCADE, default=None, blank=True,
+    controlUser = models.ForeignKey(ControlUser, on_delete=models.SET_NULL, default=None, blank=True, null=True)
+    place = models.ForeignKey(Place, verbose_name='Место', on_delete=models.SET_NULL, default=None, blank=True,
                               null=True)
 
     def __str__(self):
@@ -353,7 +353,7 @@ class ControlUserPlace(models.Model):
 
 
 class Social(models.Model):
-    controlUser = models.ForeignKey(ControlUser, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    controlUser = models.ForeignKey(ControlUser, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     prefix = models.CharField(max_length=200, verbose_name='Префикс', default='https://vk.com/id')
     value = models.CharField(max_length=200, verbose_name='Значение', default='', db_index=True)
 
@@ -369,7 +369,7 @@ class Social(models.Model):
 
 
 class Post(models.Model):
-    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    social = models.ForeignKey(Social, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     id_post = models.IntegerField(verbose_name='Номер поста', blank=True, default=0)
     date = models.DateTimeField(verbose_name='Дата добавления', default=None, blank=True, null=True)
     text = models.TextField(verbose_name='Текст поста', default='', blank=True)
@@ -383,13 +383,13 @@ class Post(models.Model):
 
 
 class PostCorrupt(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    post = models.ForeignKey(Post, on_delete=models.SET_NULL, default=None, blank=True, null=True)
+    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     confirmedAt = models.DateTimeField(verbose_name='Дата подтверждения', default=None, blank=True, null=True)
 
 
 class Video(models.Model):
-    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    social = models.ForeignKey(Social, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     id_video = models.IntegerField(verbose_name='Номер видеозаписи', blank=True, default=0)
     date = models.DateTimeField(verbose_name='Дата добавления', default=None, blank=True, null=True)
     name = models.TextField(verbose_name='Название видеозаписи', default='', blank=True)
@@ -404,13 +404,13 @@ class Video(models.Model):
 
 
 class VideoCorrupt(models.Model):
-    video = models.ForeignKey(Video, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    video = models.ForeignKey(Video, on_delete=models.SET_NULL, default=None, blank=True, null=True)
+    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     confirmedAt = models.DateTimeField(verbose_name='Дата подтверждения', default=None, blank=True, null=True)
 
 
 class Groups(models.Model):
-    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    social = models.ForeignKey(Social, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     id_groups = models.IntegerField(verbose_name='Номер сообщества', blank=True, default=0)
     name = models.TextField(verbose_name='Название сообщества', default='', blank=True)
 
@@ -423,13 +423,13 @@ class Groups(models.Model):
 
 
 class GroupsCorrupt(models.Model):
-    groups = models.ForeignKey(Groups, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    groups = models.ForeignKey(Groups, on_delete=models.SET_NULL, default=None, blank=True, null=True)
+    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     confirmedAt = models.DateTimeField(verbose_name='Дата подтверждения', default=None, blank=True, null=True)
 
 
 class Inf(models.Model):
-    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    social = models.ForeignKey(Social, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     about = models.TextField(verbose_name='О себе', default='', blank=True)
     activities = models.TextField(verbose_name='Деятельность', default='', blank=True)
     books = models.TextField(verbose_name='Любимые книги', default='', blank=True)
@@ -451,13 +451,13 @@ class Inf(models.Model):
 
 
 class InfCorrupt(models.Model):
-    inf = models.ForeignKey(Inf, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    inf = models.ForeignKey(Inf, on_delete=models.SET_NULL, default=None, blank=True, null=True)
+    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     confirmedAt = models.DateTimeField(verbose_name='Дата подтверждения', default=None, blank=True, null=True)
 
 
 class Photos(models.Model):
-    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    social = models.ForeignKey(Social, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     link = models.TextField(verbose_name='Ссылка на фотоизображение', default='', blank=True)
 
     def __str__(self):
@@ -469,13 +469,13 @@ class Photos(models.Model):
 
 
 class PhotosCorrupt(models.Model):
-    photo = models.ForeignKey(Photos, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    photo = models.ForeignKey(Photos, on_delete=models.SET_NULL, default=None, blank=True, null=True)
+    corrupt = models.ForeignKey(CorruptInfo, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     confirmedAt = models.DateTimeField(verbose_name='Дата подтверждения', default=None, blank=True, null=True)
 
 
 class PostsChecks(models.Model):
-    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    social = models.ForeignKey(Social, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     id_post = models.IntegerField(verbose_name='Номер поста', blank=True, default=0)
 
     def __str__(self):
@@ -487,7 +487,7 @@ class PostsChecks(models.Model):
 
 
 class VideoChecks(models.Model):
-    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    social = models.ForeignKey(Social, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     id_video = models.IntegerField(verbose_name='Номер видеозаписи', blank=True, default=0)
 
     def __str__(self):
@@ -499,7 +499,7 @@ class VideoChecks(models.Model):
 
 
 class GroupsChecks(models.Model):
-    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    social = models.ForeignKey(Social, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     id_groups = models.IntegerField(verbose_name='Номер сообщества', blank=True, default=0)
 
     def __str__(self):
@@ -511,7 +511,7 @@ class GroupsChecks(models.Model):
 
 
 class PhotosChecks(models.Model):
-    social = models.ForeignKey(Social, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    social = models.ForeignKey(Social, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     link = models.TextField(verbose_name='Ссылка на фотоизображение', default='', blank=True)
 
     def __str__(self):

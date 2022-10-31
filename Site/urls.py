@@ -34,6 +34,11 @@ from Site.controllers.vch.vch_remove import vch_remove
 from Site.controllers.vch.vch_table import vch_table
 from Site.controllers.vch.vch_work import vch_work
 from Site.controllers.archive.table import table as archive_table
+from Site.controllers.archive.remove.post import post as archive_remove_post
+from Site.controllers.archive.remove.video import video as archive_remove_video
+from Site.controllers.archive.remove.group import group as archive_remove_group
+from Site.controllers.archive.remove.photo import photo as archive_remove_photo
+from Site.controllers.archive.remove.inf import inf as archive_remove_inf
 from Site.views import index, control, actions, reports, config, place, login, tester, vch, corrupt, archive
 from mysite import settings
 
@@ -60,6 +65,12 @@ urlpatterns = [
 
                   url(r'^archive/$', archive, name='archive'),
                   url(r'^archive/table/$', archive_table, name='archive_table'),
+                  url(r'^archive/get/$', archive_table, name='archive_table'),
+                  url(r'^archive/remove/post/$', archive_remove_post, name='archive_remove_post'),
+                  url(r'^archive/remove/video/$', archive_remove_video, name='archive_remove_video'),
+                  url(r'^archive/remove/group/$', archive_remove_group, name='archive_remove_group'),
+                  url(r'^archive/remove/photo/$', archive_remove_photo, name='archive_remove_photo'),
+                  url(r'^archive/remove/inf/$', archive_remove_inf, name='archive_remove_inf'),
 
                   url(r'^actions/$', actions, name='actions'),
 
@@ -78,6 +89,7 @@ urlpatterns = [
                   url(r'^config/place/city/get/$', place_city_get, name='place_city_get'),
                   url(r'^config/place/city/work/$', place_city_work, name='place_city_work'),
                   url(r'^config/place/city/remove/$', place_city_remove, name='place_city_remove'),
+
                   url(r'^config/vch/$', vch, name='vch'),
                   url(r'^config/vch/get/$', vch_get, name='vch_get'),
                   url(r'^config/vch/table/$', vch_table, name='vch_table'),

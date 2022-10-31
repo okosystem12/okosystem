@@ -2,10 +2,11 @@ from django.db.models import Q
 
 from Site.app.handler.linkList import linklist
 from Site.app.handler.valueList import valueList
+from Site.app.social.groupLink import groupLink
 from Site.models import GroupsCorrupt
 
 
-def oneGroup(group, gc):
+def oneGroup(group):
     return {
         'realId': group.id,
         'materialsType': 'Группа',
@@ -13,9 +14,7 @@ def oneGroup(group, gc):
             'type': 'group',
             'content': {
                 'name': group.name,
+                'link': linklist([groupLink(group)])
             }
-        },
-        'social': linklist([group.social.prefix + group.social.value]),
-        'controlUser': group.social.controlUser.fullName(),
-        'corrupt': valueList(gc.values_list('corrupt__info', flat=True))
+        }
     }

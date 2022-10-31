@@ -2,6 +2,7 @@
 @import "./component.css";
 @import "./card-info.css";
 @import "./progressbar.css";
+@import "./corrupt.css";
 
 #globalLoader {
     position: absolute;

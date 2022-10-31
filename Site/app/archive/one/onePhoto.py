@@ -5,7 +5,7 @@ from Site.app.handler.valueList import valueList
 from Site.models import PhotosCorrupt
 
 
-def onePhoto(photo, pc):
+def onePhoto(photo):
     return {
         'realId': photo.id,
         'materialsType': 'Фото',
@@ -14,8 +14,5 @@ def onePhoto(photo, pc):
             'content': {
                 'link': linklist([photo.link])
             }
-        },
-        'social': linklist([photo.social.prefix + photo.social.value]),
-        'controlUser': photo.social.controlUser.fullName(),
-        'corrupt': valueList(pc.values_list('corrupt__info', flat=True))
+        }
     }

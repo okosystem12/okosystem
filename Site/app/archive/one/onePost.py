@@ -6,7 +6,7 @@ from Site.app.social.postLink import postLink
 from Site.models import PostCorrupt
 
 
-def onePost(post, pc):
+def onePost(post):
     return {
         'realId': post.id,
         'materialsType': 'Пост',
@@ -17,7 +17,4 @@ def onePost(post, pc):
                 'link': linklist([postLink(post)])
             }
         },
-        'social': linklist([post.social.prefix + post.social.value]),
-        'controlUser': post.social.controlUser.fullName(),
-        'corrupt': valueList(pc.values_list('corrupt__info', flat=True))
     }

@@ -1,5 +1,6 @@
 from django.db.models import Q
 
+from Site.app.archive.one.oneDefault import oneDefault
 from Site.app.archive.one.oneGroup import oneGroup
 from Site.app.archive.one.oneInf import oneInf
 from Site.app.archive.one.onePhoto import onePhoto
@@ -19,7 +20,8 @@ def data(postList, videoList, groupsList, photosList, infList, confirmed=False):
             info = {}
             info.update(emptyRow)
             info.update({'id': index})
-            info.update(onePost(post, pc))
+            info.update(onePost(post))
+            info.update(oneDefault(post, pc))
             result.append(info)
             index += 1
 
@@ -30,7 +32,8 @@ def data(postList, videoList, groupsList, photosList, infList, confirmed=False):
             info = {}
             info.update(emptyRow)
             info.update({'id': index})
-            info.update(oneVideo(video, vc))
+            info.update(oneVideo(video))
+            info.update(oneDefault(video, vc))
             result.append(info)
             index += 1
 
@@ -42,7 +45,8 @@ def data(postList, videoList, groupsList, photosList, infList, confirmed=False):
             info = {}
             info.update(emptyRow)
             info.update({'id': index})
-            info.update(oneGroup(group, gc))
+            info.update(oneGroup(group))
+            info.update(oneDefault(group, gc))
             result.append(info)
             index += 1
 
@@ -54,7 +58,8 @@ def data(postList, videoList, groupsList, photosList, infList, confirmed=False):
             info = {}
             info.update(emptyRow)
             info.update({'id': index})
-            info.update(onePhoto(photo, pc))
+            info.update(onePhoto(photo))
+            info.update(oneDefault(photo, pc))
             result.append(info)
             index += 1
 
@@ -65,7 +70,8 @@ def data(postList, videoList, groupsList, photosList, infList, confirmed=False):
             info = {}
             info.update(emptyRow)
             info.update({'id': index})
-            info.update(oneInf(inf, ic))
+            info.update(oneInf(inf))
+            info.update(oneDefault(inf, ic))
             result.append(info)
             index += 1
 
