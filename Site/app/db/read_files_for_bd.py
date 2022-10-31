@@ -35,5 +35,5 @@ def read_files_for_bd(path_dir):
         data_update.clear()
 
 
-read_files_for_bd('D:\\nd\\database')
+# read_files_for_bd('D:\\nd\\database')
 # read_files_for_bd(r'D:\oko\okosystem\genering_profils_vk\database')

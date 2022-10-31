@@ -514,7 +514,7 @@ class PhotosChecks(models.Model):
 
 
 class AllUsersVK(models.Model):
-    id_user = models.IntegerField(verbose_name='id пользователя', default=0, blank=True)
+    id_user = models.IntegerField(verbose_name='id пользователя', default=0, blank=True, db_index=True)
     first_name = models.TextField(verbose_name='Имя', default='', blank=True)
     last_name = models.TextField(verbose_name='Фамилия', default='', blank=True)
     bdate = models.TextField(verbose_name='Дата рождения', default="", blank=True)
