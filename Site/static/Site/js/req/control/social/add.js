@@ -1,5 +1,6 @@
 import {doNothing} from "../../../utils/doNothing";
-import {work} from "./work";
+import {main} from "../../main";
+import {userId} from "../../../storage/control/userId";
 
 export const add = (value = '', callback = doNothing) =>
-    work({value, action: 'add'}, callback);
+    main('/control/social/add/', {value, userId: userId.value}, callback);

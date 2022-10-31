@@ -12,7 +12,9 @@ from Site.controllers.control.control_work_img import control_work_img
 from Site.controllers.control.control_work_img_remove import control_work_img_remove
 from Site.controllers.control.status.search import search as status_search
 from Site.controllers.control.status.analysis import analysis as status_analysis
-from Site.controllers.control.social.work import work as social_work
+from Site.controllers.control.social.add import add as social_add
+from Site.controllers.control.social.confirm import confirm as social_confirm
+from Site.controllers.control.social.reject import reject as social_reject
 from Site.controllers.corrupt.corrupt_get import corrupt_get
 from Site.controllers.corrupt.corrupt_remove import corrupt_remove
 from Site.controllers.corrupt.corrupt_table import corrupt_table
@@ -55,7 +57,10 @@ urlpatterns = [
                   url(r'^control/table/$', control_table, name='control_table'),
                   url(r'^control/status/search/$', status_search, name='status_search'),
                   url(r'^control/status/analysis/$', status_analysis, name='status_analysis'),
-                  url(r'^control/social/work/$', social_work, name='social_work'),
+
+                  url(r'^control/social/add/$', social_add, name='social_add'),
+                  url(r'^control/social/confirm/$', social_confirm, name='social_confirm'),
+                  url(r'^control/social/reject/$', social_reject, name='social_reject'),
 
                   url(r'^corrupt/$', corrupt, name='corrupt'),
                   url(r'^corrupt/get/$', corrupt_get, name='corrupt_get'),
