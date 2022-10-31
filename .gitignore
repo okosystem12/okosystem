@@ -3,6 +3,7 @@
 
 .idea/
 **/node_modules/
+Site/migrations/
 
 mysite/settings.py
 
