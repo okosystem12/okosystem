@@ -5,10 +5,12 @@ import {socialList} from "../../../../storage/control/socialList";
 
 
 export const search = (data = {}) => {
-    const {viewSearch, viewSearchAdd} = componentsData;
+    const {viewSearch, viewSearchAdd, socialCount, socialWait} = componentsData;
 
     viewSearch.html('');
     viewSearchAdd.html('');
+    socialCount.html(0).hide();
+    socialWait.html(0).hide();
 
     switch (data?.status.stage) {
         case 'prepare':

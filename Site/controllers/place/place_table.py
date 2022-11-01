@@ -7,9 +7,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.array.sortList import sortList
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
+from Site.app.handler.place import place
+from Site.app.object.elem import elem
 from Site.app.table.tableConfig import tableConfig
 from Site.controllers.place.prepInfo import prepInfo
-from Site.models import Countries, Regions, Cities
 
 
 @csrf_exempt
@@ -19,9 +20,10 @@ def place_table(request):
 
     tc = tableConfig(request.POST)
 
-    countriesList = Countries.objects.filter(Q(removeAt=None))
-    regionsList = Regions.objects.filter(Q(removeAt=None) & Q(country__in=countriesList))
-    citiesList = Cities.objects.filter(Q(removeAt=None) & (Q(region__in=regionsList) | Q(country__in=countriesList)))
+    _data = json.loads(elem(request.GET, 'data', '{}'))
+    _type = elem(_data, 'type')
+
+    countriesList, regionsList, citiesList = place(_type)
 
     iTotalRecords = countriesList.count() + regionsList.count() + citiesList.count()
 

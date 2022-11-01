@@ -4,6 +4,7 @@
 @import "./progressbar.css";
 @import "./corrupt.css";
 
+
 #globalLoader {
     position: absolute;
     top: 0;
@@ -269,4 +270,34 @@ div.dt-buttons {
 
 .panel .lead {
     margin: 0;
+}
+
+.accordion-event {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.accordion-event, .accordion-event:hover, .accordion-event:active, .accordion-event:visited, .accordion-event:focus {
+    text-decoration:none;
+}
+
+.accordion-event:hover>span:first-child {
+    text-decoration:none;
+}
+
+.filter-info {
+    display: flex;
+    margin: -5px -5px 0 -5px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.filter-info__elem{
+   margin: 5px;
+}
+
+.fancybox-content{
+    overflow: unset;
 }

@@ -14,7 +14,8 @@ export class StorageTable extends Storage {
             columnsList: data.columnsList,
             renderList: data.renderList,
             patternList: data.patternList,
-            patternColumnsList: data.patternColumnsList
+            patternColumnsList: data.patternColumnsList,
+            filter: {},
         };
     }
 }

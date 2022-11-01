@@ -1,4 +1,4 @@
-import {fancybox} from "./fancybox";
+import {fancybox} from "../fancybox";
 
 const title = '<p class="lead fancybox-confirm__title">Подтвердите действие</p>';
 const btn =

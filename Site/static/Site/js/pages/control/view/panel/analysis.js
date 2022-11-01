@@ -4,8 +4,9 @@ import {corruptList} from "../../../../storage/control/corruptList";
 import {fillAnalysis} from "./analysis/fillAnalysis";
 
 export const analysis = (data = null) => {
-    const {viewAnalysis} = componentsData;
+    const {viewAnalysis, analysisCount} = componentsData;
     viewAnalysis.html('');
+    analysisCount.html(0).hide();
 
     switch (data?.status.stage) {
         case 'prepare':

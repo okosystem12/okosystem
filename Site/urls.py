@@ -15,6 +15,17 @@ from Site.controllers.control.status.analysis import analysis as status_analysis
 from Site.controllers.control.social.add import add as social_add
 from Site.controllers.control.social.confirm import confirm as social_confirm
 from Site.controllers.control.social.reject import reject as social_reject
+from Site.controllers.control.analysis.post.confirm import confirm as analysis_post_confirm
+from Site.controllers.control.analysis.post.reject import reject as analysis_post_reject
+from Site.controllers.control.analysis.video.confirm import confirm as analysis_video_confirm
+from Site.controllers.control.analysis.video.reject import reject as analysis_video_reject
+from Site.controllers.control.analysis.group.confirm import confirm as analysis_group_confirm
+from Site.controllers.control.analysis.group.reject import reject as analysis_group_reject
+from Site.controllers.control.analysis.photo.confirm import confirm as analysis_photo_confirm
+from Site.controllers.control.analysis.photo.reject import reject as analysis_photo_reject
+from Site.controllers.control.analysis.inf.confirm import confirm as analysis_inf_confirm
+from Site.controllers.control.analysis.inf.reject import reject as analysis_inf_reject
+
 from Site.controllers.corrupt.corrupt_get import corrupt_get
 from Site.controllers.corrupt.corrupt_remove import corrupt_remove
 from Site.controllers.corrupt.corrupt_table import corrupt_table
@@ -61,6 +72,17 @@ urlpatterns = [
                   url(r'^control/social/add/$', social_add, name='social_add'),
                   url(r'^control/social/confirm/$', social_confirm, name='social_confirm'),
                   url(r'^control/social/reject/$', social_reject, name='social_reject'),
+
+                  url(r'^control/analysis/post/confirm/$', analysis_post_confirm, name='analysis_post_confirm'),
+                  url(r'^control/analysis/post/reject/$', analysis_post_reject, name='analysis_post_reject'),
+                  url(r'^control/analysis/video/confirm/$', analysis_video_confirm, name='analysis_video_confirm'),
+                  url(r'^control/analysis/video/reject/$', analysis_video_reject, name='analysis_video_reject'),
+                  url(r'^control/analysis/group/confirm/$', analysis_group_confirm, name='analysis_group_confirm'),
+                  url(r'^control/analysis/group/reject/$', analysis_group_reject, name='analysis_group_reject'),
+                  url(r'^control/analysis/inf/confirm/$', analysis_inf_confirm, name='analysis_inf_confirm'),
+                  url(r'^control/analysis/inf/reject/$', analysis_inf_reject, name='analysis_inf_reject'),
+                  url(r'^control/analysis/photo/confirm/$', analysis_photo_confirm, name='analysis_photo_confirm'),
+                  url(r'^control/analysis/photo/reject/$', analysis_photo_reject, name='analysis_photo_reject'),
 
                   url(r'^corrupt/$', corrupt, name='corrupt'),
                   url(r'^corrupt/get/$', corrupt_get, name='corrupt_get'),

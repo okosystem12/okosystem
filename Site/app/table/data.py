@@ -1,14 +1,21 @@
+import json
+
 from django.db.models import Q
 
+from Site.app.object.elem import elem
 from Site.app.table.tableConfig import tableConfig
 
 
-def data(_request, _object, search, order, value):
+def data(_request, _object, search, order, value, filter):
     tc = tableConfig(_request.POST)
 
     oList = _object.filter(Q(removeAt=None))
 
     iTotalRecords = oList.count()
+
+    _data = json.loads(elem(_request.GET, 'data', '{}'))
+
+    oList = filter(oList, _data)
 
     if tc['search'] != '':
         for word in tc['search'].split(' '):

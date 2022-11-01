@@ -3,17 +3,20 @@ import {table} from "../../../storage/archive/table";
 import {makeTable} from "../../../utils/table/makeTable";
 import {view} from "./callback/view";
 import {remove} from "./callback/remove";
+import {table as tableElem} from "../../../components/table/table";
 
+const ajaxUrl = "/archive/table/";
 
-export const make = () => {
-    componentsData.archiveTable.html('<table class="table table-striped table-bordered" width="100%"></table>');
+export const make = (url = ajaxUrl) => {
+    componentsData.archiveTable.html(tableElem());
     table.value['table'] = makeTable(
         componentsData.archiveTable.find('.table'),
         {
             table: table.value,
+            ajaxUrl,
             ajax: {
-                "url": "/archive/table/",
-                "dataSrc": "data"
+                url: url,
+                dataSrc: "data"
             },
             btnList: ['remove'],
             destroyCallback: make,

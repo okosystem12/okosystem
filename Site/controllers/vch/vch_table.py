@@ -9,6 +9,7 @@ from Site.app.table.data import data
 from Site.app.table.vch.order import order
 from Site.app.table.vch.search import search
 from Site.app.table.vch.value import value
+from Site.app.table.vch.filter import filter
 from Site.models import Vch
 
 
@@ -17,6 +18,6 @@ def vch_table(request):
     if request.user.pk is None:
         return render(request, 'Site/login.html')
 
-    args = data(request, Vch.objects, search, order, value)
+    args = data(request, Vch.objects, search, order, value, filter)
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

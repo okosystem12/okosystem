@@ -5,7 +5,8 @@ import {buttonsColvis} from "./handler/buttonsColvis";
 import {colvisGroup} from "./configTable/colvisGroup";
 import {prepColumnsList} from "./configTable/prepColumnsList";
 import {buttonsInit} from "./handler/buttonsInit";
-import {filter} from "./handler/filter";
+import {filter} from "./filter/filter";
+import {fillFilterInfo} from "./filter/fillFilterInfo";
 
 export const makeTable = (table, options = {}) => {
 
@@ -14,6 +15,8 @@ export const makeTable = (table, options = {}) => {
     const prepList = prepColumnsList(options.table);
 
     const visList = prepList.filter(el => !el.hide);
+
+    fillFilterInfo(options);
 
     return table.DataTable({
         ...settings,

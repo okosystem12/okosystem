@@ -3,16 +3,19 @@ import {table} from "../../../../storage/config/vch/table";
 import {makeTable} from "../../../../utils/table/makeTable";
 import {remove} from "./callback/remove";
 import {edit} from "./callback/edit";
+import {table as tableElem} from "../../../../components/table/table";
 
+const ajaxUrl = "/config/vch/table/";
 
-export const make = () => {
-    componentsData.vchTable.html('<table class="table table-striped table-bordered" width="100%"></table>');
+export const make = (url = ajaxUrl) => {
+    componentsData.vchTable.html(tableElem());
     table.value['table'] = makeTable(
         componentsData.vchTable.find('.table'),
         {
             table: table.value,
+            ajaxUrl,
             ajax: {
-                "url": "/config/vch/table/",
+                "url": url,
                 "dataSrc": "data"
             },
             btnList: ['edit', 'remove'],

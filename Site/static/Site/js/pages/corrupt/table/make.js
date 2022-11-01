@@ -3,28 +3,23 @@ import {table} from "../../../storage/corrupt/table";
 import {makeTable} from "../../../utils/table/makeTable";
 import {remove} from "./callback/remove";
 import {edit} from "./callback/edit";
+import {table as tableElem} from "../../../components/table/table";
 
 
-export const make = () => {
-    componentsData.corruptTable.html('<table class="table table-striped table-bordered" width="100%"></table>');
+const ajaxUrl = `/corrupt/table/`;
+
+export const make = (url = ajaxUrl) => {
+    componentsData.corruptTable.html(tableElem());
     table.value['table'] = makeTable(
         componentsData.corruptTable.find('.table'),
         {
             table: table.value,
+            ajaxUrl,
             ajax: {
-                url: `/corrupt/table/`,
+                url: url,
                 dataSrc: "data"
             },
             btnList: ['edit', 'remove'],
-            filter: [{
-                text: 'remove',
-                action: (e, dt, node, config) => {
-                    dt.state.clear().destroy();
-                    make();
-                    dt.ajax.url(`/corrupt/table/?id=1`);
-                    dt.ajax.reload(false);
-                }
-            },],
             destroyCallback: make,
             removeCallback: remove,
             editCallback: edit,
