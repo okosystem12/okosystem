@@ -36,6 +36,7 @@ def search_post_vk_id(owner_id, dict_word=config.dict_word, token=config.token):
     data = dict(code=code, access_token=token, v='5.131')
     resp = requests.post(url=url, data=data)
     resp = resp.json()
+
     count_record = resp["response"][0]["count"]
 
     social = Social.objects.filter(Q(value=owner_id)).first()

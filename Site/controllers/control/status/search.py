@@ -32,7 +32,7 @@ def search(request):
             }
 
 
-            path_dir = os.path.abspath(r"C:\Users\user.303-ARM2\PycharmProjects\okosystem\database_vk")
+            path_dir = os.path.abspath(os.path.join("database_vk"))
             first_name = str(controlUser.firstNameT)
             last_name = str(controlUser.lastNameT)
             user = controlUser
