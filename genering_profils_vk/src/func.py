@@ -72,7 +72,7 @@ def search_post_vk_id(owner_id, token=config.token):
                                 )
 
                             PostCorrupt.objects.create(
-                                posts=_post,
+                                post=_post,
                                 corrupt=word_dict)
 
         except Exception as e:
