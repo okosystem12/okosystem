@@ -47,6 +47,7 @@ from Site.controllers.vch.vch_remove import vch_remove
 from Site.controllers.vch.vch_table import vch_table
 from Site.controllers.vch.vch_work import vch_work
 from Site.controllers.archive.table import table as archive_table
+from Site.controllers.archive.info import info as archive_info
 from Site.controllers.archive.remove.post import post as archive_remove_post
 from Site.controllers.archive.remove.video import video as archive_remove_video
 from Site.controllers.archive.remove.group import group as archive_remove_group
@@ -90,6 +91,7 @@ urlpatterns = [
                   url(r'^corrupt/remove/$', corrupt_remove, name='corrupt_remove'),
 
                   url(r'^archive/$', archive, name='archive'),
+                  url(r'^archive/info/$', archive_info, name='archive_info'),
                   url(r'^archive/table/$', archive_table, name='archive_table'),
                   url(r'^archive/get/$', archive_table, name='archive_table'),
                   url(r'^archive/remove/post/$', archive_remove_post, name='archive_remove_post'),

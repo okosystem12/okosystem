@@ -9,7 +9,7 @@ from Site.models import GroupsCorrupt
 def oneGroup(group):
     return {
         'realId': group.id,
-        'materialsType': 'Группа',
+        'materialsType': 'Сообщество',
         'materials': {
             'type': 'group',
             'content': {

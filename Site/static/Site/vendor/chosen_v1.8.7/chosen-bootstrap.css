@@ -71,7 +71,6 @@ select.form-control + .chosen-container .chosen-results li.active-result {
     font-weight: normal;
     line-height: 1.428571429;
     color: #333;
-    white-space: nowrap;
     background-image: none;
 }
 

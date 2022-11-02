@@ -1,6 +1,6 @@
-import {init} from "./table/init";
+import {getInfo} from "./getInfo";
 
 
 (() => {
-    init();
+    getInfo();
 })();
