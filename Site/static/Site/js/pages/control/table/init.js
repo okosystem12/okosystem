@@ -6,6 +6,6 @@ import {table} from "../../../storage/control/table";
 export const init = () =>
     getControlTable((msg) => {
         table.setTable(msg);
-        make();
         controlInfo();
+        make();
     });

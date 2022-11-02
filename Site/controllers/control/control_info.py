@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
-from Site.app.handler.place import placeObject
+from Site.app.handler.placeObject import placeObject
 from Site.models import Vch
 
 

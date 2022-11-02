@@ -3,18 +3,25 @@ import {table} from "../../../../storage/config/place/table";
 import {makeTable} from "../../../../utils/table/makeTable";
 import {edit} from "./callback/edit";
 import {remove} from "./callback/remove";
+import {filter} from "./filter/filter";
+import {table as tableElem} from "../../../../components/table/table";
 
 
-export const make = () => {
-    componentsData.placeTable.html('<table class="table table-striped table-bordered" width="100%"></table>');
+const ajaxUrl = "/config/place/table/";
+
+export const make = (url = ajaxUrl) => {
+    componentsData.placeTable.html(tableElem());
     table.value['table'] = makeTable(
         componentsData.placeTable.find('.table'),
         {
             table: table.value,
+            ajaxUrl,
             ajax: {
-                "url": "/config/place/table/",
+                "url": url,
                 "dataSrc": "data"
             },
+            filter: filter(table.value),
+            filterInfo: componentsData.placeTable.find('.filter-info'),
             btnList: ['edit', 'remove'],
             destroyCallback: make,
             removeCallback: remove,

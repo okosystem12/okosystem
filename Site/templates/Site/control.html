@@ -323,11 +323,15 @@
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="headingSearch">
                                 <h4 class="panel-title">
-                                    <a class="collapsed" role="button" data-toggle="collapse"
+                                    <a class="collapsed accordion-event" role="button" data-toggle="collapse"
                                        data-parent="#accordionInfo"
                                        href="#collapseSearch" aria-expanded="false"
                                        aria-controls="collapseOne">
-                                        Список социальных сетей
+                                        <span>Список социальных сетей</span>
+                                        <span>
+                                        <span class="label label-success" id="socialCount" title="Подтверждено">0</span>
+                                        <span class="label label-danger" id="socialWait" title="Ожидает">0</span>
+                                            </span>
                                     </a>
                                 </h4>
                             </div>
@@ -350,11 +354,12 @@
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="headingAnalysis">
                                 <h4 class="panel-title">
-                                    <a class="collapsed" role="button" data-toggle="collapse"
+                                    <a class="collapsed accordion-event" role="button" data-toggle="collapse"
                                        data-parent="#accordionInfo"
                                        href="#collapseAnalysis" aria-expanded="false"
                                        aria-controls="collapseTwo">
-                                        Выявленные нарушения
+                                        <span>Выявленные нарушения</span>
+                                        <span class="label label-danger" id="analysisCount" title="Ожидает">0</span>
                                     </a>
                                 </h4>
                             </div>

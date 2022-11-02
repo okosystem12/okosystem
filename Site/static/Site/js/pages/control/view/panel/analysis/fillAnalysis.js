@@ -9,10 +9,12 @@ import {corruptControl} from "../../../../../components/corrupt/corruptControl";
 import {makeBtnEvent} from "./makeBtnEvent";
 
 export const fillAnalysis = (data = null) => {
-    console.log('fillAnalysis');
     if (data) {
-        const {viewAnalysis} = componentsData;
+        const {viewAnalysis, analysisCount} = componentsData;
         viewAnalysis.html('');
+        analysisCount.html(0).hide();
+
+        let count = 0;
 
         if (corruptList.value.length !== 0) {
             const parent = 'accordionParent';
@@ -30,24 +32,34 @@ export const fillAnalysis = (data = null) => {
 
             socialList.sort().forEach(s => {
                 const panelContent = [];
+                let socCount = 0;
 
-                userCorruptList.forEach(el => {
+                userCorruptList.filter(el => el.social[0]['link'] === s).forEach(el => {
                     panelContent.push(corruptElem({
                         materialsType: el.materialsType,
                         materials: el.materials,
                         corruptList: el.corruptList
                     }));
                     el.corruptList.forEach(c => {
-                        panelContent.push(corruptControl(c))
+                        panelContent.push(corruptControl({
+                            ...c,
+                            type: el.materials.type
+                        }));
+                        count++;
+                        socCount++;
                     })
                 });
 
-                panelList.push(accordionPanel(s, corruptParent(panelContent.join('')), parent))
+                panelList.push(accordionPanel(s, socCount, corruptParent(panelContent.join('')), parent))
             });
 
             viewAnalysis.append(accordionParent(parent, panelList.join('')));
 
             makeBtnEvent();
+
+            if (count) {
+                analysisCount.html(count).show();
+            }
         }
     }
 };

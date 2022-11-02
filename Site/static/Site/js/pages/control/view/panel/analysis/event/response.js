@@ -1,11 +1,12 @@
-import {close} from "../../../close";
 import {table} from "../../../../../../storage/control/table";
-import {view} from "../../../../table/event/view";
+import {corruptList} from "../../../../../../storage/control/corruptList";
+import {setViewValue} from "../../../setViewValue";
 
 export const response = (msg) => {
     if(msg.reloadTable){
         table.value.table.ajax.reload(false);
     }
-    close();
-    view(msg.userId);
+
+    corruptList.value = msg.corruptList;
+    setViewValue(msg.controlUser[0]);
 };

@@ -14,11 +14,11 @@ def index(request):
         return render(request, 'Site/login.html')
     # return render(request, 'Site/index.html')
 
-    print(datetime.now())
-    id_user_list_max = []
-    pos = 0
-    step = 1000000
-    # while True:
+    # print(datetime.now())
+    # id_user_list_max = []
+    # pos = 0
+    # step = 1000000
+    # while pos < step * 10:
     #     notAll = AllUsersVK.objects.all()[pos:pos + step]
     #     notAllList = notAll.values_list('id_user', flat=True)
     #     if len(notAllList) == 0:
@@ -27,7 +27,7 @@ def index(request):
     #     pos += step
     #     print(pos)
     # print(max(id_user_list_max))
-    print(datetime.now())
+    # print(datetime.now())
 
     return render(request, 'Site/control.html')
 

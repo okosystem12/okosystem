@@ -19,7 +19,7 @@ def photo(request):
         _data = json.loads(elem(request.POST, 'data', '{}'))
         _id = elem(_data, 'id')
 
-        print(Photos.objects.filter(Q(pk=_id)))
+        Photos.objects.filter(Q(pk=_id)).delete()
 
         args['successText'] = 'Запись удалена'
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

@@ -6,9 +6,7 @@ import {btnEvent} from "./work/btnEvent";
 
 (() => {
     init();
-
     prepControlForm();
     validate();
-
     btnEvent();
 })();

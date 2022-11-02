@@ -3,26 +3,15 @@ from django.db.models import Q
 from Site.models import Countries, Regions, Cities
 
 
-def placeObject(_type=''):
-    regionsList = []
-    citiesList = []
-
+def place(_type=''):
     countriesList = Countries.objects.filter(Q(removeAt=None))
+    regionsList = Regions.objects.filter(Q(removeAt=None) & Q(country__in=countriesList))
+    citiesList = Cities.objects.filter(Q(removeAt=None) & (Q(region__in=regionsList) | Q(country__in=countriesList)))
 
-    if _type == '':
-        regionsList = Regions.objects.filter(Q(removeAt=None) & Q(country__in=countriesList))
-        citiesList = Cities.objects.filter(
-            Q(removeAt=None) & (Q(region__in=regionsList) | Q(country__in=countriesList)))
-
-        regionsList = list(regionsList.values())
-        citiesList = list(citiesList.values())
+    if _type == 'countries':
+        regionsList = regionsList.filter(Q(pk=None))
+        citiesList = citiesList.filter(Q(pk=None))
     elif _type == 'regions':
-        regionsList = Regions.objects.filter(Q(removeAt=None) & Q(country__in=countriesList))
+        citiesList = citiesList.filter(Q(pk=None))
 
-        regionsList = list(regionsList.values())
-
-    return {
-        'countriesList': list(countriesList.values()),
-        'regionsList': regionsList,
-        'citiesList': citiesList,
-    }
+    return countriesList, regionsList, citiesList

@@ -4,18 +4,26 @@ import {makeTable} from "../../../utils/table/makeTable";
 import {remove} from "./event/remove";
 import {edit} from "./event/edit";
 import {view} from "./event/view";
+import {table as tableElem} from "../../../components/table/table";
+import {filter} from "./filter/filter";
 
-export const make = () => {
-    componentsData.controlTable.html('<table class="table table-striped table-bordered" width="100%"></table>');
+
+const ajaxUrl = "/control/table/";
+
+export const make = (url = ajaxUrl) => {
+    componentsData.controlTable.html(tableElem());
     table.value['table'] = makeTable(
         componentsData.controlTable.find('.table'),
         {
             table: table.value,
+            ajaxUrl,
             ajax: {
-                "url": "/control/table/",
+                "url": url,
                 "dataSrc": "data"
             },
             btnList: ['view', 'edit', 'remove'],
+            filter: filter(table.value),
+            filterInfo: componentsData.controlTable.find('.filter-info'),
             destroyCallback: make,
             removeCallback: remove,
             editCallback: edit,

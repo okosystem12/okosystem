@@ -7,9 +7,15 @@ export const componentsData = {
     controlForm: $('#controlForm'),
 
     viewModal: $('#viewModal'),
+
     viewSearch: $('#viewSearch'),
     viewSearchAdd: $('#viewSearchAdd'),
+    socialCount: $('#socialCount'),
+    socialWait: $('#socialWait'),
+
     viewAnalysis: $('#viewAnalysis'),
+    analysisCount: $('#analysisCount'),
+
     panelCollapse: $('.panel-collapse'),
     viewSearchBtn: $('#viewSearchBtn'),
     viewSearchAddBtn: $('#viewSearchAddBtn'),
