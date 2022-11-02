@@ -17,16 +17,16 @@ def initT(user=None):
         for one in socialList.iterator():
             print(user)
 
-            search_post_vk_id(one.value)
-            print("Посты отработали")
+            # search_post_vk_id(one.value)
+            # print("Посты отработали")
             search_name_groups_vk_id(one.value)
             print("Группы отработали")
-            search_name_videos_vk_id(one.value)
-            print("Видео отработали")
-            search_inf_users_vk_id(one.value)
-            print("Информация отработали")
-            downloading_search_photos(one.value)
-            print("Фото отработали")
+            # search_name_videos_vk_id(one.value)
+            # print("Видео отработали")
+            # search_inf_users_vk_id(one.value)
+            # print("Информация отработали")
+            # downloading_search_photos(one.value)
+            # print("Фото отработали")
 
         else:
             print('NO initT')
