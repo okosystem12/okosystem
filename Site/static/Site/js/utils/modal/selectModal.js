@@ -4,10 +4,10 @@ import {initChosen} from "../list/initChosen";
 import {initOptionList} from "../../components/select/initOptionList";
 
 const title = '<p class="lead fancybox-confirm__title">Укажите значение</p>';
-const form =
+const form = (multiple = false) =>
     '<form id="fancyboxConfirmForm">' +
     '<div class="form-group">' +
-    '<select class="form-control" name="fancyboxVal" multiple></select>' +
+    `<select class="form-control" name="fancyboxVal" ${multiple ? 'multiple' : ''}></select>` +
     '</div>' +
     '<button type="submit" class="btn btn-success fancybox-confirm__btn"><span class="btn-label"><span class="glyphicon glyphicon-ok"></span></span>' +
     'Подтвердить</button>' +
@@ -15,9 +15,9 @@ const form =
     '<span class="btn-label"><span class="glyphicon glyphicon-remove"></span></span>' +
     'Отмена</button></form>';
 
-export const selectModal = (text = '', value = '', valueList = [], callback) =>
+export const selectModal = (text = '', value = '', multiple = false, valueList = [], callback) =>
     $.fancybox.open({
-        src: `<div class="fancybox-confirm">${title}${form}</div>`,
+        src: `<div class="fancybox-confirm">${title}${form(multiple)}</div>`,
         type: "html",
         opts: {
             ...fancybox,

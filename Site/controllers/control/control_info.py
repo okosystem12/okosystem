@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
 from Site.app.handler.placeObject import placeObject
-from Site.models import Vch
+from Site.models import Vch, Status
 
 
 @csrf_exempt
@@ -17,7 +17,8 @@ def control_info(request):
 
     args = {}
     args.update({
-        'vchList': list(Vch.objects.filter(Q(removeAt=None)).order_by('number').values())
+        'vchList': list(Vch.objects.filter(Q(removeAt=None)).order_by('number').values()),
+        'statusList': list(Status.objects.order_by('stage__value', 'value').values('id', 'name', 'stage__name'))
     })
     args.update(placeObject())
 

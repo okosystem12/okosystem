@@ -1,13 +1,14 @@
 import {doNothing} from "../../doNothing";
 import {selectModal} from "../../modal/selectModal";
 
-export const select = (table = {}, text = '', key = '', value = {}, valueList = []) => {
+export const select = (table = {}, text = '', multiple,  key = '', value = {}, valueList = []) => {
     return {
         text,
         action: (e, dt, node, config, action = doNothing) => {
             selectModal(
                 text,
                 table.filter[key] ? table.filter[key]['value'] : '',
+                multiple,
                 valueList,
                 (selectValue = '') => {
                     selectValue = selectValue.split(',').filter(el => el !== '').map(el => parseInt(el));

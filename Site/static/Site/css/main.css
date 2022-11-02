@@ -4,6 +4,9 @@
 @import "./progressbar.css";
 @import "./corrupt.css";
 
+.container{
+    width: 100%;
+}
 
 #globalLoader {
     position: absolute;

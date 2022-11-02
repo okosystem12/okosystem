@@ -12,29 +12,31 @@ export const search = (data = {}) => {
     socialCount.html(0).hide();
     socialWait.html(0).hide();
 
-    switch (data?.status.stage) {
-        case 'prepare':
-            if (socialList.value.length === 0) {
-                switch (data?.status.type) {
-                    case 'init':
-                        viewSearch.html('<p class="lead text-center">Список пуст</p>');
-                        break;
-                    case 'search':
-                        viewSearch.html(loader('Ожидайте завершения поиска'));
-                        break;
-                    case 'equal':
-                        break;
-                    case 'notEqual':
-                        viewSearch.html('<p class="lead text-center">Совпадений не выявлено</p>');
-                        break;
-                }
-            } else {
-                fillSearchSocial(data);
-            }
-            break;
-        case 'work':
-            fillSearchSocial(data);
-            break;
-    }
+    fillSearchSocial(data);
+
+    // switch (data?.status.stage) {
+    //     case 'prepare':
+    //         if (socialList.value.length === 0) {
+    //             switch (data?.status.type) {
+    //                 case 'init':
+    //                     viewSearch.html('<p class="lead text-center">Список пуст</p>');
+    //                     break;
+    //                 case 'search':
+    //                     viewSearch.html(loader('Ожидайте завершения поиска'));
+    //                     break;
+    //                 case 'equal':
+    //                     break;
+    //                 case 'notEqual':
+    //                     viewSearch.html('<p class="lead text-center">Совпадений не выявлено</p>');
+    //                     break;
+    //             }
+    //         } else {
+    //             fillSearchSocial(data);
+    //         }
+    //         break;
+    //     case 'work':
+    //         fillSearchSocial(data);
+    //         break;
+    // }
 
 };

@@ -84,8 +84,7 @@ urlpatterns = [
                   url(r'^control/analysis/photo/confirm/$', analysis_photo_confirm, name='analysis_photo_confirm'),
                   url(r'^control/analysis/photo/reject/$', analysis_photo_reject, name='analysis_photo_reject'),
 
-                  url(r'^corrupt/$', corrupt, name='corrupt'),
-                  url(r'^corrupt/get/$', corrupt_get, name='corrupt_get'),
+                  url(r'^corrupt/$', corrupt, name='corrupt'), url(r'^corrupt/get/$', corrupt_get, name='corrupt_get'),
                   url(r'^corrupt/table/$', corrupt_table, name='corrupt_table'),
                   url(r'^corrupt/work/$', corrupt_work, name='corrupt_work'),
                   url(r'^corrupt/remove/$', corrupt_remove, name='corrupt_remove'),
@@ -103,8 +102,7 @@ urlpatterns = [
 
                   url(r'^reports/$', reports, name='reports'),
 
-                  url(r'^config/$', config, name='config'),
-                  url(r'^config/place/$', place, name='place'),
+                  url(r'^config/$', config, name='config'), url(r'^config/place/$', place, name='place'),
                   url(r'^config/place/info/$', place_info, name='place_info'),
                   url(r'^config/place/table/$', place_table, name='place_table'),
                   url(r'^config/place/countries/get/$', place_countries_get, name='place_countries_get'),
@@ -117,8 +115,7 @@ urlpatterns = [
                   url(r'^config/place/city/work/$', place_city_work, name='place_city_work'),
                   url(r'^config/place/city/remove/$', place_city_remove, name='place_city_remove'),
 
-                  url(r'^config/vch/$', vch, name='vch'),
-                  url(r'^config/vch/get/$', vch_get, name='vch_get'),
+                  url(r'^config/vch/$', vch, name='vch'), url(r'^config/vch/get/$', vch_get, name='vch_get'),
                   url(r'^config/vch/table/$', vch_table, name='vch_table'),
                   url(r'^config/vch/work/$', vch_work, name='vch_work'),
                   url(r'^config/vch/remove/$', vch_remove, name='vch_remove'),

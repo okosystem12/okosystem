@@ -8,28 +8,30 @@ export const analysis = (data = null) => {
     viewAnalysis.html('');
     analysisCount.html(0).hide();
 
-    switch (data?.status.stage) {
-        case 'prepare':
-            viewAnalysis.html('<p class="lead text-center">Список пуст</p>');
-            break;
-        case 'work':
-            if (corruptList.value.length === 0) {
-                switch (data?.status.type) {
-                    case 'init':
-                        viewAnalysis.html('<p class="lead text-center">Список пуст</p>');
-                        break;
-                    case 'analysis':
-                        viewAnalysis.html(loader('Ожидайте завершения анализа'));
-                        break;
-                    case 'warning':
-                        break;
-                    case 'success':
-                        viewAnalysis.html('<p class="lead text-center">Нарушений не выявлено</p>');
-                        break;
-                }
-            } else {
-                fillAnalysis(data);
-            }
-            break;
-    }
+    fillAnalysis(data);
+
+    // switch (data?.status.stage) {
+    //     case 'prepare':
+    //         viewAnalysis.html('<p class="lead text-center">Список пуст</p>');
+    //         break;
+    //     case 'work':
+    //         if (corruptList.value.length === 0) {
+    //             switch (data?.status.type) {
+    //                 case 'init':
+    //                     viewAnalysis.html('<p class="lead text-center">Список пуст</p>');
+    //                     break;
+    //                 case 'analysis':
+    //                     viewAnalysis.html(loader('Ожидайте завершения анализа'));
+    //                     break;
+    //                 case 'warning':
+    //                     break;
+    //                 case 'success':
+    //                     viewAnalysis.html('<p class="lead text-center">Нарушений не выявлено</p>');
+    //                     break;
+    //             }
+    //         } else {
+    //             fillAnalysis(data);
+    //         }
+    //         break;
+    // }
 };

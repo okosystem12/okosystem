@@ -99,8 +99,8 @@ DATABASES = {
         'NAME': 'oko',
         'USER': 'postgres',
         'PASSWORD': '1',
-        'HOST': '192.168.1.180',
-        # 'HOST': '127.0.0.1',
+        # 'HOST': '192.168.1.180',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }

@@ -1,0 +1,1 @@
+export const option = (elem = {}) => `<option value="${elem.id}">${elem.title}</option>`;
