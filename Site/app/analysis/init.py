@@ -25,8 +25,8 @@ def initT(user=None):
             print("Видео отработали")
             search_inf_users_vk_id(one.value)
             print("Информация отработали")
-            # downloading_search_photos(one.value)
-            # print("Фото отработали")
+            downloading_search_photos(one.value)
+            print("Фото отработали")
 
         else:
             print('NO initT')

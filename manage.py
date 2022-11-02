@@ -2,11 +2,11 @@
 import os
 import sys
 
-# from keras_retinanet import models
-#
-# model = models.load_model(os.path.abspath(os.path.join("genering_profils_vk", "files", "resnet101_csv_06.h5")),
-#                           backbone_name='resnet101')
-# model = models.convert_model(model)
+from keras_retinanet import models
+
+model = models.load_model(os.path.abspath(os.path.join("genering_profils_vk", "files", "resnet101_csv_06.h5")),
+                          backbone_name='resnet101')
+model = models.convert_model(model)
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")

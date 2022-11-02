@@ -4,7 +4,7 @@ from datetime import datetime
 import requests
 
 from django.db.models import Q
-# from manage import model
+from manage import model
 from Site.models import Social, Post, Video, Groups, Inf, Photos, PostsChecks, PhotosChecks, GroupsChecks, VideoChecks, \
     AllUsersVK, TokensForVkUpdate, Environments, CorruptInfo, GroupsCorrupt, PostCorrupt, VideoCorrupt, InfCorrupt, \
     PhotosCorrupt
@@ -86,7 +86,6 @@ def search_post_vk_id(owner_id, token=config.token):
 
 # скачивание всех фото пользователя + обработка + сохранение
 def downloading_search_photos(user_id, token=config.token):
-
     def emoji_wipe(plain):
         array = bytearray(plain)
         while b'\xf0' in array:
@@ -126,7 +125,6 @@ def downloading_search_photos(user_id, token=config.token):
 
     photo_type_sort_arr = ['w', 'z', 'y', 'x', 'r', 'q', 'p', 'o', 'm', 's']
 
-
     def extract_pirture_url(response):
         try:
             sizes = response['sizes']
@@ -156,7 +154,7 @@ def downloading_search_photos(user_id, token=config.token):
                     for each in photos_response:
                         if each != 'error':
                             try:
-                                link = extract_pirture_url(each) # получили ссылку на фото
+                                link = extract_pirture_url(each)  # получили ссылку на фото
 
                                 photos_list = PhotosChecks.objects.filter(
                                     Q(social=social)
@@ -168,13 +166,9 @@ def downloading_search_photos(user_id, token=config.token):
                                         social=social,
                                         link=link
                                     )
-
-                                PhotosCorrupt.objects.create(
-                                    photo= _photo,
-                                    corrupt = "Принадлежность к 12 ГУ МО"
-                                )
                                 with open(path, 'a') as f:
                                     f.write('%s\n' % link)
+
                             except Exception as e:
                                 pass
             except Exception as e:
@@ -205,7 +199,7 @@ def downloading_search_photos(user_id, token=config.token):
         os.makedirs(dir_for_photos_tmp)
 
     # создание файла со ссылками в этом каталоге
-    file_with_photos = os.path.abspath(os.path.join("tmp", '%s.txt' % 'photos_user_' +str(user_id)))
+    file_with_photos = os.path.abspath(os.path.join("tmp", '%s.txt' % 'photos_user_' + str(user_id)))
 
     social = Social.objects.filter(Q(value=user_id)).first()
 
@@ -236,10 +230,14 @@ def downloading_search_photos(user_id, token=config.token):
 
                 # проверка нейронкой
                 if detect_photo(model, file_name_abs):
-                    Photos.objects.create(
+                    _photo = Photos.objects.create(
                         social=social,
                         link=link
+                    )
 
+                    PhotosCorrupt.objects.create(
+                        photo=_photo,
+                        corrupt=CorruptInfo.objects.filter(Q(value='Принадлежность к 12 ГУ МО')).first()
                     )
                 os.remove(file_name_abs)
         except Exception:
@@ -250,7 +248,6 @@ def downloading_search_photos(user_id, token=config.token):
 
 
 # поиск по ключевым словам среди списка сообществ
-
 def search_name_groups_vk_id(user_id, token=config.token):
     url = "https://api.vk.com/method/execute?"
     api = 'API.groups.get({"user_id":"' + str(user_id) + '", "count":"1"})'
@@ -354,7 +351,7 @@ def search_name_videos_vk_id(owner_id, token=config.token):
                                 VideoCorrupt.objects.create(
                                     video=_video,
                                     corrupt=word_dict
-                            )
+                                )
 
         except Exception as e:
             print(e)
