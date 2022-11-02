@@ -1,5 +1,6 @@
 import {doNothing} from "../../../utils/doNothing";
-import {work} from "./work";
+import {main} from "../../main";
+import {userId} from "../../../storage/control/userId";
 
 export const confirm = (id= null,callback=doNothing) =>
-    work({id, action:'confirm'}, callback);
+     main('/control/social/confirm/', {id, userId: userId.value}, callback);

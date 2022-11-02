@@ -1,5 +1,6 @@
 import {doNothing} from "../../../utils/doNothing";
-import {work} from "./work";
+import {main} from "../../main";
+import {userId} from "../../../storage/control/userId";
 
 export const reject = (id = null, callback = doNothing) =>
-    work({id, action: 'reject'}, callback);
+     main('/control/social/reject/', {id, userId: userId.value}, callback);
