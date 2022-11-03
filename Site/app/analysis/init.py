@@ -3,6 +3,8 @@ from threading import Thread
 from django.db.models import Q
 
 from Site.app.status.setStatus import setStatus
+from Site.app.status.updateByAnalysis import updateByAnalysis
+from Site.app.status.updateBySocial import updateBySocial
 from Site.models import Social, CorruptInfo
 from genering_profils_vk.src.func import *
 
@@ -25,9 +27,9 @@ def initT(user=None):
             print("Видео отработали")
             search_inf_users_vk_id(one.value)
             print("Информация отработали")
-            downloading_search_photos(one.value)
-            print("Фото отработали")
-
+            # downloading_search_photos(one.value)
+            # print("Фото отработали")
         else:
             print('NO initT')
-        setStatus(user, 'warning' if socialList.exists() else 'success')
+
+        updateByAnalysis(user, 'robot')

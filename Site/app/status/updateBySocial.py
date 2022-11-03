@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db.models import Q
 
 from Site.app.status.setStatus import setStatus
@@ -17,3 +19,6 @@ def updateBySocial(_user, _type='manual'):
             setStatus(_user, 'prepare', 'notEqual')
         elif not _social_list.filter(Q(confirmedAt__isnull=False)).exists():
             setStatus(_user, 'prepare', 'equal')
+
+        _user.lastSearchAt = datetime.now()
+        _user.save()

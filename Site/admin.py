@@ -34,13 +34,6 @@ class TokenAdminPanel(admin.ModelAdmin):
 admin.site.register(TokenAdmin, TokenAdminPanel)
 
 
-class AllUsersVKPanel(admin.ModelAdmin):
-    list_display = [field.name for field in AllUsersVK._meta.fields]
-
-
-admin.site.register(AllUsersVK, AllUsersVKPanel)
-
-
 class VideoChecksPanel(admin.ModelAdmin):
     list_display = [field.name for field in VideoChecks._meta.fields]
 
@@ -143,6 +136,7 @@ admin.site.register(StatusStage, StatusStagePanel)
 
 class StatusPanel(admin.ModelAdmin):
     list_display = [field.name for field in Status._meta.fields]
+    list_filter = ["stage"]
 
 
 admin.site.register(Status, StatusPanel)

@@ -48,8 +48,6 @@ def search_vk(path_dir, user):
         data.clear()
         data_update.clear()
         updateBySocial(user, 'robot')
-        user.lastSearchAt = datetime.now()
-        user.save()
 
 
 # обновление базы пользователей

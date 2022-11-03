@@ -9,6 +9,8 @@ from Site.app.analysis.init import init
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
 from Site.app.object.elem import elem
 from Site.app.status.setStatus import setStatus
+from Site.app.status.updateByAnalysis import updateByAnalysis
+from Site.app.status.updateBySocial import updateBySocial
 from Site.models import ControlUser
 
 
@@ -24,7 +26,7 @@ def analysis(request):
 
         controlUser = ControlUser.objects.filter(Q(pk=id)).first()
         if controlUser:
-            setStatus(controlUser, 'analysis')
+            updateByAnalysis(controlUser)
             init(controlUser)
 
             args = {
