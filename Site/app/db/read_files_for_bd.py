@@ -1,6 +1,9 @@
 import os
+from datetime import datetime
 
 from django.db.models import Q
+
+from Site.app.status.updateBySocial import updateBySocial
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 import django
@@ -22,7 +25,7 @@ from Site.models import AllUsersVK, Environments, Social, ControlUser
 list_data = []
 
 
-def search_vk(path_dir, first_name, last_name, user):
+def search_vk(path_dir, user):
     # AllUsersVK.objects.all().delete()
     # return
     print("Зашли в функцию")
@@ -36,15 +39,17 @@ def search_vk(path_dir, first_name, last_name, user):
                        elem.get("deactivated") not in ("deleted", "banned") and not elem.get("is_closed")]
         print("Сформировали обновленный список пользователей")
         for l in data_update:
-            if l.get("first_name", "") == first_name and l.get("last_name", "") == last_name:
+            if l.get("first_name", "") == user.firstNameT and l.get("last_name", "") == user.lastNameT:
                 print("Нашли совпаление с id", l.get("id", ""))
                 if not Social.objects.filter(Q(controlUser=user) & Q(value=l.get("id", ""))).exists():
                     Social.objects.create(controlUser=user,
-                                          prefix=r"https://vk.com/id",
                                           value=l.get("id", ""))
 
         data.clear()
         data_update.clear()
+        updateBySocial(user, 'robot')
+        user.lastSearchAt = datetime.now()
+        user.save()
 
 
 # обновление базы пользователей

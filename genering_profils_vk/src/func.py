@@ -4,7 +4,7 @@ from datetime import datetime
 import requests
 
 from django.db.models import Q
-from manage import model
+# from manage import model
 from Site.models import Social, Post, Video, Groups, Inf, Photos, PostsChecks, PhotosChecks, GroupsChecks, VideoChecks, \
     AllUsersVK, TokensForVkUpdate, Environments, CorruptInfo, GroupsCorrupt, PostCorrupt, VideoCorrupt, InfCorrupt, \
     PhotosCorrupt

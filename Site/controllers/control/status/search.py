@@ -31,11 +31,7 @@ def search(request):
                 'successText': 'Поиск сотрудника ' + controlUser.shortName(),
             }
 
-
             path_dir = os.path.abspath(os.path.join("database_vk"))
-            first_name = str(controlUser.firstNameT)
-            last_name = str(controlUser.lastNameT)
-            user = controlUser
-            search_vk(path_dir, first_name, last_name, user)
+            search_vk(path_dir, controlUser)
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

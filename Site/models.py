@@ -274,6 +274,8 @@ class ControlUser(models.Model):
                                default=None, blank=True, null=True)
 
     updatedAt = models.DateTimeField(verbose_name='Дата последнего обновления', default=None, blank=True, null=True)
+    lastSearchAt = models.DateTimeField(verbose_name='Дата последнего поиска', default=None, blank=True, null=True)
+    lastAnalysisAt = models.DateTimeField(verbose_name='Дата последнего анализа', default=None, blank=True, null=True)
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
     def __str__(self):

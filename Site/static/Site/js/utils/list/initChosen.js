@@ -7,8 +7,6 @@ export const initChosen = (elem) => {
         width: '100%'
     });
 
-    console.log('multiple');
-
     if (elem.attr('multiple') !== 'multiple') {
         elem.on('change', () => {
             elem.click();

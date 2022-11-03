@@ -8,7 +8,7 @@ export const info = (control = {}) => {
 ${
         columnList.map(el => {
             const _val = control[el.data];
-            if(_val !== '' && _val.length !== 0) {
+            if(_val !== null && _val.length !== 0) {
             const _render = table.value.renderList.find(r => r.id === el.render_id);
                 return `<div class="card-info__title">${el.title}</div><div class="card-info__value">${_render ? render(_render)(_val) : _val}</div>`
             }

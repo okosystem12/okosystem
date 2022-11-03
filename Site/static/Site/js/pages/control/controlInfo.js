@@ -12,7 +12,4 @@ export const controlInfo = () =>
         citiesList.value = msg.citiesList;
         vchList.value = msg.vchList;
         statusList.value = msg.statusList;
-
-
-        console.log(statusList.value)
     });
