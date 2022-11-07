@@ -20,7 +20,7 @@ from aiohttp import ClientSession
 from genering_profils_vk.src import config
 import json
 
-from Site.models import AllUsersVK, Environments, Social, ControlUser
+from Site.models import AllUsersVK, Environments, Social, ControlUser, LastUpdateConfig
 
 list_data = []
 
@@ -108,7 +108,7 @@ def update_inf_users(id_user_last, list_token=config.list_token):
     # 105 and 900
     all = 320 * 25 * 900
     threshold = id_user_last // all
-    for i in range(threshold, threshold + 3):
+    for i in range(threshold, threshold + 1):
         param_count = 900
         for query in range(i * param_count + 1, (i + 1) * param_count + 1):
             try:
@@ -138,9 +138,15 @@ def update_inf_users(id_user_last, list_token=config.list_token):
                 loop.run_until_complete(run_zero(query))
 
     # запись в базу максимального id
-    lastUserId = Environments.objects.filter(key="lastUserId").first()
+    lastUserId = Environments.objects.filter(key="lastUserId")
+    if not lastUserId.exists():
+        lastUserId = Environments.objects.create(key="lastUserId")
     lastUserId.value = str(max_id)
     lastUserId.save()
+
+    lastUC = LastUpdateConfig.objects.filter(Q(type='allUsersVK') & Q(type='allUsersVK'))
+    if lastUC.exists():
+        lastUC.update(dateEnd=datetime.now())
 
 
 # lastUserId = Environments.objects.filter(key="lastUserId").first()

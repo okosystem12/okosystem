@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.conf.urls.static import static
 
+from Site.controllers.auth.auth_info import auth_info
 from Site.controllers.auth.auth_login import auth_login
 from Site.controllers.auth.auth_logout import auth_logout
 from Site.controllers.control.control_get import control_get
@@ -46,6 +47,8 @@ from Site.controllers.vch.vch_get import vch_get
 from Site.controllers.vch.vch_remove import vch_remove
 from Site.controllers.vch.vch_table import vch_table
 from Site.controllers.vch.vch_work import vch_work
+from Site.controllers.config.vk.info import info as config_vk_info
+from Site.controllers.config.vk.update import update as config_vk_update
 from Site.controllers.archive.table import table as archive_table
 from Site.controllers.archive.info import info as archive_info
 from Site.controllers.archive.remove.post import post as archive_remove_post
@@ -122,12 +125,16 @@ urlpatterns = [
                   url(r'^config/vch/work/$', vch_work, name='vch_work'),
                   url(r'^config/vch/remove/$', vch_remove, name='vch_remove'),
 
+                  url(r'^config/vk/info/$', config_vk_info, name='config_vk_info'),
+                  url(r'^config/vk/update/$', config_vk_update, name='config_vk_update'),
+
                   url(r'^login/$', login, name='login'),
 
                   url(r'^table/info/$', table_info, name='table_info'),
 
                   url(r'^auth/login/$', auth_login, name='auth_login'),
                   url(r'^auth/logout/$', auth_logout, name='auth_logout'),
+                  url(r'^auth/info/$', auth_info, name='auth_info'),
 
                   url(r'^tester/$', tester, name='tester'),
 

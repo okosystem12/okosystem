@@ -14,6 +14,8 @@ def index(request):
         return render(request, 'Site/login.html')
     # return render(request, 'Site/index.html')
 
+    # print(AllUsersVK.objects.last().__dict__)
+
     return render(request, 'Site/control.html')
 
 

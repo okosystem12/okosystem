@@ -32,7 +32,6 @@
 }
 
 .load__wrapper {
-    height: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,13 +42,14 @@
 }
 
 .load__text {
-    margin: 0 0 0 7px;
+    margin: 140px 0 0 7px;
     font-family: 'Helvetica Neue', Helvetica, sans-serif;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 7px;
     text-transform: uppercase;
     color: #1F4173;
+    text-align: center;
 }
 
 .btn .btn-label {

@@ -5,10 +5,12 @@ import {showNotificationWarning} from "../utils/notification/showNotificationWar
 import {showNotificationSuccess} from "../utils/notification/showNotificationSuccess";
 import {showNotificationInfo} from "../utils/notification/showNotificationInfo";
 import {doNothing} from "../utils/doNothing";
+import {showLoadCount} from "../storage/app/showLoadCount";
 
 export const main = (url, data = [], callback = doNothing, silents = false) => {
     if (!silents) {
         showLoad();
+        showLoadCount.value += 1;
     }
 
     $.ajax({
@@ -17,6 +19,7 @@ export const main = (url, data = [], callback = doNothing, silents = false) => {
         async: silents,
         data: {'data': JSON.stringify(data)},
         complete: function (msg, textStatus) {
+            showLoadCount.value -= 1;
             if (textStatus === 'success') {
 
                 msg = JSON.parse(msg.responseText);
@@ -31,14 +34,14 @@ export const main = (url, data = [], callback = doNothing, silents = false) => {
                     showNotificationInfo(msg['infoText']);
                 }
 
-                if (callback) {
-                    callback(msg);
-                }
-
-                hideLoad();
+                callback(msg);
             }
             if (textStatus === 'error' || textStatus === 'timeout' || textStatus === 'abort') {
                 showNotificationDanger('Произошла ошибка на сервере. Пожалуйста, перезагрузите страницу');
+            }
+
+            if (showLoadCount.value <= 0) {
+                showLoadCount.value = 0;
                 hideLoad();
             }
         }

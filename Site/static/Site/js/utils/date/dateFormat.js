@@ -1,0 +1,1 @@
+export const dateFormat = (date = new Date()) => new Date(date).toLocaleString('ru');

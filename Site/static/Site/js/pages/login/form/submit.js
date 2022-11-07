@@ -1,4 +1,4 @@
-import {authLogin} from "../../../req/authLogin";
+import {login} from "../../../req/auth/login";
 import {highlight} from "../../../utils/form/highlight";
 import {componentsData} from "../componentsData";
 
@@ -7,7 +7,7 @@ export const submit = (form, e) => {
     const {username, password} = componentsData;
     const path = window.location.pathname;
 
-    authLogin({
+    login({
         username: username.val().trim(),
         password: password.val().trim(),
         path
