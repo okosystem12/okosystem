@@ -2,6 +2,8 @@ from django.conf.urls import url
 from django.conf.urls.static import static
 
 from Site.controllers.index.statistics.controlUser import controlUser as index_statistics_controlUser
+from Site.controllers.index.statistics.corrupt import corrupt as index_statistics_corrupt
+from Site.controllers.index.statistics.archive import archive as index_statistics_archive
 from Site.controllers.auth.auth_info import auth_info
 from Site.controllers.auth.auth_login import auth_login
 from Site.controllers.auth.auth_logout import auth_logout
@@ -63,6 +65,8 @@ from mysite import settings
 urlpatterns = [
                   url(r'^$', index, name='index'),
                   url(r'^index/statistics/controlUser/$', index_statistics_controlUser, name='index_statistics_controlUser'),
+                  url(r'^index/statistics/corrupt/$', index_statistics_corrupt, name='index_statistics_corrupt'),
+                  url(r'^index/statistics/archive/$', index_statistics_archive, name='index_statistics_archive'),
 
                   url(r'^control/$', control, name='control'),
                   url(r'^control/get/$', control_get, name='control_get'),

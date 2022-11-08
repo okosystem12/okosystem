@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
+from Site.app.archive.main import main
 from Site.app.archive.search.fJoin import fJoin
 from Site.app.array.sortList import sortList
 from Site.app.array.sortListCustom import sortListCustom
@@ -25,20 +26,7 @@ def table(request):
 
     tc = tableConfig(request.POST)
 
-    postList = Post.objects.filter(Q(postcorrupt__confirmedAt__isnull=False))
-    postList = Post.objects.filter(Q(pk__in=postList))
-
-    videoList = Video.objects.filter(Q(videocorrupt__confirmedAt__isnull=False))
-    videoList = Video.objects.filter(Q(pk__in=videoList))
-
-    groupsList = Groups.objects.filter(Q(groupscorrupt__confirmedAt__isnull=False))
-    groupsList = Groups.objects.filter(Q(pk__in=groupsList))
-
-    photosList = Photos.objects.filter(Q(photoscorrupt__confirmedAt__isnull=False))
-    photosList = Photos.objects.filter(Q(pk__in=photosList))
-
-    infList = Inf.objects.filter(Q(infcorrupt__confirmedAt__isnull=False))
-    infList = Inf.objects.filter(Q(pk__in=infList))
+    postList, videoList, groupsList, photosList, infList = main()
 
     iTotalRecords = postList.count() + videoList.count() + groupsList.count() + photosList.count() + infList.count()
 

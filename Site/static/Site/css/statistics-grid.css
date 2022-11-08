@@ -10,9 +10,13 @@
 
 .statistics-grid__value {
     font-weight: bold;
+    text-align: right;
 }
 
 .statistics-grid__row {
     font-weight: bold;
-    grid-column: 1 / 3;
+    border-bottom: 1px solid #ddd;
+}
+.statistics-grid__row + .statistics-grid__value{
+    border-bottom: 1px solid #ddd;
 }
