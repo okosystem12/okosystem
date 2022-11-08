@@ -1,0 +1,18 @@
+.statistics-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 10px 20px;
+}
+
+.statistics-grid__title {
+
+}
+
+.statistics-grid__value {
+    font-weight: bold;
+}
+
+.statistics-grid__row {
+    font-weight: bold;
+    grid-column: 1 / 3;
+}

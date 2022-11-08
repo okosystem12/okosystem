@@ -12,7 +12,7 @@ from Site.models import File
 @csrf_exempt
 def control_work_img(request):
     if request.user.pk is None:
-        return render(request, 'Site/login.html')
+        return HttpResponse(json.dumps({'logout':True}, default=my_convert_datetime))
 
     img = elem(request.FILES, 'file')
     file = File.objects.create(

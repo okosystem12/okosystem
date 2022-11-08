@@ -1,7 +1,7 @@
 .card-info {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 15px 10px;
+    grid-gap: 15px 10px;
 }
 
 .card-info__title {

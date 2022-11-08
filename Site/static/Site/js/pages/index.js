@@ -1,4 +1,5 @@
+import {getStatistics} from "./index/getStatistics";
 
 (()=>{
-    console.log('index');
+    getStatistics();
 })();

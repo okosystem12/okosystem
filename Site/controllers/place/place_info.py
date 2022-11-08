@@ -12,7 +12,7 @@ from Site.app.handler.placeObject import placeObject
 @csrf_exempt
 def place_info(request):
     if request.user.pk is None:
-        return render(request, 'Site/login.html')
+        return HttpResponse(json.dumps({'logout':True}, default=my_convert_datetime))
 
     _data = json.loads(elem(request.POST, 'data', '{}'))
     _type = elem(_data, 'type')

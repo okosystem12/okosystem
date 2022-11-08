@@ -13,7 +13,7 @@ from Site.models import Video
 @csrf_exempt
 def video(request):
     if request.user.pk is None:
-        return render(request, 'Site/login.html')
+        return HttpResponse(json.dumps({'logout':True}, default=my_convert_datetime))
     args = {}
     if request.POST:
         _data = json.loads(elem(request.POST, 'data', '{}'))

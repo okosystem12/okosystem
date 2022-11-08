@@ -3,6 +3,7 @@
 @import "./card-info.css";
 @import "./progressbar.css";
 @import "./corrupt.css";
+@import "./statistics-grid.css";
 
 .container{
     width: 100%;

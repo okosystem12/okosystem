@@ -1,21 +1,20 @@
 import {eventUpdate} from "./eventUpdate";
-import {allUsersVK} from "../../../../storage/config/allUsersVK";
 import {componentsData} from "../componentsData";
 import {loader} from "../../../../components/loader";
 import {dateFormat} from "../../../../utils/date/dateFormat";
 
-export const update = () => {
+export const update = (allUsersVK = null) => {
     const {updateAllUsersVK, dateAllUsersVK} = componentsData;
 
     updateAllUsersVK.removeAttr('disabled');
 
-    if (allUsersVK.value) {
-        if (allUsersVK.value.dateEnd === null) {
+    if (allUsersVK) {
+        if (allUsersVK.dateEnd === null) {
             dateAllUsersVK.html(loader('Ожидайте завершения обновления'));
             updateAllUsersVK.attr('disabled', 'disabled');
         }
         else {
-            dateAllUsersVK.html(dateFormat(allUsersVK.value.dateEnd));
+            dateAllUsersVK.html(dateFormat(allUsersVK.dateEnd));
         }
     }
     else {

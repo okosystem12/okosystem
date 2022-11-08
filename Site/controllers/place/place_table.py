@@ -16,7 +16,7 @@ from Site.controllers.place.prepInfo import prepInfo
 @csrf_exempt
 def place_table(request):
     if request.user.pk is None:
-        return render(request, 'Site/login.html')
+        return HttpResponse(json.dumps({'logout':True}, default=my_convert_datetime))
 
     tc = tableConfig(request.POST)
 

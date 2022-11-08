@@ -14,7 +14,7 @@ from Site.models import LastUpdateConfig, Environments
 @csrf_exempt
 def update(request):
     if request.user.pk is None:
-        return render(request, 'Site/login.html')
+        return HttpResponse(json.dumps({'logout':True}, default=my_convert_datetime))
 
     if request.POST:
         LastUpdateConfig.objects.create(type='allUsersVK', dateStart=datetime.now())

@@ -12,7 +12,7 @@ from Site.models import ControlUser, CorruptInfo
 @csrf_exempt
 def info(request):
     if request.user.pk is None:
-        return render(request, 'Site/login.html')
+        return HttpResponse(json.dumps({'logout':True}, default=my_convert_datetime))
 
     usersList = ControlUser.objects.filter(
         Q(social__post__postcorrupt__isnull=False) | Q(social__groups__groupscorrupt__isnull=False) | Q(

@@ -22,7 +22,17 @@ export const main = (url, data = [], callback = doNothing, silents = false) => {
             showLoadCount.value -= 1;
             if (textStatus === 'success') {
 
-                msg = JSON.parse(msg.responseText);
+                try {
+                    msg = JSON.parse(msg.responseText);
+                }
+                catch (e) {
+                    msg['logout'] = true;
+                }
+
+                if(msg['logout']){
+                    window.location.href = '/auth/logout/';
+                    return;
+                }
 
                 if (msg.hasOwnProperty('errorText')) {
                     showNotificationDanger(msg['errorText']);

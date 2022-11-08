@@ -15,7 +15,7 @@ from Site.models import ControlUser, ControlUserImg, File, Phone, Mail, Place, S
 @csrf_exempt
 def control_get(request):
     if request.user.pk is None:
-        return render(request, 'Site/login.html')
+        return HttpResponse(json.dumps({'logout':True}, default=my_convert_datetime))
 
     args = {}
     if request.POST:

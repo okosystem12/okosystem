@@ -7,9 +7,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const stylePath = '../Site/static/Site/css/';
 const entryPath = '../Site/static/Site/js/pages/';
 
-const archivePath = entryPath + 'archive/';
-const controlPath = entryPath + 'control/';
-const corruptPath = entryPath + 'corrupt/';
 const configPath = entryPath + 'config/';
 
 module.exports = {
@@ -19,13 +16,13 @@ module.exports = {
         'style': stylePath + 'main.css',
         'base': entryPath + 'base.js',
         'index': entryPath + 'index.js',
-        'archive': archivePath + 'archive.js',
+        'archive': entryPath + 'archive.js',
         'config': configPath + 'config.js',
         'place': configPath + 'place.js',
         'vch': configPath + 'vch.js',
-        'control': controlPath + 'control.js',
-        'corrupt': corruptPath + 'corrupt.js',
-        'login': entryPath + 'login/login.js',
+        'control': entryPath + 'control.js',
+        'corrupt': entryPath + 'corrupt.js',
+        'login': entryPath + 'login.js',
     },
     output: {
         filename: '[name].bundle.js',

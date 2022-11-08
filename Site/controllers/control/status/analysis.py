@@ -17,7 +17,7 @@ from Site.models import ControlUser
 @csrf_exempt
 def analysis(request):
     if request.user.pk is None:
-        return render(request, 'Site/login.html')
+        return HttpResponse(json.dumps({'logout':True}, default=my_convert_datetime))
 
     args = {}
     if request.POST:

@@ -15,7 +15,7 @@ from Site.models import ControlUserImg, ControlUser, File
 @csrf_exempt
 def control_work_img_remove(request):
     if request.user.pk is None:
-        return render(request, 'Site/login.html')
+        return HttpResponse(json.dumps({'logout':True}, default=my_convert_datetime))
     args = {}
     if request.POST:
         _data = json.loads(elem(request.POST, 'data', '{}'))

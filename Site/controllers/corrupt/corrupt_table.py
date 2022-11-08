@@ -18,7 +18,7 @@ from Site.models import CorruptInfo
 @csrf_exempt
 def corrupt_table(request):
     if request.user.pk is None:
-        return render(request, 'Site/login.html')
+        return HttpResponse(json.dumps({'logout':True}, default=my_convert_datetime))
 
     args = data(request, CorruptInfo.objects.filter(Q(tech=False)), search, order,  value, filter)
 

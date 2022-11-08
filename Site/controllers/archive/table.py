@@ -21,7 +21,7 @@ from Site.models import Post, Video, Groups, Photos, Inf
 @csrf_exempt
 def table(request):
     if request.user.pk is None:
-        return render(request, 'Site/login.html')
+        return HttpResponse(json.dumps({'logout':True}, default=my_convert_datetime))
 
     tc = tableConfig(request.POST)
 
