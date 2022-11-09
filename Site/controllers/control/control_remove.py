@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
+from Site.app.log.log import log
 from Site.app.object.elem import elem
 from Site.app.object.object import objectRemoveAt
 from Site.models import ControlUser
@@ -19,7 +20,9 @@ def control_remove(request):
     if request.POST:
         _data = json.loads(elem(request.POST, 'data', '{}'))
         _id = elem(_data, 'id', None)
-        objectRemoveAt(ControlUser.objects.filter(Q(pk=_id)))
+        cList = ControlUser.objects.filter(Q(pk=_id))
+        objectRemoveAt(cList)
+        log(request.user.pk, 'Данные ЛС', 'Удаление', '', list(cList.values()))
 
         args['successText'] = 'Запись удалена'
         args['reload'] = True

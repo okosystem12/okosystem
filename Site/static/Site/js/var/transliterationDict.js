@@ -66,6 +66,3 @@ export const transliterationDict = {
     'Ю': 'YU',
     'Я': 'YA'
 };
-
-
-export const transliterationKeys = Object.keys(transliterationDict);

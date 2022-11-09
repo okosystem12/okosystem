@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
+from Site.app.log.log import log
 from Site.app.object.elem import elem
 from Site.app.social.unsetSocial import unsetSocial
 from Site.app.status.setStatus import setStatus
@@ -36,6 +37,8 @@ def confirm(request):
                 args.update({'reloadTable': True})
                 unsetSocial(_user, _social.value)
                 args.update(success(_controlUser))
+
+                log(request.user.pk, 'Данные ЛС', 'Управление', 'Подтверждение соц. сети', _social.__dict__)
         else:
             return HttpResponse(json.dumps({'warningText': 'Действие не выполнено'}, default=my_convert_datetime))
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

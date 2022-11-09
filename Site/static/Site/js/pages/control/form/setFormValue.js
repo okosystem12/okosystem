@@ -15,7 +15,7 @@ import {placeList} from "../../../storage/app/placeList";
 import {label} from "../../../utils/modal/label";
 import {userId} from "../../../storage/control/userId";
 import {vchList} from "../../../storage/app/vchList";
-import {transliteration} from "../../../utils/string/transliteration";
+import {transliteration} from "../../../utils/string/transliteration/transliteration";
 
 
 export const setFormValue = (data = emptyControlForm) => {

@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
+from Site.app.log.log import log
 from Site.app.object.elem import elem
 from Site.app.social.unsetSocial import unsetSocial
 from Site.app.status.setStatus import setStatus
@@ -26,7 +27,8 @@ def add(request):
         _value = elem(_data, 'value')
 
         _controlUser = ControlUser.objects.filter(Q(pk=_userId))
-
+        _new = False
+        _old = None
         if _controlUser.exists():
             _user = _controlUser.first()
             _check_value = Social.objects.filter(Q(value=_value) & Q(confirmedAt__isnull=False)).first()
@@ -38,9 +40,18 @@ def add(request):
                         value=_value,
                         confirmedAt=datetime.now()
                     )
+                    _new = True
+                else:
+                    _old = _social
 
                 _social.confirmedAt = datetime.now()
                 _social.save()
+
+                if _new:
+                    log(request.user.pk, 'Данные ЛС', 'Управление', 'Добавление соц. сети')
+                else:
+                    if _old:
+                        log(request.user.pk, 'Данные ЛС', 'Управление', 'Изменение соц. сети', _old.__dict__)
 
                 unsetSocial(_user, _value)
                 args.update({'reloadTable': True})

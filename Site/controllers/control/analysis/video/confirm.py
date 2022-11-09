@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
+from Site.app.log.log import log
 from Site.app.object.elem import elem
 from Site.controllers.control.analysis.success import success
 from Site.models import ControlUser, VideoCorrupt
@@ -31,6 +32,7 @@ def confirm(request):
                 _c.save()
 
                 args.update(success(_user))
+                log(request.user.pk, 'Данные ЛС', 'Управление', 'Подтверждение Видеозапись')
         else:
             return HttpResponse(json.dumps({'warningText': 'Действие не выполнено'}, default=my_convert_datetime))
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

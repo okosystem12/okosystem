@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
 from Site.app.db.read_files_for_bd import search_vk
+from Site.app.log.log import log
 from Site.app.object.elem import elem
 from Site.app.status.setStatus import setStatus
 from Site.models import ControlUser
@@ -27,6 +28,7 @@ def search(request):
         if controlUser:
             setStatus(controlUser, 'search')
 
+            log(request.user.pk, 'Данные ЛС', 'Управление', 'Поиск сотрудника', controlUser.__dict__)
             args = {
                 'successText': 'Поиск сотрудника ' + controlUser.shortName(),
             }

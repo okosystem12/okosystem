@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
+from Site.app.log.log import log
 from Site.app.object.elem import elem
 from Site.app.object.object import objectRemoveAt
 from Site.models import Vch
@@ -20,7 +21,9 @@ def vch_remove(request):
         _data = json.loads(elem(request.POST, 'data', '{}'))
         _id = elem(_data, 'id')
 
-        objectRemoveAt(Vch.objects.filter(Q(removeAt=None) & Q(pk=_id)))
+        vchList = Vch.objects.filter(Q(removeAt=None) & Q(pk=_id))
+        objectRemoveAt(vchList)
+        log(request.user.pk, 'Настройки', 'Удаление', 'ВЧ', list(vchList.values()))
 
         args['successText'] = 'Запись удалена'
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

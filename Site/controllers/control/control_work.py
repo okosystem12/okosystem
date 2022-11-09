@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
+from Site.app.log.log import log
 from Site.app.object.elem import elem
 from Site.app.object.objDate import objDate
 from Site.app.object.object import objectRemoveAt
@@ -24,13 +25,15 @@ def control_work(request):
     if request.POST:
         _data = json.loads(elem(request.POST, 'data', '{}'))
         id = elem(_data, 'id', None)
-
+        _old = None
         _new = False
         controlUser = ControlUser.objects.filter(Q(pk=id)).first()
         if not controlUser:
             _new = True
             controlUser = ControlUser.objects.create()
             setStatus(controlUser)
+        else:
+            _old = controlUser
 
         birthDate = objDate(_data, 'birthDate', '0.0.0').split('.')
 
@@ -89,6 +92,11 @@ def control_work(request):
         objectRemoveAt(userMailList.exclude(Q(id__in=elem(_data, 'mailIdList', []))))
         objectUpdate(Mail, elem(_data, 'mailList', []), controlUser)
 
+        if _new:
+            log(request.user.pk, 'Данные ЛС', 'Создание', '')
+        else:
+            if _old:
+                log(request.user.pk, 'Данные ЛС', 'Изменение', '', _old.__dict__)
 
         args = {
             'successText': 'Запись добавлена' if _new else 'Запись обновлена',

@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.analysis.init import init
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
+from Site.app.log.log import log
 from Site.app.object.elem import elem
 from Site.app.status.setStatus import setStatus
 from Site.app.status.updateByAnalysis import updateByAnalysis
@@ -29,6 +30,7 @@ def analysis(request):
             updateByAnalysis(controlUser)
             init(controlUser)
 
+            log(request.user.pk, 'Данные ЛС', 'Управление', 'Анализ сотрудника', controlUser.__dict__)
             args = {
                 'successText': 'Анализ сотрудника ' + controlUser.shortName(),
             }

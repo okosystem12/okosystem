@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
+from Site.app.log.log import log
 from Site.app.object.elem import elem
 from Site.models import Vch
 
@@ -20,16 +21,24 @@ def vch_work(request):
         _data = json.loads(elem(request.POST, 'data', '{}'))
         id = elem(_data, 'id', None)
         number = elem(_data, 'number')
-
+        _old = None
         if Vch.objects.filter(Q(removeAt=None) & Q(number=number)).exclude(Q(pk=id)).count() == 0:
             _new = False
             _vch = Vch.objects.filter(Q(removeAt=None) & Q(pk=id)).first()
             if not _vch:
                 _new = True
                 _vch = Vch.objects.create()
+            else:
+                _old = _vch
 
             _vch.number = number
             _vch.save()
+
+            if _new:
+                log(request.user.pk, 'Настройки', 'Создание', 'ВЧ')
+            else:
+                if _old:
+                    log(request.user.pk, 'Настройки', 'Изменение', 'ВЧ', _old.__dict__)
 
             args = {
                 'successText': 'Запись обновлена' if _new else 'Запись добавлена',

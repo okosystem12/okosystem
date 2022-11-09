@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
+from Site.app.log.log import log
 from Site.app.object.elem import elem
 from Site.models import Countries, Regions, Cities
 
@@ -23,6 +24,7 @@ def place_city_work(request):
         region_id = elem(_data, 'region_id', None)
         title = elem(_data, 'title')
         country = Countries.objects.filter(Q(removeAt=None) & Q(pk=country_id)).first()
+        _old = None
         if country:
             region = Regions.objects.filter(Q(removeAt=None) & Q(pk=region_id)).first()
             if Cities.objects.filter(Q(removeAt=None) & Q(country=country) & Q(region=region) & Q(title=title)).exclude(
@@ -32,6 +34,8 @@ def place_city_work(request):
                 if not city:
                     _new = True
                     city = Cities.objects.create()
+                else:
+                    _old = city
 
                 city.country = country
                 city.region = region
@@ -39,6 +43,12 @@ def place_city_work(request):
                 city.save()
 
                 citiesList = Cities.objects.filter(Q(removeAt=None) & Q(pk=city.pk))
+
+                if _new:
+                    log(request.user.pk, 'Настройки', 'Создание', 'Город')
+                else:
+                    if _old:
+                        log(request.user.pk, 'Настройки', 'Изменение', 'Город', _old.__dict__)
 
                 args = {'successText': 'Запись обновлена' if _new else 'Запись добавлена',
                     'citiesList': list(citiesList.values()), }

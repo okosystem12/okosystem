@@ -4,6 +4,22 @@ from django.db import models
 from Site.apps import *
 
 
+class Logs(models.Model):
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.SET_NULL, default=None, blank=True,
+                             null=True)
+    place = models.CharField(max_length=200, default='')
+    action = models.CharField(max_length=200, default='')
+    details = models.CharField(max_length=200, default='')
+    description = models.TextField(default='')
+    date = models.DateTimeField(verbose_name='Дата', default=None, blank=True, null=True)
+
+    def __str__(self):
+        return self.action
+
+    class Meta:
+        ordering = ['action', 'pk']
+
+
 class Environments(models.Model):
     key = models.CharField(max_length=200, default='', db_index=True, unique=True)
     value = models.TextField(default='')
@@ -28,6 +44,20 @@ class CorruptInfo(models.Model):
         ordering = ['value', 'pk']
         verbose_name_plural = 'Ключевые слова'
         verbose_name = 'Ключевое слово'
+
+
+class CorruptExtend(models.Model):
+    corruptInfo = models.ForeignKey(CorruptInfo, verbose_name='Ключевое слово', on_delete=models.SET_NULL, default=None,
+                                    blank=True, null=True)
+    value = models.CharField(max_length=200, verbose_name='Мутант', default='', db_index=True)
+
+    def __str__(self):
+        return self.value
+
+    class Meta:
+        ordering = ['value', 'pk']
+        verbose_name_plural = 'Ключевые слова (мутации)'
+        verbose_name = 'Ключевое слово (мутация)'
 
 
 class StatusStage(models.Model):
@@ -270,8 +300,8 @@ class ControlUser(models.Model):
     vch = models.ForeignKey(Vch, verbose_name='Место военной службы', on_delete=models.SET_NULL, default=None,
                             blank=True, null=True)
 
-    status = models.ForeignKey(Status, verbose_name='Статус', on_delete=models.SET_NULL,
-                               default=None, blank=True, null=True)
+    status = models.ForeignKey(Status, verbose_name='Статус', on_delete=models.SET_NULL, default=None, blank=True,
+                               null=True)
 
     updatedAt = models.DateTimeField(verbose_name='Дата последнего обновления', default=None, blank=True, null=True)
     lastSearchAt = models.DateTimeField(verbose_name='Дата последнего поиска', default=None, blank=True, null=True)
@@ -282,14 +312,12 @@ class ControlUser(models.Model):
         return self.lastName + ' ' + self.firstName
 
     def fullName(self):
-        return self.lastName \
-               + ((' ' + self.firstName) if self.firstName != '' else '') \
-               + ((' ' + self.patronymic) if self.patronymic != '' else '')
+        return self.lastName + ((' ' + self.firstName) if self.firstName != '' else '') + (
+            (' ' + self.patronymic) if self.patronymic != '' else '')
 
     def shortName(self):
-        return self.lastName \
-               + ((' '+self.firstName[0]+'.') if self.firstName != '' else '') \
-               + ((self.patronymic[0]+'.') if self.patronymic != '' else '')
+        return self.lastName + ((' ' + self.firstName[0] + '.') if self.firstName != '' else '') + (
+            (self.patronymic[0] + '.') if self.patronymic != '' else '')
 
     class Meta:
         ordering = ['lastName', 'firstName', 'patronymic']

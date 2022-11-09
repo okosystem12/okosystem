@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
+from Site.app.log.log import log
 from Site.app.object.elem import elem
 from Site.controllers.control.analysis.success import success
 from Site.models import ControlUser, PostCorrupt
@@ -26,6 +27,7 @@ def reject(request):
         if _user.exists():
             PostCorrupt.objects.filter(Q(pk=_id) & Q(post__social__controlUser__in=_user)).delete()
             args.update(success(_user))
+            log(request.user.pk, 'Данные ЛС', 'Управление', 'Удаление Пост')
         else:
             return HttpResponse(json.dumps({'warningText': 'Действие не выполнено'}, default=my_convert_datetime))
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

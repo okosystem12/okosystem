@@ -2,7 +2,7 @@ import {componentsData} from "../componentsData";
 import {work} from "../../../req/control/work";
 import {userId} from "../../../storage/control/userId";
 import {componentData} from "../../../components/componentList/componentData";
-import {transliteration} from "../../../utils/string/transliteration";
+import {transliteration} from "../../../utils/string/transliteration/transliteration";
 import {close} from "./close";
 
 export const submit = (form, e) => {

@@ -1,4 +1,5 @@
-import {transliterationDict, transliterationKeys} from "../../var/transliterationDict";
+import {transliterationDict} from "../../../var/transliterationDict";
+import {transliterationKeys} from "./transliterationKeys";
 
 export const transliteration = (string = '') =>
     string.split('').map(el => {
