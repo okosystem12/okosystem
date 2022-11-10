@@ -28,18 +28,16 @@ list_data = []
 def search_vk(path_dir, user):
     # AllUsersVK.objects.all().delete()
     # return
-    print("Зашли в функцию")
     for namefile in os.listdir(path_dir):
-        print("Зашли в каталог")
         with open(os.path.join(path_dir, namefile), "r", encoding="utf-8") as file:
-            print("Открыли файл", os.path.join(path_dir, namefile))
+
             data = [json.loads(line) for line in file]
 
         data_update = [elem for l in data for elem in l if
                        elem.get("deactivated") not in ("deleted", "banned") and not elem.get("is_closed")]
-        print("Сформировали обновленный список пользователей")
         for l in data_update:
             if l.get("first_name", "") == user.firstNameT and l.get("last_name", "") == user.lastNameT:
+                print("Открыли файл", os.path.join(path_dir, namefile))
                 print("Нашли совпаление с id", l.get("id", ""))
                 if not Social.objects.filter(Q(controlUser=user) & Q(value=l.get("id", ""))).exists():
                     Social.objects.create(controlUser=user,
@@ -107,21 +105,21 @@ def update_inf_users(id_user_last, list_token=config.list_token):
     st = time()
     # 105 and 900
     all = 320 * 25 * 900
-    threshold = id_user_last // all
+    threshold = int(id_user_last) // all
+    # threshold + 3
     for i in range(threshold, threshold + 1):
         param_count = 900
         for query in range(i * param_count + 1, (i + 1) * param_count + 1):
             try:
                 data_update = [elem for elem in list_data if
                                elem.get("deactivated") not in ("deleted", "banned") and not elem.get("is_closed")]
-                for l in data_update:
-                    max_id = int(l.get("id"))
-                    print(max_id)
+                print(f"len data update {len(data_update)}\nquery = {query}")
+                if len(data_update) > 0:
+                    for l in data_update:
+                        max_id = int(l.get("id"))
+
                     string = json.dumps(data_update)
-                    with open(os.path.abspath(
-                            os.path.join("..", "..", "..", "database_vk", f"update_database-VK-users_{query}.txt")),
-                              "a", encoding="utf-8") \
-                            as file:
+                    with open(os.path.abspath(os.path.join("database_vk", f"update_database-VK-users_{query}.txt")), "a", encoding="utf-8") as file:
                         file.write(string + "\n")
 
                 list_data.clear()
