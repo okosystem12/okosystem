@@ -45,8 +45,8 @@ const placeDisassemble = (id = null) => {
         const city = citiesList.value.find(el => el.id === place.city_id);
 
         result.push(country ? `${country.title}` : null);
-        result.push(region ? `рег. ${region.title}` : null);
-        result.push(city ? `г. ${city.title}` : null);
+        result.push(region ? `${region.title}` : null);
+        result.push(city ? `${city.title}` : null);
     }
 
     return result;

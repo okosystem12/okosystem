@@ -9,7 +9,7 @@ def placeDisassemble(place=None):
         city = Cities.objects.filter(pk=place.city_id).first()
 
         result.append(country.title if country else None)
-        result.append(('рег. ' + region.title) if region else None)
-        result.append(('г. ' + city.title) if city else None)
+        result.append(region.title if region else None)
+        result.append(city.title if city else None)
 
     return result

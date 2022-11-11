@@ -104,7 +104,7 @@ def update_inf_users(id_user_last, list_token=config.list_token):
     # param_count = 554
     st = time()
     # 105 and 900
-    all = 320 * 25 * 900
+    all = 25 * 900
     threshold = int(id_user_last) // all
     # threshold + 3
     for i in range(threshold, threshold + 1):

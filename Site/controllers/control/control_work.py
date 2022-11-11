@@ -19,7 +19,7 @@ from Site.models import ControlUser, Place, ControlUserImg, Phone, Mail, File
 @csrf_exempt
 def control_work(request):
     if request.user.pk is None:
-        return HttpResponse(json.dumps({'logout':True}, default=my_convert_datetime))
+        return HttpResponse(json.dumps({'logout': True}, default=my_convert_datetime))
 
     args = {}
     if request.POST:
@@ -57,11 +57,7 @@ def control_work(request):
         birthCity = elem(_data, 'birthCity')
 
         if birthCountry or birthRegion or birthCity:
-            birthPlace = Place.objects.create(
-                country_id=birthCountry,
-                region_id=birthRegion,
-                city_id=birthCity,
-            )
+            birthPlace = Place.objects.create(country_id=birthCountry, region_id=birthRegion, city_id=birthCity, )
             controlUser.birthPlace = birthPlace
 
         liveCountry = elem(_data, 'liveCountry')
@@ -69,20 +65,13 @@ def control_work(request):
         liveCity = elem(_data, 'liveCity')
 
         if liveCountry or liveRegion or liveCity:
-            livePlace = Place.objects.create(
-                country_id=liveCountry,
-                region_id=liveRegion,
-                city_id=liveCity,
-            )
+            livePlace = Place.objects.create(country_id=liveCountry, region_id=liveRegion, city_id=liveCity, )
             controlUser.livePlace = livePlace
         controlUser.save()
 
         for f in File.objects.filter(Q(removeAt=None) & Q(pk__in=elem(_data, 'photoList', []))).iterator():
             if not ControlUserImg.objects.filter(Q(file=f)).exists():
-                ControlUserImg.objects.create(
-                    controlUser=controlUser,
-                    file=f
-                )
+                ControlUserImg.objects.create(controlUser=controlUser, file=f)
 
         userPhoneList = Phone.objects.filter(Q(controlUser=controlUser))
         objectRemoveAt(userPhoneList.exclude(Q(id__in=elem(_data, 'phoneIdList', []))))
@@ -96,10 +85,8 @@ def control_work(request):
             log(request.user.pk, 'Данные ЛС', 'Создание', '')
         else:
             if _old:
-                log(request.user.pk, 'Данные ЛС', 'Изменение', '', _old.__dict__)
+                log(request.user.pk, 'Данные ЛС', 'Изменение', '', {'old': _old.fullName()})
 
-        args = {
-            'successText': 'Запись добавлена' if _new else 'Запись обновлена',
-        }
+        args = {'successText': 'Запись добавлена' if _new else 'Запись обновлена', }
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))
