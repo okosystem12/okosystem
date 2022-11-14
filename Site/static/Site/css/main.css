@@ -305,3 +305,7 @@ div.dt-buttons {
 .fancybox-content{
     overflow: unset;
 }
+
+.navbar-brand .glyphicon{
+    margin-right: 15px;
+}
