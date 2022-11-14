@@ -10,8 +10,6 @@ from Site.app.datetime.my_convert_datetime import my_convert_datetime
 from Site.app.log.log import log
 from Site.app.object.elem import elem
 from Site.app.social.unsetSocial import unsetSocial
-from Site.app.status.setStatus import setStatus
-from Site.app.status.updateBySocial import updateBySocial
 from Site.controllers.control.social.success import success
 from Site.models import Social, ControlUser
 

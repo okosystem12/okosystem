@@ -10,6 +10,7 @@ def prepStatus(_id=None):
         result.update(status.__dict__)
         result.update({
             'stage': status.stage.type,
+            'block': status.block,
             'title': '<b> ' + status.stage.name + ':</b> ' + status.name
         })
     return result

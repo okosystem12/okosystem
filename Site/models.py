@@ -80,6 +80,7 @@ class Status(models.Model):
     stage = models.ForeignKey(StatusStage, verbose_name='Этап', on_delete=models.SET_NULL, default=None, blank=True,
                               null=True)
     value = models.IntegerField(verbose_name='Значение (%)', default=0)
+    block = models.BooleanField(verbose_name='Заблокирован', default=True)
     color = models.CharField(max_length=200, verbose_name='Цвет', default='')
 
     def __str__(self):

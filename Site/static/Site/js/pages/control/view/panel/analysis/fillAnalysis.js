@@ -7,6 +7,7 @@ import {corruptElem} from "../../../../../components/corrupt/corruptElem";
 import {corruptParent} from "../../../../../components/corrupt/corruptParent";
 import {corruptControl} from "../../../../../components/corrupt/corruptControl";
 import {makeBtnEvent} from "./makeBtnEvent";
+import {socialList} from "../../../../../storage/control/socialList";
 
 export const fillAnalysis = (data = null) => {
     if (data) {
@@ -21,36 +22,39 @@ export const fillAnalysis = (data = null) => {
             const panelList = [];
             const userCorruptList = corruptList.value.filter(el => el.controlUser_id === data.id);
 
-            const socialList = [];
+            const sList = [];
 
             userCorruptList.forEach(el => {
                 const link = el.social[0]['link'];
-                if (socialList.indexOf(el.social[0]['link']) === -1) {
-                    socialList.push(link);
+                if (sList.indexOf(el.social[0]['link']) === -1) {
+                    sList.push(link);
                 }
             });
 
-            socialList.sort().forEach(s => {
-                const panelContent = [];
-                let socCount = 0;
+            sList.sort().forEach(s => {
+                const uSocial = socialList.value.find(us => (us.prefix + us.value) === s);
+                if(uSocial) {
+                    const panelContent = [];
+                    let socCount = 0;
 
-                userCorruptList.filter(el => el.social[0]['link'] === s).forEach(el => {
-                    panelContent.push(corruptElem({
-                        materialsType: el.materialsType,
-                        materials: el.materials,
-                        corruptList: el.corruptList
-                    }));
-                    el.corruptList.forEach(c => {
-                        panelContent.push(corruptControl({
-                            ...c,
-                            type: el.materials.type
+                    userCorruptList.filter(el => el.social[0]['link'] === s).forEach(el => {
+                        panelContent.push(corruptElem({
+                            materialsType: el.materialsType,
+                            materials: el.materials,
+                            corruptList: el.corruptList
                         }));
-                        count++;
-                        socCount++;
-                    })
-                });
+                        el.corruptList.forEach(c => {
+                            panelContent.push(corruptControl({
+                                ...c,
+                                type: el.materials.type
+                            }));
+                            count++;
+                            socCount++;
+                        })
+                    });
 
-                panelList.push(accordionPanel(s, socCount, corruptParent(panelContent.join('')), parent))
+                    panelList.push(accordionPanel(s, socCount, corruptParent(panelContent.join('')), parent))
+                }
             });
 
             viewAnalysis.append(accordionParent(parent, panelList.join('')));
