@@ -136,13 +136,13 @@ def update_inf_users(id_user_last, list_token=config.list_token):
                 loop.run_until_complete(run_zero(query))
 
     # запись в базу максимального id
-    lastUserId = Environments.objects.filter(key="lastUserId")
-    if not lastUserId.exists():
+    lastUserId = Environments.objects.filter(key="lastUserId").first()
+    if not lastUserId:
         lastUserId = Environments.objects.create(key="lastUserId")
     lastUserId.value = str(max_id)
     lastUserId.save()
 
-    lastUC = LastUpdateConfig.objects.filter(Q(type='allUsersVK') & Q(type='allUsersVK'))
+    lastUC = LastUpdateConfig.objects.filter(Q(type='allUsersVK'))
     if lastUC.exists():
         lastUC.update(dateEnd=datetime.now())
 
