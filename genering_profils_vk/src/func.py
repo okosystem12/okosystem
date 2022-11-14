@@ -4,7 +4,7 @@ from datetime import datetime
 import requests
 
 from django.db.models import Q
-# from manage import model
+from manage import model
 from Site.models import Social, Post, Video, Groups, Inf, Photos, PostsChecks, PhotosChecks, GroupsChecks, VideoChecks, \
     AllUsersVK, TokensForVkUpdate, Environments, CorruptInfo, GroupsCorrupt, PostCorrupt, VideoCorrupt, InfCorrupt, \
     PhotosCorrupt
@@ -60,7 +60,7 @@ def search_post_vk_id(owner_id, token=config.token):
                         social=social,
                         id_post=resp["response"][0]["items"][i_resp]["id"]
                     )
-                    for word_dict in CorruptInfo.objects.all():
+                    for word_dict in CorruptInfo.objects.filter(Q(removeAt__isnull=True)):
                         if word_dict.value.lower() in resp["response"][0]["items"][i_resp]["text"].lower():
                             _post = Post.objects.filter(
                                 Q(social=social) & Q(id_post=int(resp["response"][0]["items"][i_resp]["id"]))).first()
@@ -166,8 +166,8 @@ def downloading_search_photos(user_id, token=config.token):
                                         social=social,
                                         link=link
                                     )
-                                with open(path, 'a') as f:
-                                    f.write('%s\n' % link)
+                                    with open(path, 'a') as f:
+                                        f.write('%s\n' % link)
 
                             except Exception as e:
                                 pass
@@ -237,7 +237,7 @@ def downloading_search_photos(user_id, token=config.token):
 
                     PhotosCorrupt.objects.create(
                         photo=_photo,
-                        corrupt=CorruptInfo.objects.filter(Q(value='Принадлежность к 12 ГУ МО')).first()
+                        corrupt=CorruptInfo.objects.filter(Q(value='Принадлежность к 12 ГУ МО') & Q(removeAt__isnull=True)).first()
                     )
                 os.remove(file_name_abs)
         except Exception:
@@ -279,7 +279,7 @@ def search_name_groups_vk_id(user_id, token=config.token):
                         social=social,
                         id_groups=resp["response"][0]["items"][0]["id"]
                     )
-                    for word_dict in CorruptInfo.objects.all():
+                    for word_dict in CorruptInfo.objects.filter(Q(removeAt__isnull=True)):
                         if word_dict.value.lower() in resp["response"][0]["items"][i_resp]["name"].lower():
                             _group = Groups.objects.filter(
                                 Q(social=social) & Q(id_groups=int(resp["response"][0]["items"][i_resp]["id"]))).first()
@@ -332,7 +332,7 @@ def search_name_videos_vk_id(owner_id, token=config.token):
                         social=social,
                         id_video=resp["response"][0]["items"][i_resp]["id"]
                     )
-                    for word_dict in CorruptInfo.objects.all():
+                    for word_dict in CorruptInfo.objects.filter(Q(removeAt__isnull=True)):
                         if word_dict.value.lower() in resp["response"][0]["items"][0]["title"].lower():
                             _video = Video.objects.filter(
                                 Q(social=social) & Q(id_video=int(resp["response"][0]["items"][0]["id"]))).first()
@@ -387,7 +387,7 @@ def search_inf_users_vk_id(owner_id, token=config.token):
     else:
         try:
             for key, value in data.items():
-                for word in CorruptInfo.objects.all():
+                for word in CorruptInfo.objects.filter(Q(removeAt__isnull=True)):
                     if str(word.value.lower()) in str(value.lower()):
                         _inf = Inf.objects.filter(Q(social=social)).first()
                         if not _inf:
@@ -415,3 +415,4 @@ def search_inf_users_vk_id(owner_id, token=config.token):
         except Exception as e:
             print(e)
             return
+#
