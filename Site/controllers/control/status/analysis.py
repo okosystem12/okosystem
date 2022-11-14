@@ -27,7 +27,7 @@ def analysis(request):
 
         controlUser = ControlUser.objects.filter(Q(pk=id)).first()
         if controlUser:
-            updateByAnalysis(controlUser)
+            setStatus(controlUser, 'work', 'analysis')
             init(controlUser)
 
             log(request.user.pk, 'Данные ЛС', 'Управление', 'Анализ сотрудника')

@@ -12,14 +12,14 @@ def updateByAnalysis(_user, _type='manual'):
     if _type == 'manual':
         if not _social_list.exists():
             setStatus(_user)
-        elif not _social_list.filter(Q(confirmedAt__isnull=True)).exists():
+        elif not _social_list.filter(Q(confirmedAt__isnull=False)).exists():
             setStatus(_user, 'work', 'analysis')
     if _type == 'robot':
-        _post = PostCorrupt.objects.filter(Q(post__social__in=_social_list) & Q(confirmedAt__isnull=False)).exists()
-        _video = VideoCorrupt.objects.filter(Q(video__social__in=_social_list) & Q(confirmedAt__isnull=False)).exists()
-        _photos = PhotosCorrupt.objects.filter(Q(photo__social__in=_social_list) & Q(confirmedAt__isnull=False)).exists()
-        _groups = GroupsCorrupt.objects.filter(Q(groups__social__in=_social_list) & Q(confirmedAt__isnull=False)).exists()
-        _inf = InfCorrupt.objects.filter(Q(inf__social__in=_social_list) & Q(confirmedAt__isnull=False)).exists()
+        _post = PostCorrupt.objects.filter(Q(post__social__in=_social_list) & Q(confirmedAt__isnull=True)).exists()
+        _video = VideoCorrupt.objects.filter(Q(video__social__in=_social_list) & Q(confirmedAt__isnull=True)).exists()
+        _photos = PhotosCorrupt.objects.filter(Q(photo__social__in=_social_list) & Q(confirmedAt__isnull=True)).exists()
+        _groups = GroupsCorrupt.objects.filter(Q(groups__social__in=_social_list) & Q(confirmedAt__isnull=True)).exists()
+        _inf = InfCorrupt.objects.filter(Q(inf__social__in=_social_list) & Q(confirmedAt__isnull=True)).exists()
 
         if _post or _video or _photos or _groups or _inf:
             setStatus(_user, 'work', 'warning')

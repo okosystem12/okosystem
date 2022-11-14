@@ -17,7 +17,6 @@ def initT(user=None):
     if user:
         socialList = Social.objects.filter(Q(controlUser=user))
         for one in socialList.iterator():
-            print(user)
 
             search_post_vk_id(one.value)
             print("Посты отработали")
