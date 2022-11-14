@@ -19,7 +19,7 @@ def updateByAnalysis(_user, _type='manual'):
         if not _social_list.exists():
             setStatus(_user)
         elif not (_post or _video or _photos or _groups or _inf):
-            setStatus(_user, 'work', 'analysis')
+            setStatus(_user, 'work')
     if _type == 'robot':
         if _post or _video or _photos or _groups or _inf:
             setStatus(_user, 'work', 'warning')

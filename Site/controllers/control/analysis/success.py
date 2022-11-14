@@ -4,5 +4,10 @@ from Site.app.table.control.value import value
 
 
 def success(_user):
-    updateByAnalysis(_user)
-    return {'controlUser': value(_user), 'corruptList': corruptionList(_user), 'successText': 'Действие выполнено'}
+    updateByAnalysis(_user.first())
+    return {
+        'controlUser': value(_user),
+            'corruptList': corruptionList(_user),
+            'successText': 'Действие выполнено',
+        'reloadTable': True
+    }
