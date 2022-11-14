@@ -2,7 +2,7 @@
 import os
 import sys
 
-from keras_retinanet import models
+# from keras_retinanet import models
 
 model = models.load_model(os.path.abspath(os.path.join("genering_profils_vk", "files", "resnet101_csv_06.h5")),
                           backbone_name='resnet101')

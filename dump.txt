@@ -1,0 +1,1 @@
+python -Xutf8 ./manage.py dumpdata --natural-foreign --natural-primary --exclude Site.AllUsersVK > 1.json
