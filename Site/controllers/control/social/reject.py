@@ -35,7 +35,7 @@ def reject(request):
                 if _social.confirmedAt:
                     args.update({'reloadTable': True})
                 _social.delete()
-                log(request.user.pk, 'Данные ЛС', 'Управление', 'Удаление соц. сети', _social.__dict__)
+                log(request.user.pk, 'Данные ЛС', 'Управление', 'Удаление соц. сети')
             args.update(success(_controlUser))
         else:
             return HttpResponse(json.dumps({'warningText': 'Действие не выполнено'}, default=my_convert_datetime))

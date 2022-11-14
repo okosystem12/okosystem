@@ -30,7 +30,7 @@ def analysis(request):
             updateByAnalysis(controlUser)
             init(controlUser)
 
-            log(request.user.pk, 'Данные ЛС', 'Управление', 'Анализ сотрудника', controlUser.__dict__)
+            log(request.user.pk, 'Данные ЛС', 'Управление', 'Анализ сотрудника')
             args = {
                 'successText': 'Анализ сотрудника ' + controlUser.shortName(),
             }

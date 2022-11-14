@@ -51,7 +51,7 @@ def add(request):
                     log(request.user.pk, 'Данные ЛС', 'Управление', 'Добавление соц. сети')
                 else:
                     if _old:
-                        log(request.user.pk, 'Данные ЛС', 'Управление', 'Изменение соц. сети', _old.__dict__)
+                        log(request.user.pk, 'Данные ЛС', 'Управление', 'Изменение соц. сети')
 
                 unsetSocial(_user, _value)
                 args.update({'reloadTable': True})

@@ -48,7 +48,7 @@ def place_city_work(request):
                     log(request.user.pk, 'Настройки', 'Создание', 'Город')
                 else:
                     if _old:
-                        log(request.user.pk, 'Настройки', 'Изменение', 'Город', _old.__dict__)
+                        log(request.user.pk, 'Настройки', 'Изменение', 'Город')
 
                 args = {'successText': 'Запись обновлена' if _new else 'Запись добавлена',
                     'citiesList': list(citiesList.values()), }

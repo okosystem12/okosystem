@@ -45,7 +45,7 @@ def place_regions_work(request):
                     log(request.user.pk, 'Настройки', 'Создание', 'Регион')
                 else:
                     if _old:
-                        log(request.user.pk, 'Настройки', 'Изменение', 'Регион', _old.__dict__)
+                        log(request.user.pk, 'Настройки', 'Изменение', 'Регион')
 
                 args = {
                     'successText': 'Запись обновлена' if _new else 'Запись добавлена',

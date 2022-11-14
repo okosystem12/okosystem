@@ -38,7 +38,7 @@ def vch_work(request):
                 log(request.user.pk, 'Настройки', 'Создание', 'ВЧ')
             else:
                 if _old:
-                    log(request.user.pk, 'Настройки', 'Изменение', 'ВЧ', _old.__dict__)
+                    log(request.user.pk, 'Настройки', 'Изменение', 'ВЧ')
 
             args = {
                 'successText': 'Запись обновлена' if _new else 'Запись добавлена',

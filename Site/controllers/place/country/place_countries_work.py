@@ -39,7 +39,7 @@ def place_countries_work(request):
                 log(request.user.pk, 'Настройки', 'Создание', 'Страна')
             else:
                 if _old:
-                    log(request.user.pk, 'Настройки', 'Изменение', 'Страна', _old.__dict__)
+                    log(request.user.pk, 'Настройки', 'Изменение', 'Страна')
 
             args = {
                 'successText': 'Запись обновлена' if _new else 'Запись добавлена',

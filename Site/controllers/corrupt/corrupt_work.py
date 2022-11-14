@@ -46,7 +46,7 @@ def corrupt_work(request):
                 log(request.user.pk, 'Ключевые слова', 'Создание', '')
             else:
                 if _old:
-                    log(request.user.pk, 'Ключевые слова', 'Изменение', '', _old.__dict__)
+                    log(request.user.pk, 'Ключевые слова', 'Изменение', '')
 
             args = {
                 'successText': 'Запись обновлена' if _new else 'Запись добавлена',
