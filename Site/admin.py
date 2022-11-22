@@ -210,16 +210,16 @@ admin.site.register(Environments, EnvironmentsPanel)
 #
 # admin.site.register(Social, SocialPanel)
 #
-
-
-class CorruptInfoInline(admin.TabularInline):
-    model = CorruptExtend
-    extra = 0
-
-
-class CorruptInfoPanel(admin.ModelAdmin):
-    list_display = [field.name for field in CorruptInfo._meta.fields]
-    inlines = [CorruptInfoInline]
-
-
-admin.site.register(CorruptInfo, CorruptInfoPanel)
+#
+#
+# class CorruptInfoInline(admin.TabularInline):
+#     model = CorruptExtend
+#     extra = 0
+#
+#
+# class CorruptInfoPanel(admin.ModelAdmin):
+#     list_display = [field.name for field in CorruptInfo._meta.fields]
+#     inlines = [CorruptInfoInline]
+#
+#
+# admin.site.register(CorruptInfo, CorruptInfoPanel)
