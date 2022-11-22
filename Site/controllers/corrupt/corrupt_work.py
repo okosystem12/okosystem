@@ -40,6 +40,14 @@ def corrupt_work(request):
             _corrupt.save()
 
             if _corrupt.value != _old_value:
+                CorruptExtend.objects.filter(Q(corruptInfo=_corrupt)).delete()
+
+                CorruptExtend.objects.create(corruptInfo=_corrupt, value=value.lower())
+
+                _corrupt.extend_count = 1
+                _corrupt.extend_finish = 0
+                _corrupt.save()
+
                 extend(_corrupt.pk)
 
             log(request.user.pk, 'Ключевые слова', 'Изменение' if not _new else 'Создание', '')

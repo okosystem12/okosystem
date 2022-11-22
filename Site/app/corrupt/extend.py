@@ -19,14 +19,6 @@ def extend(_id):
 def extend_t(_id):
     _corrupt = CorruptInfo.objects.filter(Q(pk=_id)).first()
     if _corrupt:
-        CorruptExtend.objects.filter(Q(corruptInfo=_corrupt)).delete()
-
-        CorruptExtend.objects.create(corruptInfo=_corrupt, value=_corrupt.value.lower())
-
-        _corrupt.extend_count = 1
-        _corrupt.extend_finish = 0
-        _corrupt.save()
-
         for a in [inflect, decimPart, mimicPart, alterPart, translitPart]:
             action(_corrupt.pk, a)
         #     extList = []

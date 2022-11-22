@@ -2,8 +2,7 @@ from threading import Thread
 
 from django.db.models import Q
 
-from Site.app.extend.fin import fin
-from Site.models import CorruptInfo
+from Site.models import CorruptInfo, CorruptExtend
 
 
 def action(_id, a):
@@ -11,12 +10,23 @@ def action(_id, a):
 
 
 def action_t(_id, a):
-    _corrupt = CorruptInfo.objects.filter(Q(pk=_id)).first()
+    _corrupt = CorruptInfo.objects.filter(Q(pk=_id) & Q(removeAt__isnull=True)).first()
     if _corrupt:
         extList = []
+        _old_value = _corrupt.value.lower()
         try:
-            extList = a(_corrupt.value.lower())
+            extList = a(_old_value)
         except Exception as e:
             print(e)
 
-        fin(_id, extList)
+        _corrupt = CorruptInfo.objects.filter(Q(pk=_id) & Q(removeAt__isnull=True)).first()
+        if _corrupt and _old_value == _corrupt.value.lower():
+            for ext in extList:
+                CorruptExtend.objects.create(corruptInfo_id=_id, value=ext)
+            _corrupt = CorruptInfo.objects.filter(Q(pk=_id) & Q(removeAt__isnull=True)).first()
+            if _corrupt and _old_value == _corrupt.value.lower():
+                _corrupt.extend_count += len(extList)
+                _corrupt.extend_finish += 20
+                _corrupt.save()
+            else:
+                CorruptExtend.objects.filter(Q(corruptInfo_id=_id) & Q(value__in=extList)).delete()

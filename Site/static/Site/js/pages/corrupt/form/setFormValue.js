@@ -4,6 +4,7 @@ import {label} from "../../../utils/modal/label";
 
 export const setFormValue = (data = {}) => {
     editId.value = data.id || null;
+
     const {corruptValue, corruptInfo, corruptModalLabel} = componentsData;
 
     label(corruptModalLabel, editId.value, 'ключевое слово', data.value);
