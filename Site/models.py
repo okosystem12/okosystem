@@ -29,12 +29,16 @@ class Environments(models.Model):
 
     class Meta:
         ordering = ['key', 'pk']
+        verbose_name_plural = 'Переменные окружения'
+        verbose_name = 'Переменая окружения'
 
 
 class CorruptInfo(models.Model):
     value = models.CharField(max_length=200, verbose_name='Значение', default='', db_index=True)
     info = models.TextField(verbose_name='Информация', default='', blank=True)
     tech = models.BooleanField(verbose_name='Управление администратором', default=False)
+    extend_count = models.IntegerField(verbose_name='Размер словаря', default=0)
+    extend_finish = models.IntegerField(verbose_name='Завершение формирования словаря', default=0)
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
     def __str__(self):
@@ -570,7 +574,7 @@ class AllUsersVK(models.Model):
 
 
 class TokenAdmin(models.Model):
-    tokenVK = models.TextField(verbose_name='Токен администратора', default='', blank=True)
+    tokenVK = models.TextField(verbose_name='Токен администратора', default='')
 
     def __str__(self):
         return self.tokenVK.__str__()
@@ -581,7 +585,7 @@ class TokenAdmin(models.Model):
 
 
 class TokensForVkUpdate(models.Model):
-    tokenVK = models.TextField(verbose_name='Токен', default='', blank=True)
+    tokenVK = models.TextField(verbose_name='Токен', default='')
 
     def __str__(self):
         return self.tokenVK.__str__()

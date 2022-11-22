@@ -6,7 +6,6 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
-from Site.app.object.elem import elem
 from Site.app.table.corrupt.order import order
 from Site.app.table.corrupt.search import search
 from Site.app.table.corrupt.value import value
@@ -18,7 +17,7 @@ from Site.models import CorruptInfo
 @csrf_exempt
 def corrupt_table(request):
     if request.user.pk is None:
-        return HttpResponse(json.dumps({'logout':True}, default=my_convert_datetime))
+        return HttpResponse(json.dumps({'logout': True}, default=my_convert_datetime))
 
     args = data(request, CorruptInfo.objects.filter(Q(tech=False)), search, order,  value, filter)
 

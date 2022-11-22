@@ -15,17 +15,17 @@ def init(user=None):
 
 def initT(user=None):
     if user:
-        socialList = Social.objects.filter(Q(controlUser=user))
+        socialList = Social.objects.filter(Q(controlUser=user) & Q(confirmedAt__isnull=False))
         for one in socialList.iterator():
 
             search_post_vk_id(one.value)
             print("Посты отработали")
-            # search_name_groups_vk_id(one.value)
-            # print("Группы отработали")
-            # search_name_videos_vk_id(one.value)
-            # print("Видео отработали")
-            # search_inf_users_vk_id(one.value)
-            # print("Информация отработали")
+            search_name_groups_vk_id(one.value)
+            print("Группы отработали")
+            search_name_videos_vk_id(one.value)
+            print("Видео отработали")
+            search_inf_users_vk_id(one.value)
+            print("Информация отработали")
             # downloading_search_photos(one.value)
             print("Фото отработали")
         else:

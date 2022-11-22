@@ -50,7 +50,7 @@ def place_city_work(request):
                     if _old:
                         log(request.user.pk, 'Настройки', 'Изменение', 'Город')
 
-                args = {'successText': 'Запись обновлена' if _new else 'Запись добавлена',
+                args = {'successText': 'Запись обновлена' if not _new else 'Запись добавлена',
                     'citiesList': list(citiesList.values()), }
             else:
                 args = {'errorHighlight': 'Город с названием "' + title + '" для страны "' + country.title + (

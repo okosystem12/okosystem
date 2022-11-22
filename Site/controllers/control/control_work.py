@@ -87,6 +87,6 @@ def control_work(request):
             if _old:
                 log(request.user.pk, 'Данные ЛС', 'Изменение', '', {'old': _old.fullName()})
 
-        args = {'successText': 'Запись добавлена' if _new else 'Запись обновлена', }
+        args = {'successText': 'Запись добавлена' if not _new else 'Запись обновлена', }
 
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

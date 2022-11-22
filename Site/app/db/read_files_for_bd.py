@@ -29,23 +29,25 @@ def search_vk(path_dir, user):
     # AllUsersVK.objects.all().delete()
     # return
     for namefile in os.listdir(path_dir):
-        with open(os.path.join(path_dir, namefile), "r", encoding="utf-8") as file:
+        try:
+            with open(os.path.join(path_dir, namefile), "r", encoding="utf-8") as file:
+                data = [json.loads(line) for line in file]
 
-            data = [json.loads(line) for line in file]
+            data_update = [elem for l in data for elem in l if
+                           elem.get("deactivated") not in ("deleted", "banned") and not elem.get("is_closed")]
+            for l in data_update:
+                if l.get("first_name", "") == user.firstNameT and l.get("last_name", "") == user.lastNameT:
+                    print("Открыли файл", os.path.join(path_dir, namefile))
+                    print("Нашли совпаление с id", l.get("id", ""))
+                    if not Social.objects.filter(Q(controlUser=user) & Q(value=l.get("id", ""))).exists():
+                        Social.objects.create(controlUser=user,
+                                              value=l.get("id", ""))
 
-        data_update = [elem for l in data for elem in l if
-                       elem.get("deactivated") not in ("deleted", "banned") and not elem.get("is_closed")]
-        for l in data_update:
-            if l.get("first_name", "") == user.firstNameT and l.get("last_name", "") == user.lastNameT:
-                print("Открыли файл", os.path.join(path_dir, namefile))
-                print("Нашли совпаление с id", l.get("id", ""))
-                if not Social.objects.filter(Q(controlUser=user) & Q(value=l.get("id", ""))).exists():
-                    Social.objects.create(controlUser=user,
-                                          value=l.get("id", ""))
-
-        data.clear()
-        data_update.clear()
-        updateBySocial(user, 'robot')
+            data.clear()
+            data_update.clear()
+            updateBySocial(user, 'robot')
+        except Exception as e:
+            print(e)
 
 
 # обновление базы пользователей

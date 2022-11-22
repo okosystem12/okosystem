@@ -4,6 +4,7 @@ export const initChosen = (elem) => {
         placeholder_text: 'Выберите значение...',
         disable_search_threshold: 5,
         allow_single_deselect: true,
+        search_contains: true,
         width: '100%'
     });
 

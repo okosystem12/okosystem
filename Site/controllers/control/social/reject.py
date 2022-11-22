@@ -14,7 +14,7 @@ from Site.app.status.setStatus import setStatus
 from Site.app.status.updateBySocial import updateBySocial
 from Site.controllers.control.social.success import success
 from Site.models import Social, ControlUser, Post, Video, Photos, Inf, Groups, PostCorrupt, VideoCorrupt, PhotosCorrupt, \
-    InfCorrupt, GroupsCorrupt
+    InfCorrupt, GroupsCorrupt, PostsChecks, VideoChecks, PhotosChecks, GroupsChecks
 
 
 @csrf_exempt
@@ -35,7 +35,6 @@ def reject(request):
             if _social:
                 if _social.confirmedAt:
                     args.update({'reloadTable': True})
-                _social.delete()
 
                 Post.objects.filter(Q(social=_social)).delete()
                 Video.objects.filter(Q(social=_social)).delete()
@@ -43,11 +42,18 @@ def reject(request):
                 Inf.objects.filter(Q(social=_social)).delete()
                 Groups.objects.filter(Q(social=_social)).delete()
 
+                PostsChecks.objects.filter(Q(social=_social)).delete()
+                VideoChecks.objects.filter(Q(social=_social)).delete()
+                PhotosChecks.objects.filter(Q(social=_social)).delete()
+                GroupsChecks.objects.filter(Q(social=_social)).delete()
+
                 PostCorrupt.objects.filter(Q(post__social=_social)).delete()
                 VideoCorrupt.objects.filter(Q(video__social=_social)).delete()
                 PhotosCorrupt.objects.filter(Q(photo__social=_social)).delete()
                 InfCorrupt.objects.filter(Q(inf__social=_social)).delete()
                 GroupsCorrupt.objects.filter(Q(groups__social=_social)).delete()
+
+                _social.delete()
 
                 log(request.user.pk, 'Данные ЛС', 'Управление', 'Удаление соц. сети')
             args.update(success(_controlUser))

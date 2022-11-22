@@ -5,12 +5,13 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
+from Site.app.corrupt.extend import extend
 from Site.app.datetime.my_convert_datetime import my_convert_datetime
 from Site.app.log.log import log
 from Site.app.object.elem import elem
 from Site.app.text.inflect import inflect
 from Site.app.text.repl.replAllType import replAllType
-from Site.models import CorruptInfo
+from Site.models import CorruptInfo, CorruptExtend
 
 
 @csrf_exempt
@@ -24,7 +25,7 @@ def corrupt_work(request):
         id = elem(_data, 'id', None)
         value = elem(_data, 'value')
         info = elem(_data, 'info')
-        _old = None
+        _old_value = ''
         if CorruptInfo.objects.filter(Q(removeAt=None) & Q(value=value)).exclude(Q(pk=id)).count() == 0:
             _new = False
             _corrupt = CorruptInfo.objects.filter(Q(removeAt=None) & Q(pk=id)).first()
@@ -32,24 +33,19 @@ def corrupt_work(request):
                 _new = True
                 _corrupt = CorruptInfo.objects.create()
             else:
-                _old = _corrupt
+                _old_value = _corrupt.value
 
             _corrupt.value = value
             _corrupt.info = info
             _corrupt.save()
 
-            rList = replAllType(value.lower())
-            print(rList)
-            print(len(rList))
+            if _corrupt.value != _old_value:
+                extend(_corrupt.pk)
 
-            if _new:
-                log(request.user.pk, 'Ключевые слова', 'Создание', '')
-            else:
-                if _old:
-                    log(request.user.pk, 'Ключевые слова', 'Изменение', '')
+            log(request.user.pk, 'Ключевые слова', 'Изменение' if not _new else 'Создание', '')
 
             args = {
-                'successText': 'Запись обновлена' if _new else 'Запись добавлена',
+                'successText': 'Запись обновлена' if not _new else 'Запись добавлена',
             }
         else:
             args = {

@@ -10,7 +10,7 @@ from Site.models import PostCorrupt, VideoCorrupt, GroupsCorrupt, PhotosCorrupt,
 
 
 def data(postList, videoList, groupsList, photosList, infList, confirmed=False):
-    emptyRow = {'id': '', 'controlUser': '', 'materials': '', 'social': '', 'corrupt': '', 'materialsType': ''}
+    emptyRow = {'id': '', 'controlUser': '', 'materials': '', 'social': '', 'corrupt': '', 'materialsType': '', 'confirmedAt': ''}
     index = 0
     result = []
 

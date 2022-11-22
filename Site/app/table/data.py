@@ -18,8 +18,7 @@ def data(_request, _object, search, order, value, filter):
     oList = filter(oList, _data)
 
     if tc['search'] != '':
-        for word in tc['search'].split(' '):
-            oList = search(oList, word)
+        oList = search(oList, tc['search'])
 
     iTotalDisplayRecords = oList.count()
 

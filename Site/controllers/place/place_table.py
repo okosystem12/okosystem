@@ -28,11 +28,10 @@ def place_table(request):
     iTotalRecords = countriesList.count() + regionsList.count() + citiesList.count()
 
     if tc['search'] != '':
-        for word in tc['search'].split(' '):
-            countriesList = countriesList.filter(Q(title__icontains=word))
-            regionsList = regionsList.filter(Q(title__icontains=word) | Q(country__in=countriesList))
-            citiesList = citiesList.filter(
-                Q(title__icontains=word) | (Q(region__in=regionsList) | Q(country__in=countriesList)))
+        countriesList = countriesList.filter(Q(title__icontains=tc['search']))
+        regionsList = regionsList.filter(Q(title__icontains=tc['search']) | Q(country__in=countriesList))
+        citiesList = citiesList.filter(
+            Q(title__icontains=tc['search']) | (Q(region__in=regionsList) | Q(country__in=countriesList)))
 
     iTotalDisplayRecords= countriesList.count() + regionsList.count() + citiesList.count()
 

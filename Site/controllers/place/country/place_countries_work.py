@@ -42,7 +42,7 @@ def place_countries_work(request):
                     log(request.user.pk, 'Настройки', 'Изменение', 'Страна')
 
             args = {
-                'successText': 'Запись обновлена' if _new else 'Запись добавлена',
+                'successText': 'Запись обновлена' if not _new else 'Запись добавлена',
                 'countriesList': list(countriesList.values()),
             }
         else:

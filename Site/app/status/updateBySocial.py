@@ -15,10 +15,10 @@ def updateBySocial(_user, _type='manual'):
         elif not _social_list.filter(Q(confirmedAt__isnull=True)).exists():
             setStatus(_user, 'work')
     if _type == 'robot':
+        _user.lastSearchAt = datetime.now()
+        _user.save()
+
         if not _social_list.exists():
             setStatus(_user, 'prepare', 'notEqual')
         elif not _social_list.filter(Q(confirmedAt__isnull=False)).exists():
             setStatus(_user, 'prepare', 'equal')
-
-        _user.lastSearchAt = datetime.now()
-        _user.save()

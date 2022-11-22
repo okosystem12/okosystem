@@ -48,7 +48,7 @@ def place_regions_work(request):
                         log(request.user.pk, 'Настройки', 'Изменение', 'Регион')
 
                 args = {
-                    'successText': 'Запись обновлена' if _new else 'Запись добавлена',
+                    'successText': 'Запись обновлена' if not _new else 'Запись добавлена',
                     'regionsList': list(regionsList.values()),
                 }
             else:
