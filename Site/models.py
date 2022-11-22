@@ -37,7 +37,6 @@ class CorruptInfo(models.Model):
     value = models.CharField(max_length=200, verbose_name='Значение', default='', db_index=True)
     info = models.TextField(verbose_name='Информация', default='', blank=True)
     tech = models.BooleanField(verbose_name='Управление администратором', default=False)
-    extend_count = models.IntegerField(verbose_name='Размер словаря', default=0)
     extend_finish = models.IntegerField(verbose_name='Завершение формирования словаря', default=0)
     removeAt = models.DateTimeField(verbose_name='Дата удаления', default=None, blank=True, null=True)
 
@@ -62,6 +61,21 @@ class CorruptExtend(models.Model):
         ordering = ['value', 'pk']
         verbose_name_plural = 'Ключевые слова (мутации)'
         verbose_name = 'Ключевое слово (мутация)'
+
+
+class CorruptExtendFin(models.Model):
+    corruptInfo = models.ForeignKey(CorruptInfo, verbose_name='Ключевое слово', on_delete=models.SET_NULL, default=None,
+                                    blank=True, null=True)
+    type = models.CharField(max_length=200, verbose_name='Тип', default='', db_index=True)
+    count = models.IntegerField(verbose_name='Размер словаря', default=0)
+
+    def __str__(self):
+        return self.type
+
+    class Meta:
+        ordering = ['type', 'pk']
+        verbose_name_plural = '(мутации)'
+        verbose_name = '(мутация)'
 
 
 class StatusStage(models.Model):

@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 from Site.models import Status, Render, Table, Column, PatternColumn, PatternTable, LastUpdateConfig, ControlUser, File, \
     Phone, Place, StatusStage, Social, Post, Video, Groups, Inf, Photos, VideoChecks, PhotosChecks, GroupsChecks, \
     PostsChecks, AllUsersVK, CorruptInfo, TokensForVkUpdate, TokenAdmin, PostCorrupt, VideoCorrupt, GroupsCorrupt, \
-    PhotosCorrupt, InfCorrupt, Environments, CorruptExtend
+    PhotosCorrupt, InfCorrupt, Environments, CorruptExtend, CorruptExtendFin
 
 admin.site.unregister(Group)
 
@@ -217,9 +217,15 @@ class CorruptInfoInline(admin.TabularInline):
     extra = 0
 
 
+
+class CorruptFinInfoInline(admin.TabularInline):
+    model = CorruptExtendFin
+    extra = 0
+
+
 class CorruptInfoPanel(admin.ModelAdmin):
     list_display = [field.name for field in CorruptInfo._meta.fields]
-    inlines = [CorruptInfoInline]
+    inlines = [CorruptFinInfoInline, CorruptInfoInline]
 
 
 admin.site.register(CorruptInfo, CorruptInfoPanel)

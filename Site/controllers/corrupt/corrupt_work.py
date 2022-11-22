@@ -11,7 +11,7 @@ from Site.app.log.log import log
 from Site.app.object.elem import elem
 from Site.app.text.inflect import inflect
 from Site.app.text.repl.replAllType import replAllType
-from Site.models import CorruptInfo, CorruptExtend
+from Site.models import CorruptInfo, CorruptExtend, CorruptExtendFin
 
 
 @csrf_exempt
@@ -41,12 +41,10 @@ def corrupt_work(request):
 
             if _corrupt.value != _old_value:
                 CorruptExtend.objects.filter(Q(corruptInfo=_corrupt)).delete()
+                CorruptExtendFin.objects.filter(Q(corruptInfo=_corrupt)).delete()
 
                 CorruptExtend.objects.create(corruptInfo=_corrupt, value=value.lower())
-
-                _corrupt.extend_count = 1
-                _corrupt.extend_finish = 0
-                _corrupt.save()
+                CorruptExtendFin.objects.create(corruptInfo=_corrupt, type='default', count=1)
 
                 extend(_corrupt.pk)
 
