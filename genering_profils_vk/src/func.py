@@ -7,7 +7,7 @@ from django.db.models import Q
 # from manage import model
 from Site.models import Social, Post, Video, Groups, Inf, Photos, PostsChecks, PhotosChecks, GroupsChecks, VideoChecks, \
     AllUsersVK, TokensForVkUpdate, Environments, CorruptInfo, GroupsCorrupt, PostCorrupt, VideoCorrupt, InfCorrupt, \
-    PhotosCorrupt
+    PhotosCorrupt, CorruptExtend
 from genering_profils_vk.src import config
 from genering_profils_vk.src.evaluate import detect_photo
 
@@ -61,23 +61,23 @@ def search_post_vk_id(owner_id, token=config.token):
                         id_post=resp["response"][0]["items"][i_resp]["id"]
                     )
                     for word_dict in CorruptInfo.objects.filter(Q(removeAt__isnull=True)):
-                        if word_dict.value.lower() in resp["response"][0]["items"][i_resp]["text"].lower():
-                            _post = Post.objects.filter(
-                                Q(social=social) & Q(id_post=int(resp["response"][0]["items"][i_resp]["id"]))).first()
-                            if not _post:
-                                _post = Post.objects.create(
-                                    social=social,
-                                    id_post=resp["response"][0]["items"][i_resp]["id"],
-                                    date=datetime.utcfromtimestamp(resp["response"][0]["items"][i_resp]["date"]),
-                                    text=resp["response"][0]["items"][i_resp]["text"]
-                                )
+                        for corrupt_word in CorruptExtend.objects.filter(Q(corruptInfo=word_dict)):
+                            if corrupt_word.value.lower() in resp["response"][0]["items"][i_resp]["text"].lower():
+                                _post = Post.objects.filter(Q(social=social) & Q(id_post=int(resp["response"][0]["items"][i_resp]["id"]))).first()
+                                if not _post:
+                                    _post = Post.objects.create(
+                                        social=social,
+                                        id_post=resp["response"][0]["items"][i_resp]["id"],
+                                        date=datetime.utcfromtimestamp(resp["response"][0]["items"][i_resp]["date"]),
+                                        text=resp["response"][0]["items"][i_resp]["text"]
+                                    )
 
-                            _pc = PostCorrupt.objects.filter(Q(post=_post) & Q(corrupt=word_dict))
-                            if not _pc:
-                                PostCorrupt.objects.create(
-                                    post=_post,
-                                    corrupt=word_dict
-                                )
+                                _pc = PostCorrupt.objects.filter(Q(post=_post) & Q(corrupt=word_dict))
+                                if not _pc:
+                                    PostCorrupt.objects.create(
+                                        post=_post,
+                                        corrupt=word_dict
+                                    )
 
         except Exception as e:
             print(e)
@@ -280,22 +280,23 @@ def search_name_groups_vk_id(user_id, token=config.token):
                         id_groups=resp["response"][0]["items"][0]["id"]
                     )
                     for word_dict in CorruptInfo.objects.filter(Q(removeAt__isnull=True)):
-                        if word_dict.value.lower() in resp["response"][0]["items"][i_resp]["name"].lower():
-                            _group = Groups.objects.filter(
-                                Q(social=social) & Q(id_groups=int(resp["response"][0]["items"][i_resp]["id"]))).first()
+                        for corrupt_word in CorruptExtend.objects.filter(Q(corruptInfo=word_dict)):
+                            if corrupt_word.value.lower() in resp["response"][0]["items"][i_resp]["name"].lower():
+                                _group = Groups.objects.filter(
+                                    Q(social=social) & Q(id_groups=int(resp["response"][0]["items"][i_resp]["id"]))).first()
 
-                            if not _group:
-                                _group = Groups.objects.create(
-                                    social=social,
-                                    id_groups=int(resp["response"][0]["items"][i_resp]["id"]),
-                                    name=resp["response"][0]["items"][i_resp]["name"]
-                                )
-                            _gc = GroupsCorrupt.objects.filter(Q(groups=_group) & Q(corrupt=word_dict))
-                            if not _gc:
-                                GroupsCorrupt.objects.create(
-                                    groups=_group,
-                                    corrupt=word_dict
-                                )
+                                if not _group:
+                                    _group = Groups.objects.create(
+                                        social=social,
+                                        id_groups=int(resp["response"][0]["items"][i_resp]["id"]),
+                                        name=resp["response"][0]["items"][i_resp]["name"]
+                                    )
+                                _gc = GroupsCorrupt.objects.filter(Q(groups=_group) & Q(corrupt=word_dict))
+                                if not _gc:
+                                    GroupsCorrupt.objects.create(
+                                        groups=_group,
+                                        corrupt=word_dict
+                                    )
         except Exception:
             return
 
@@ -333,25 +334,26 @@ def search_name_videos_vk_id(owner_id, token=config.token):
                         id_video=resp["response"][0]["items"][i_resp]["id"]
                     )
                     for word_dict in CorruptInfo.objects.filter(Q(removeAt__isnull=True)):
-                        if word_dict.value.lower() in resp["response"][0]["items"][0]["title"].lower():
-                            _video = Video.objects.filter(
-                                Q(social=social) & Q(id_video=int(resp["response"][0]["items"][0]["id"]))).first()
+                        for corrupt_word in CorruptExtend.objects.filter(Q(corruptInfo=word_dict)):
+                            if corrupt_word.value.lower() in resp["response"][0]["items"][0]["title"].lower():
+                                _video = Video.objects.filter(
+                                    Q(social=social) & Q(id_video=int(resp["response"][0]["items"][0]["id"]))).first()
 
-                            if not _video:
-                                _video = Video.objects.create(
-                                    social=social,
-                                    id_video=int(resp["response"][0]["items"][0]["id"]),
-                                    date=datetime.utcfromtimestamp(resp["response"][0]["items"][0]["date"]),
-                                    name=resp["response"][0]["items"][0]["title"],
-                                    link=resp["response"][0]["items"][0]["player"]
+                                if not _video:
+                                    _video = Video.objects.create(
+                                        social=social,
+                                        id_video=int(resp["response"][0]["items"][0]["id"]),
+                                        date=datetime.utcfromtimestamp(resp["response"][0]["items"][0]["date"]),
+                                        name=resp["response"][0]["items"][0]["title"],
+                                        link=resp["response"][0]["items"][0]["player"]
 
-                                )
-                            _vc = VideoCorrupt.objects.filter(Q(video=_video) & Q(corrupt=word_dict))
-                            if not _vc:
-                                VideoCorrupt.objects.create(
-                                    video=_video,
-                                    corrupt=word_dict
-                                )
+                                    )
+                                _vc = VideoCorrupt.objects.filter(Q(video=_video) & Q(corrupt=word_dict))
+                                if not _vc:
+                                    VideoCorrupt.objects.create(
+                                        video=_video,
+                                        corrupt=word_dict
+                                    )
 
         except Exception as e:
             print(e)
@@ -388,30 +390,31 @@ def search_inf_users_vk_id(owner_id, token=config.token):
         try:
             for key, value in data.items():
                 for word in CorruptInfo.objects.filter(Q(removeAt__isnull=True)):
-                    if str(word.value.lower()) in str(value.lower()):
-                        _inf = Inf.objects.filter(Q(social=social)).first()
-                        if not _inf:
-                            _inf = Inf.objects.create(
-                                social=social,
-                                about=data["О себе"],
-                                activities=data["Деятельность"],
-                                books=data["Любимые книги"],
-                                games=data["Любимые игры"],
-                                interests=data["Интересы"],
-                                movies=data["Любимые фильмы"],
-                                music=data["Любимая музыка"],
-                                nickname=data["Никнейм"],
-                                quotes=data["Любимые цитаты"],
-                                status=data["Статус пользователя"],
-                                tv=data["Любимые телешоу"],
+                    for corrupt_word in CorruptExtend.objects.filter(Q(corruptInfo=word)):
+                        if str(corrupt_word.value.lower()) in str(value.lower()):
+                            _inf = Inf.objects.filter(Q(social=social)).first()
+                            if not _inf:
+                                _inf = Inf.objects.create(
+                                    social=social,
+                                    about=data["О себе"],
+                                    activities=data["Деятельность"],
+                                    books=data["Любимые книги"],
+                                    games=data["Любимые игры"],
+                                    interests=data["Интересы"],
+                                    movies=data["Любимые фильмы"],
+                                    music=data["Любимая музыка"],
+                                    nickname=data["Никнейм"],
+                                    quotes=data["Любимые цитаты"],
+                                    status=data["Статус пользователя"],
+                                    tv=data["Любимые телешоу"],
 
-                            )
-                            _ic = InfCorrupt.objects.filter(Q(inf=_inf) & Q(corrupt=word))
-                            if not _ic:
-                                InfCorrupt.objects.create(
-                                    inf=_inf,
-                                    corrupt=word
                                 )
+                                _ic = InfCorrupt.objects.filter(Q(inf=_inf) & Q(corrupt=word))
+                                if not _ic:
+                                    InfCorrupt.objects.create(
+                                        inf=_inf,
+                                        corrupt=word
+                                    )
         except Exception as e:
             print(e)
             return
