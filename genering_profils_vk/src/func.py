@@ -419,3 +419,12 @@ def search_inf_users_vk_id(owner_id, token=config.token):
             print(e)
             return
 #
+
+
+def check_access_token(token=config.token):
+    url = "https://api.vk.com/method/execute?"
+    api = 'API.users.get({"user_ids":"1", "fields": "id"})'
+    code = f'return [{api}];'
+    data = dict(code=code, access_token=token, v='5.131')
+    resp = requests.post(url=url, data=data)
+    return resp.json()

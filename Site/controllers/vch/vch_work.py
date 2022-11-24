@@ -22,7 +22,7 @@ def vch_work(request):
         id = elem(_data, 'id', None)
         number = elem(_data, 'number')
         _old = None
-        if Vch.objects.filter(Q(removeAt=None) & Q(number=number)).exclude(Q(pk=id)).count() == 0:
+        if not Vch.objects.filter(Q(removeAt=None) & Q(number=number)).exclude(Q(pk=id)).exists():
             _new = False
             _vch = Vch.objects.filter(Q(removeAt=None) & Q(pk=id)).first()
             if not _vch:

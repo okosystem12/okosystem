@@ -1,5 +1,4 @@
 import {getDate} from "./getDate";
 
-export const init = () => {
+export const init = () =>
     getDate();
-};

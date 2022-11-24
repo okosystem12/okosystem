@@ -52,6 +52,8 @@ from Site.controllers.vch.vch_table import vch_table
 from Site.controllers.vch.vch_work import vch_work
 from Site.controllers.config.vk.info import info as config_vk_info
 from Site.controllers.config.vk.update import update as config_vk_update
+from Site.controllers.config.token.get import get as config_token_get
+from Site.controllers.config.token.work import work as config_token_work
 from Site.controllers.archive.table import table as archive_table
 from Site.controllers.archive.info import info as archive_info
 from Site.controllers.archive.remove.post import post as archive_remove_post
@@ -114,6 +116,13 @@ urlpatterns = [
                   url(r'^reports/$', reports, name='reports'),
 
                   url(r'^config/$', config, name='config'), url(r'^config/place/$', place, name='place'),
+
+                  url(r'^config/vk/info/$', config_vk_info, name='config_vk_info'),
+                  url(r'^config/vk/update/$', config_vk_update, name='config_vk_update'),
+
+                  url(r'^config/token/get/$', config_token_get, name='config_token_get'),
+                  url(r'^config/token/work/$', config_token_work, name='config_token_work'),
+
                   url(r'^config/place/info/$', place_info, name='place_info'),
                   url(r'^config/place/table/$', place_table, name='place_table'),
                   url(r'^config/place/countries/get/$', place_countries_get, name='place_countries_get'),
@@ -130,9 +139,6 @@ urlpatterns = [
                   url(r'^config/vch/table/$', vch_table, name='vch_table'),
                   url(r'^config/vch/work/$', vch_work, name='vch_work'),
                   url(r'^config/vch/remove/$', vch_remove, name='vch_remove'),
-
-                  url(r'^config/vk/info/$', config_vk_info, name='config_vk_info'),
-                  url(r'^config/vk/update/$', config_vk_update, name='config_vk_update'),
 
                   url(r'^login/$', login, name='login'),
 
