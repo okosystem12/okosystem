@@ -24,7 +24,7 @@ export const setViewValue = (data = null) => {
 
         panelCollapse.removeClass('in');
 
-        viewModalLabel.html(`Карточка ${userShortName(data)}`);
+        viewModalLabel.html(`Карточка КП ${userShortName(data)}`);
 
         controlUserImgList.value.filter(el => el.controlUser_id === data.id).forEach(el => {
             const file = fileList.value.find(f => f.id === el.file_id);

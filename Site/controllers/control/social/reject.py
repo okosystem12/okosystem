@@ -55,7 +55,7 @@ def reject(request):
 
                 _social.delete()
 
-                log(request.user.pk, 'Данные ЛС', 'Управление', 'Удаление соц. сети')
+                log(request.user.pk, 'Данные КП', 'Управление', 'Удаление соц. сети')
             args.update(success(_controlUser))
         else:
             return HttpResponse(json.dumps({'warningText': 'Действие не выполнено'}, default=my_convert_datetime))

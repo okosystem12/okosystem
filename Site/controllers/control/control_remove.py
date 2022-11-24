@@ -22,7 +22,7 @@ def control_remove(request):
         _id = elem(_data, 'id', None)
         cList = ControlUser.objects.filter(Q(pk=_id))
         objectRemoveAt(cList)
-        log(request.user.pk, 'Данные ЛС', 'Удаление', '', list(cList.values()))
+        log(request.user.pk, 'Данные КП', 'Удаление', '', list(cList.values()))
 
         args['successText'] = 'Запись удалена'
         args['reload'] = True

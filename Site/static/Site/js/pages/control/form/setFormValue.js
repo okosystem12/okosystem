@@ -16,6 +16,7 @@ import {label} from "../../../utils/modal/label";
 import {userId} from "../../../storage/control/userId";
 import {vchList} from "../../../storage/app/vchList";
 import {transliteration} from "../../../utils/string/transliteration/transliteration";
+import {userShortName} from "../../../utils/user/userShortName";
 
 
 export const setFormValue = (data = emptyControlForm) => {
@@ -47,7 +48,7 @@ export const setFormValue = (data = emptyControlForm) => {
 
     userId.value = data.id || null;
 
-    label(controlModalLabel, userId.value, '', data.lastName);
+    label(controlModalLabel, userId.value, 'КП', userShortName(data));
 
     lastNameT.html(transliteration(data.lastName));
     firstNameT.html(transliteration(data.firstName));

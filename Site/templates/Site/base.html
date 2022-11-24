@@ -71,13 +71,13 @@
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="{% url 'index' %}">
-                    <span class="glyphicon glyphicon-eye-open"></span><p>Поиск информации в сети Интернет по заданным параметрам</p>
+                    <span class="glyphicon glyphicon-eye-open"></span>Поиск информации в сети Интернет по заданным параметрам
                 </a>
             </div>
             {% if user.username %}
                 <ul class="nav navbar-nav collapse navbar-collapse">
                     <li class="{% block nav-index %}{% endblock %}"><a href="{% url 'index' %}">Главная</a></li>
-                    <li class="{% block nav-control %}{% endblock %}"><a href="{% url 'control' %}">Данные ЛС</a></li>
+                    <li class="{% block nav-control %}{% endblock %}"><a href="{% url 'control' %}">Данные КП</a></li>
                     <li class="{% block nav-archive %}{% endblock %}"><a href="{% url 'archive' %}">Архив нарушений</a>
                     </li>
                     <li class="{% block nav-corrupt %}{% endblock %}"><a href="{% url 'corrupt' %}">Ключевые слова</a>
@@ -102,7 +102,7 @@
                             <b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{% url 'index' %}">Главная</a></li>
-                            <li><a href="{% url 'control' %}">Данные ЛС</a></li>
+                            <li><a href="{% url 'control' %}">Данные КП</a></li>
                             <li><a href="{% url 'archive' %}">Архив нарушений</a></li>
                             <li><a href="{% url 'corrupt' %}">Ключевые слова</a></li>
 {#                            <li><a href="{% url 'reports' %}">Отчёты</a></li>#}

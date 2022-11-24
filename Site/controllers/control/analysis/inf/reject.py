@@ -27,7 +27,7 @@ def reject(request):
         if _user.exists():
             InfCorrupt.objects.filter(Q(pk=_id) & Q(inf__social__controlUser__in=_user)).delete()
             args.update(success(_user))
-            log(request.user.pk, 'Данные ЛС', 'Управление', 'Удаление Информация о пользователе')
+            log(request.user.pk, 'Данные КП', 'Управление', 'Удаление Информация о пользователе')
         else:
             return HttpResponse(json.dumps({'warningText': 'Действие не выполнено'}, default=my_convert_datetime))
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

@@ -1,6 +1,6 @@
 export const dataTablesRu = {
     "processing": "Подождите...",
-    "search": "Поиск:",
+    "search": "",
     "lengthMenu": "Показать _MENU_ записей",
     "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
     "infoEmpty": "Записи с 0 до 0 из 0 записей",
@@ -204,5 +204,5 @@ export const dataTablesRu = {
             "system": "Возникла системная ошибка (<a target=\"\\\" rel=\"nofollow\" href=\"\\\">Подробнее<\/a>)"
         }
     },
-    "searchPlaceholder": "Что ищете?"
+    "searchPlaceholder": "Поиск..."
 }

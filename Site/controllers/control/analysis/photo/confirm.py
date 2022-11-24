@@ -32,7 +32,7 @@ def confirm(request):
                 _c.save()
 
                 args.update(success(_user))
-                log(request.user.pk, 'Данные ЛС', 'Управление', 'Подтверждение Фотоизображение')
+                log(request.user.pk, 'Данные КП', 'Управление', 'Подтверждение Фотоизображение')
         else:
             return HttpResponse(json.dumps({'warningText': 'Действие не выполнено'}, default=my_convert_datetime))
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

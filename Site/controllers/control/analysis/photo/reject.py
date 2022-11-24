@@ -27,7 +27,7 @@ def reject(request):
         if _user.exists():
             PhotosCorrupt.objects.filter(Q(pk=_id) & Q(photo__social__controlUser__in=_user)).delete()
             args.update(success(_user))
-            log(request.user.pk, 'Данные ЛС', 'Управление', 'Удаление Фотоизображение')
+            log(request.user.pk, 'Данные КП', 'Управление', 'Удаление Фотоизображение')
         else:
             return HttpResponse(json.dumps({'warningText': 'Действие не выполнено'}, default=my_convert_datetime))
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

@@ -26,6 +26,6 @@ def update(request):
             id_user_last = lastUserId.first().value
 
         update_inf_users(id_user_last=id_user_last)
-        log(request.user.pk, 'Настройки', 'Обновление', 'Обновление списска пользователей ВК', {'oldId': id_user_last})
+        log(request.user.pk, 'Настройки', 'Обновление', 'Обновление списка пользователей ВК', {'oldId': id_user_last})
 
     return HttpResponse(json.dumps({}, default=my_convert_datetime))

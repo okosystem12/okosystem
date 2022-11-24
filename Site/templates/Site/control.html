@@ -2,7 +2,7 @@
 
 {% load static %}
 {% block title %}
-    Данные ЛС
+    Данные КП
 {% endblock %}
 {% block nav-control %}
     active
@@ -12,7 +12,7 @@
 {% block content %}
     <ol class="breadcrumb">
         <li><a href="{% url 'index' %}">Главная</a></li>
-        <li class="active">Данные ЛС</li>
+        <li class="active">Данные контролируемых пользователей</li>
     </ol>
 
     <div class="form-group row">
@@ -22,7 +22,7 @@
                                         <span class="btn-label">
                                             <span class="glyphicon glyphicon-plus"></span>
                                         </span>
-                    Новый
+                    Добавить
                 </button>
             </div>
         </div>
@@ -54,7 +54,7 @@
                                                             <label for="lastName" class="control-label"
                                                                    title="Это поле обязательно для заполнения">Фамилия</label>
                                                             <input type="text" class="form-control" id="lastName"
-                                                                   name="lastName" placeholder="Фамилия">
+                                                                   name="lastName" placeholder="Фамилия...">
                                                             <div class="form-control form-transliteration"
                                                                  id="lastNameT"></div>
                                                         </div>
@@ -64,7 +64,7 @@
                                                             <label for="firstName" class="control-label"
                                                                    title="Это поле обязательно для заполнения">Имя</label>
                                                             <input type="text" class="form-control" id="firstName"
-                                                                   name="firstName" placeholder="Имя">
+                                                                   name="firstName" placeholder="Имя...">
                                                             <div class="form-control form-transliteration"
                                                                  id="firstNameT"></div>
                                                         </div>
@@ -74,7 +74,7 @@
                                                             <label for="patronymic"
                                                                    class="control-label">Отчество</label>
                                                             <input type="text" class="form-control" id="patronymic"
-                                                                   name="patronymic" placeholder="Отчество">
+                                                                   name="patronymic" placeholder="Отчество...">
                                                             <div class="form-control form-transliteration"
                                                                  id="patronymicT"></div>
                                                         </div>
@@ -104,7 +104,7 @@
                                                                    title="Это поле обязательно для заполнения">Дата
                                                                 рождения</label>
                                                             <input type="text" class="form-control" id="birthDate"
-                                                                   name="birthDate" placeholder="Дата рождения">
+                                                                   name="birthDate" placeholder="Дата рождения...">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -193,13 +193,13 @@
                                                         <label for="schools" class="control-label">Школа</label>
                                                         <textarea id="schools" name="schools"
                                                                   class="form-control form-textarea"
-                                                                  placeholder="Школа"></textarea>
+                                                                  placeholder="Школа..."></textarea>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <label for="universities" class="control-label">ВУЗ</label>
+                                                        <label for="universities" class="control-label">Высшее учебное заведение</label>
                                                         <textarea id="universities" name="universities"
                                                                   class="form-control form-textarea"
-                                                                  placeholder="ВУЗ"></textarea>
+                                                                  placeholder="Высшее учебное заведение..."></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -216,7 +216,7 @@
                                                         <label for="work" class="control-label">Место работы</label>
                                                         <textarea id="work" name="work"
                                                                   class="form-control form-textarea"
-                                                                  placeholder="Место работы"></textarea>
+                                                                  placeholder="Место работы..."></textarea>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="vch" class="control-label">Место военной

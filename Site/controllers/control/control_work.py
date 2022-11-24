@@ -82,10 +82,10 @@ def control_work(request):
         objectUpdate(Mail, elem(_data, 'mailList', []), controlUser)
 
         if _new:
-            log(request.user.pk, 'Данные ЛС', 'Создание', '')
+            log(request.user.pk, 'Данные КП', 'Создание', '')
         else:
             if _old:
-                log(request.user.pk, 'Данные ЛС', 'Изменение', '', {'old': _old.fullName()})
+                log(request.user.pk, 'Данные КП', 'Изменение', '', {'old': _old.fullName()})
 
         args = {'successText': 'Запись добавлена' if not _new else 'Запись обновлена', }
 

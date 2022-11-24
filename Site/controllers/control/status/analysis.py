@@ -30,7 +30,7 @@ def analysis(request):
             setStatus(controlUser, 'work', 'analysis')
             init(controlUser)
 
-            log(request.user.pk, 'Данные ЛС', 'Управление', 'Анализ сотрудника')
+            log(request.user.pk, 'Данные КП', 'Управление', 'Анализ сотрудника')
             args = {
                 'successText': 'Анализ сотрудника ' + controlUser.shortName(),
             }

@@ -36,7 +36,7 @@ def confirm(request):
                 unsetSocial(_user, _social.value)
                 args.update(success(_controlUser))
 
-                log(request.user.pk, 'Данные ЛС', 'Управление', 'Подтверждение соц. сети')
+                log(request.user.pk, 'Данные КП', 'Управление', 'Подтверждение соц. сети')
         else:
             return HttpResponse(json.dumps({'warningText': 'Действие не выполнено'}, default=my_convert_datetime))
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

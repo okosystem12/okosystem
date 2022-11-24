@@ -48,10 +48,10 @@ def add(request):
                 _social.save()
 
                 if _new:
-                    log(request.user.pk, 'Данные ЛС', 'Управление', 'Добавление соц. сети')
+                    log(request.user.pk, 'Данные КП', 'Управление', 'Добавление соц. сети')
                 else:
                     if _old:
-                        log(request.user.pk, 'Данные ЛС', 'Управление', 'Изменение соц. сети')
+                        log(request.user.pk, 'Данные КП', 'Управление', 'Изменение соц. сети')
 
                 unsetSocial(_user, _value)
                 args.update({'reloadTable': True})

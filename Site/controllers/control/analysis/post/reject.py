@@ -27,7 +27,7 @@ def reject(request):
         if _user.exists():
             PostCorrupt.objects.filter(Q(pk=_id) & Q(post__social__controlUser__in=_user)).delete()
             args.update(success(_user))
-            log(request.user.pk, 'Данные ЛС', 'Управление', 'Удаление Пост')
+            log(request.user.pk, 'Данные КП', 'Управление', 'Удаление Пост')
         else:
             return HttpResponse(json.dumps({'warningText': 'Действие не выполнено'}, default=my_convert_datetime))
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

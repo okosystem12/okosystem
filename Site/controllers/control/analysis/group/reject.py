@@ -27,7 +27,7 @@ def reject(request):
         if _user.exists():
             GroupsCorrupt.objects.filter(Q(pk=_id) & Q(groups__social__controlUser__in=_user)).delete()
             args.update(success(_user))
-            log(request.user.pk, 'Данные ЛС', 'Управление', 'Удаление Сообщество')
+            log(request.user.pk, 'Данные КП', 'Управление', 'Удаление Сообщество')
         else:
             return HttpResponse(json.dumps({'warningText': 'Действие не выполнено'}, default=my_convert_datetime))
     return HttpResponse(json.dumps(args, default=my_convert_datetime))

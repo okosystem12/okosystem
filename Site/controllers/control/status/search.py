@@ -28,7 +28,7 @@ def search(request):
         if controlUser:
             setStatus(controlUser, 'search')
 
-            log(request.user.pk, 'Данные ЛС', 'Управление', 'Поиск сотрудника')
+            log(request.user.pk, 'Данные КП', 'Управление', 'Поиск сотрудника')
             args = {
                 'successText': 'Поиск сотрудника ' + controlUser.shortName(),
             }
